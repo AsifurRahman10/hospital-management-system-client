@@ -9,7 +9,7 @@ const manrope = Manrope({
 })
 
 export const metadata: Metadata = {
-  title: 'Duozhuamiao Dental | Thoughtful care, healthier smiles',
+  title: 'Life Hospital Dental | Thoughtful care, healthier smiles',
   description:
     'Modern dental care with a thoughtful team, clear treatment plans, and a gentler patient experience.'
 }

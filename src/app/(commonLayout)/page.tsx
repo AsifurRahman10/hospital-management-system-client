@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import { ServiceCard } from '@/components/service-card'
-import { SiteHeader } from '@/components/site-header'
+import { Navbar } from '@/components/shared/Navbar'
 
 const services = [
   {
@@ -44,7 +44,7 @@ export default function Home() {
       <div
         id='top'
         className='bg-background'>
-        <SiteHeader />
+        <Navbar />
         <main>
           <section
             aria-labelledby='hero-title'
@@ -282,7 +282,7 @@ export default function Home() {
 
       <footer className='border-t border-border bg-white px-6 py-7'>
         <div className='mx-auto flex max-w-[1080px] flex-col gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between'>
-          <p className='font-extrabold text-foreground'>Duozhuamiao Dental</p>
+          <p className='font-extrabold text-foreground'>Life Hospital Dental</p>
           <p>Thoughtful care for healthier smiles.</p>
           <Link
             href='#top'

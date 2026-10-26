@@ -46,7 +46,7 @@ The centered desktop content width is 1080 px in the header/hero, About, Service
 
 - **Nodes:** section `1:18`; content `1:19`; header row `1:20`; hero row `1:30`.
 - **Section:** 1200 × 566 px; `#f3f5f9`. Inner content is 1080 px wide, x=60.
-- **Header row:** 1080 × 86 px, top aligned; 20 px vertical padding and 20 px item gap are present in the generated layout context. Brand `Duozhuamiao` (`1:21`) at left, five centered navigation labels (`1:22`–`1:27`), outlined appointment button (`1:28`) at right, 167 × 46 px in metadata.
+- **Header row:** 1080 × 86 px, top aligned; 20 px vertical padding and 20 px item gap are present in the generated layout context. Brand `Life Hospital` (`1:21`) at left, five centered navigation labels (`1:22`–`1:27`), outlined appointment button (`1:28`) at right, 167 × 46 px in metadata.
 - **Navigation:** About us, Services, Doctors, Testimonials, Contacts. Manrope Medium 14 px, black, 20 px gap.
 - **Hero row:** node `1:30`, 1080 × 480 px at y=86; 100 px gap between text and image collage; vertical padding is 70 px. Left text block `1:31` is 492 px wide and vertically centered. Heading `1:32`: “High-quality and painless dentistry”, Manrope ExtraBold 52 px, 1.2 line height, black with “dentistry” in `#3167d9`. Supporting copy `1:33`: Manrope Medium 14 px, 1.2 line height, 60% black. Primary CTA `1:34`: “Make Appointment”, metadata 167 × 46 px.
 - **Hero collage:** node `1:36`, 488 × 340 px, positioned x=592, y=70 in hero row. Composed of asymmetrically cropped image rectangles, blue and mint blocks/circle; 10 px gaps. Main right photo is 220 × 340 px with upper-left 80 px and lower-right 80 px corners, other corners 5 px (`1:44`). Other collage slots: 124 × 177, 258 × 103, and 124 × 177 px, with various 40–50 px asymmetric corners (`1:39`–`1:43`).
@@ -95,7 +95,7 @@ The centered desktop content width is 1080 px in the header/hero, About, Service
 
 - **Nodes:** section `1:211`; inner row `1:212`.
 - **Section:** `#f3f5f9`, 1200 × 166 px. Inner row at `(60, 60)`, 1080 × 46 px.
-- **Layout/content:** brand `Duozhuamiao` at left; repeated five-link centered navigation; outlined “Make Appointment” button at right. 20 px item gaps. Brand 16 px ExtraBold, nav 14 px Medium, button label 14 px Bold. Button metadata size 167 × 46 px.
+- **Layout/content:** brand `Life Hospital` at left; repeated five-link centered navigation; outlined “Make Appointment” button at right. 20 px item gaps. Brand 16 px ExtraBold, nav 14 px Medium, button label 14 px Bold. Button metadata size 167 × 46 px.
 
 ## 5. Design Tokens
 
