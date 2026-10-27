@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Manrope } from 'next/font/google'
 import './globals.css'
+import QueryProviders from '@/providers/queryProviders'
 
 const manrope = Manrope({
   variable: '--font-manrope',
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     <html
       lang='en'
       className={`${manrope.variable} h-full antialiased`}>
-      <body className='min-h-full'>{children}</body>
+      <body className='min-h-full'>
+        <QueryProviders>{children}</QueryProviders>
+      </body>
     </html>
   )
 }

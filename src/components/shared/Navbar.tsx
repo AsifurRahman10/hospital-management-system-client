@@ -38,7 +38,7 @@ export function Navbar() {
       </nav>
       <div className='flex gap-6 justify-center items-center'>
         <Link
-          href='#login'
+          href='/login'
           className='text-sm font-semibold text-primary'>
           Login
         </Link>
