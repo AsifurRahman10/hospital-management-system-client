@@ -25,14 +25,13 @@ const LoginForm = () => {
     },
 
     onSubmit: async ({ value }) => {
-      console.log(value)
       setServerError(null)
       try {
-        // const result = (await mutateAsync(value)) as any
-        // if (!result.success) {
-        //   setServerError(result.message || 'Login failed')
-        //   return
-        // }
+        const result = (await mutateAsync(value)) as any
+        if (!result.success) {
+          setServerError(result.message || 'Login failed')
+          return
+        }
       } catch (error: any) {
         console.log(`Login failed: ${error.message}`)
         setServerError(`Login failed: ${error.message}`)
