@@ -6,7 +6,8 @@ import { ILoginPayload, loginZodSchema } from '@/validation/auth.validation'
 import { redirect } from 'next/navigation'
 
 const loginAction = async (
-  payload: ILoginPayload
+  payload: ILoginPayload,
+  redirectPath?: string
 ): Promise<ILoginResponse | ApiErrorResponse> => {
   const parsedPayload = loginZodSchema.safeParse(payload)
 
@@ -25,7 +26,11 @@ const loginAction = async (
     )
     console.log(response.data)
 
-    redirect('/')
+    if (redirectPath) {
+      redirect(redirectPath)
+    } else {
+      redirect('/')
+    }
   } catch (error: any) {
     if (
       error &&
