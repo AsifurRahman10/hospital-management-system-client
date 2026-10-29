@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { SidebarNavList } from '@/components/modules/dashboard/SidebarNavList'
-import { NavUser } from '@/components/modules/dashboard/nav-user'
+import { NavUser } from '@/components/modules/dashboard/navUser'
 import {
   Sidebar,
   SidebarContent,
@@ -41,30 +41,36 @@ export async function AppSidebar({
               aria-hidden='true'
             />
           </span>
-          <span>
+          <span className='group-data-[collapsible=icon]:hidden'>
             Life<span className='text-primary'>.</span>care
           </span>
         </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarNavList items={navItems} />
-        <div className='mt-auto px-4 pb-4 group-data-[collapsible=icon]:hidden'>
-          <div className='rounded-md border border-primary/15 bg-secondary/60 p-3'>
-            <div className='mb-2 flex items-center gap-2 text-xs font-semibold text-secondary-foreground'>
-              <StethoscopeIcon className='size-3.5' />
-              Care team status
-            </div>
-            <div className='flex items-center gap-2 text-xs text-muted-foreground'>
-              <span className='size-2 rounded-full bg-accent' />
-              All systems operational
-            </div>
-          </div>
-        </div>
+        <DemoCard />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={sidebarUser} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
+  )
+}
+
+const DemoCard = () => {
+  return (
+    <div className='mt-auto px-4 pb-4 group-data-[collapsible=icon]:hidden'>
+      <div className='rounded-md border border-primary/15 bg-secondary/60 p-3'>
+        <div className='mb-2 flex items-center gap-2 text-xs font-semibold text-secondary-foreground'>
+          <StethoscopeIcon className='size-3.5' />
+          Care team status
+        </div>
+        <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+          <span className='size-2 rounded-full bg-accent' />
+          All systems operational
+        </div>
+      </div>
+    </div>
   )
 }
