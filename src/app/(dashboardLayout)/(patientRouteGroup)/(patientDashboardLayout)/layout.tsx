@@ -3,10 +3,5 @@ export default function PatientDashboardLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  return (
-    <>
-      Patient Dashboard Layout
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

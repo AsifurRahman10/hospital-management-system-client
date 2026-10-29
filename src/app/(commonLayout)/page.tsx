@@ -8,7 +8,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
-import { ServiceCard } from '@/components/service-card'
+import { ServiceCard } from '@/components/modules/dashboard/service-card'
 import { Navbar } from '@/components/shared/Navbar'
 
 const services = [
