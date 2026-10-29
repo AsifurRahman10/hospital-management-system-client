@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import loginAction from '@/app/(commonLayout)/(authRouteGorup)/login/_action'
 import AppField from '@/components/shared/AppField'
 import { AuthShell } from '@/components/shared/AuthShell'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
+import { loginAction } from '@/service/auth.service'
 import { ILoginPayload, loginZodSchema } from '@/validation/auth.validation'
 import { useForm } from '@tanstack/react-form'
 import { useMutation } from '@tanstack/react-query'

@@ -10,6 +10,8 @@ import {
   StethoscopeIcon,
   UsersIcon
 } from 'lucide-react'
+import { MetricCard } from '@/components/shared/MetricCard'
+import { AttentionItem } from '@/components/shared/AttentionItem'
 
 const appointments = [
   {
@@ -265,70 +267,6 @@ const PatientDashboardPage = () => {
         </section>
       </div>
     </div>
-  )
-}
-
-function MetricCard({
-  label,
-  value,
-  detail,
-  icon,
-  tone
-}: {
-  label: string
-  value: string
-  detail: string
-  icon: React.ReactNode
-  tone: 'blue' | 'mint' | 'amber' | 'rose'
-}) {
-  const tones = {
-    blue: 'bg-[#eaf0ff] text-primary',
-    mint: 'bg-secondary text-secondary-foreground',
-    amber: 'bg-[#fff4df] text-[#9a650f]',
-    rose: 'bg-[#fbeaea] text-[#a64c4c]'
-  }
-  return (
-    <div className='rounded-lg border border-border bg-card p-5 shadow-[0_8px_24px_rgba(27,45,75,0.04)]'>
-      <div className='flex items-center justify-between'>
-        <span className='text-xs font-semibold text-muted-foreground'>
-          {label}
-        </span>
-        <span
-          className={`grid size-8 place-items-center rounded-md ${tones[tone]}`}>
-          {React.cloneElement(
-            icon as React.ReactElement<{ className?: string }>,
-            { className: 'size-4' }
-          )}
-        </span>
-      </div>
-      <p className='mt-4 text-3xl font-extrabold tracking-tight'>{value}</p>
-      <p className='mt-1 text-xs text-muted-foreground'>{detail}</p>
-    </div>
-  )
-}
-
-function AttentionItem({
-  title,
-  detail,
-  color
-}: {
-  title: string
-  detail: string
-  color: string
-}) {
-  return (
-    <button
-      className='flex w-full items-center gap-3 rounded-md border border-transparent p-2 text-left transition-colors hover:border-border hover:bg-muted/50'
-      type='button'>
-      <span className={`size-2.5 shrink-0 rounded-full ${color}`} />
-      <span className='min-w-0 flex-1'>
-        <span className='block truncate text-sm font-semibold'>{title}</span>
-        <span className='mt-0.5 block truncate text-xs text-muted-foreground'>
-          {detail}
-        </span>
-      </span>
-      <ChevronRightIcon className='size-4 shrink-0 text-muted-foreground' />
-    </button>
   )
 }
 
