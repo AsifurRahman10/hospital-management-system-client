@@ -1,45 +1,18 @@
 'use client'
 import {
-  ArrowUpRightIcon,
   CalendarDaysIcon,
-  ChevronRightIcon,
-  Clock3Icon,
   DollarSignIcon,
-  MoreHorizontalIcon,
   PlusIcon,
   StethoscopeIcon,
   UsersIcon
 } from 'lucide-react'
 import { MetricCard } from '@/components/shared/MetricCard'
-import { AttentionItem } from '@/components/shared/AttentionItem'
+
 import { useQuery } from '@tanstack/react-query'
 import { getStats } from '@/service/dashboard.service'
 import { AdminDashboardStats } from '@/types/dashboard.type'
 import BarChartComponent from '@/components/modules/dashboard/BarChart'
 import AppointmentPieChart from '@/components/modules/dashboard/PieChart'
-
-const appointments = [
-  {
-    time: '09:00',
-    name: 'Olivia Bennett',
-    type: 'Follow-up consultation',
-    color: 'bg-primary'
-  },
-  {
-    time: '10:30',
-    name: 'Noah Williams',
-    type: 'Annual health review',
-    color: 'bg-accent'
-  },
-  {
-    time: '13:15',
-    name: 'Emma Richardson',
-    type: 'Medication check-in',
-    color: 'bg-[#f3b35b]'
-  }
-]
-
-const activity = [42, 58, 49, 72, 64, 86, 78, 92, 83, 96, 88, 100]
 
 const AdminDashboardContent = () => {
   const { data: adminDashboardData } = useQuery({
