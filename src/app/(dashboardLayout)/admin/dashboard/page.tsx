@@ -1,5 +1,10 @@
+import AdminDashboardContent from '@/components/modules/dashboard/admin/AdminDashboardContent'
 import { getStats } from '@/service/dashboard.service'
-import { QueryClient } from '@tanstack/react-query'
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient
+} from '@tanstack/react-query'
 
 const AdminDashboardPage = async () => {
   const queryClient = new QueryClient()
@@ -10,7 +15,11 @@ const AdminDashboardPage = async () => {
     staleTime: 30 * 1000,
     gcTime: 5 * 60 * 1000
   })
-  return <div>AdminDashboardPage</div>
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <AdminDashboardContent />
+    </HydrationBoundary>
+  )
 }
 
 export default AdminDashboardPage

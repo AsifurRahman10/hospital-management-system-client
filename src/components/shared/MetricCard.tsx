@@ -9,7 +9,7 @@ export function MetricCard({
 }: {
   label: string
   value: string
-  detail: string
+  detail?: string
   icon: React.ReactNode
   tone: 'blue' | 'mint' | 'amber' | 'rose'
 }) {

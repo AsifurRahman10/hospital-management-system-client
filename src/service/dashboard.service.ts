@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use server'
 import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiErrorResponse } from '@/types/api.types'
-import { DoctorDashboardStats } from '@/types/dashboard.type'
+import {
+  AdminDashboardStats,
+  DoctorDashboardStats
+} from '@/types/dashboard.type'
 
 export const getStats = async (): Promise<
-  DoctorDashboardStats | ApiErrorResponse
+  DoctorDashboardStats | AdminDashboardStats | ApiErrorResponse
 > => {
   try {
     const response = await httpClient.get<DoctorDashboardStats>('/stats')

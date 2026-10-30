@@ -29,7 +29,14 @@ export const syncResponseCookies = async (header: SetCookieHeader) => {
     }
 
     const name = nameValue.slice(0, separatorIndex).trim()
-    const value = nameValue.slice(separatorIndex + 1).trim()
+    const rawValue = nameValue.slice(separatorIndex + 1).trim()
+    let value = rawValue
+
+    try {
+      value = decodeURIComponent(rawValue)
+    } catch {
+      value = rawValue
+    }
 
     if (name !== SESSION_COOKIE_NAME) {
       continue
