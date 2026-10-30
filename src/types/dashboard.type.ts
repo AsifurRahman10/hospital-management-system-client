@@ -38,6 +38,7 @@ export interface AdminDashboardStats extends BaseDashboardStats {
   paymentCount: number
   userCount: number
   totalRevenue: number
+  appointmentCount: number
   pieChartData: PieChartData[]
   barChartData: BarChartData[]
 }

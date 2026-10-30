@@ -12,7 +12,7 @@ import {
 import { Plus, StethoscopeIcon } from 'lucide-react'
 import { NavSection } from '@/types/dashboard.type'
 import { getNavItemsByRole } from '@/app/lib/navList'
-import { verifyUserWithToken } from '@/service/auth.service'
+import { verifyUserWithToken } from '@/service/authVerification.service'
 import { UserRole } from '@/utils/authUtils'
 
 export async function AppSidebar({

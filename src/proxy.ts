@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyUserWithToken } from '@/service/auth.service'
+import {
+  SESSION_COOKIE_NAME,
+  verifyUserFromRequest
+} from '@/service/authVerification.service'
 import {
   getRouteOwner,
   isAuthRoute,
@@ -19,14 +22,14 @@ export async function proxy(request: NextRequest) {
 
   const hasSessionCookie = request.cookies
     .getAll()
-    .some(({ name }) => name.includes('session_token'))
+    .some(({ name }) => name === SESSION_COOKIE_NAME)
 
   if (isAuth && !hasSessionCookie) {
     return NextResponse.next()
   }
 
   try {
-    const data = await verifyUserWithToken()
+    const data = await verifyUserFromRequest(request)
 
     const role = data?.data?.role as UserRole | undefined
 
