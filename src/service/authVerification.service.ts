@@ -18,12 +18,11 @@ const verifySession = async (cookieHeader: string) => {
     },
     cache: 'no-store'
   })
-
   if (response.status === 401) {
     return null
   }
 
-  if (!response.ok) {
+  if (!response?.ok) {
     throw new Error(
       `Failed to verify user: ${response.status} ${response.statusText}`
     )
