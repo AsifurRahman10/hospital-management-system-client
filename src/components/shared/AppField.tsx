@@ -93,16 +93,7 @@ export default function AppField({
           autoComplete={autoComplete}
           disabled={disabled}
           onBlur={field.handleBlur}
-          onChange={(event) => {
-            const value =
-              type === 'number'
-                ? event.target.value === ''
-                  ? ''
-                  : event.target.valueAsNumber
-                : event.target.value
-
-            field.handleChange(value)
-          }}
+          onChange={(event) => field.handleChange(event.target.value)}
           aria-invalid={hasError}
           aria-describedby={hasError ? `${field.name}-error` : undefined}
           className={cn(

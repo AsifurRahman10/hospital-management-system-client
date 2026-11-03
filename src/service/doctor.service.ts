@@ -35,7 +35,7 @@ export const getAllSpecialties = async () => {
 export const createDoctor = async (payload: ICreateDoctorPayload) => {
   try {
     const response = await httpClient.post<IDoctor>(
-      '/users/create-doctor',
+      '/user/register-doctor',
       payload
     )
     return response
@@ -50,7 +50,9 @@ export const updateDoctor = async (
   payload: IUpdateDoctorPayload
 ) => {
   try {
-    const response = await httpClient.patch<IDoctor>(`/doctors/${id}`, payload)
+    console.log(payload)
+    const response = await httpClient.patch<IDoctor>(`/doctor/${id}`, payload)
+    // console.log(response)
     return response
   } catch (error) {
     console.log('Error updating doctor:', error)
@@ -61,7 +63,7 @@ export const updateDoctor = async (
 export const deleteDoctor = async (id: string) => {
   try {
     const response = await httpClient.delete<{ message: string }>(
-      `/doctors/${id}`
+      `/doctor/${id}`
     )
     return response
   } catch (error) {
@@ -72,7 +74,7 @@ export const deleteDoctor = async (id: string) => {
 
 export const getDoctorById = async (id: string) => {
   try {
-    const doctor = await httpClient.get<IDoctorDetails>(`/doctors/${id}`)
+    const doctor = await httpClient.get<IDoctorDetails>(`/doctor/${id}`)
     return doctor
   } catch (error) {
     console.log('Error fetching doctor by id:', error)

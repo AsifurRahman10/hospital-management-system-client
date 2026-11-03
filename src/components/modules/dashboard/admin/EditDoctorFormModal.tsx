@@ -23,7 +23,6 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/toast'
 import { updateDoctor } from '@/service/doctor.service'
 import {
   Gender,
@@ -39,6 +38,7 @@ import { useForm } from '@tanstack/react-form'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 interface EditDoctorFormModalProps {
   open: boolean
@@ -56,8 +56,8 @@ const getInitialValues = (doctor: IDoctor | null): IEditDoctorFormValues => ({
   experience: doctor?.experience?.toString() ?? '',
   gender: doctor?.gender === Gender.FEMALE ? Gender.FEMALE : Gender.MALE,
   appointmentFee: doctor?.appointmentFee?.toString() ?? '',
-  qualification: doctor?.qualification ?? '',
-  currentWorkingPlace: doctor?.currentWorkingPlace ?? '',
+  qualifications: doctor?.qualifications ?? '',
+  currentWorkplace: doctor?.currentWorkplace ?? '',
   designation: doctor?.designation ?? '',
   specialties: doctor?.doctorSpecialties?.map((item) => item.specialty.id) ?? []
 })
@@ -93,80 +93,41 @@ const EditDoctorFormModal = ({
   const router = useRouter()
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: ({
-      doctorId,
-      payload
-    }: {
-      doctorId: string
-      payload: IUpdateDoctorPayload
-    }) => updateDoctor(doctorId, payload)
+    mutationFn: (payload: IUpdateDoctorPayload) =>
+      updateDoctor(payload.id, payload)
   })
 
   const form = useForm({
     defaultValues: getInitialValues(doctor),
     onSubmit: async ({ value }) => {
       if (!doctor) {
-        toast.add({
-          title: 'Error',
-          description: 'Doctor data is not available.'
-        })
+        toast.error('Doctor data is not available.')
         return
       }
-
-      const originalSpecialtyIds = new Set(
-        doctor.doctorSpecialties.map((item) => item.specialty.id)
-      )
-      const nextSpecialtyIds = new Set(value.specialties)
-
-      const specialtyChanges: IUpdateDoctorPayload['specialties'] = []
-
-      nextSpecialtyIds.forEach((specialtyId) => {
-        if (!originalSpecialtyIds.has(specialtyId)) {
-          specialtyChanges.push({ specialtyId, shouldDelete: false })
-        }
-      })
-
-      originalSpecialtyIds.forEach((specialtyId) => {
-        if (!nextSpecialtyIds.has(specialtyId)) {
-          specialtyChanges.push({ specialtyId, shouldDelete: true })
-        }
-      })
 
       const payload: IUpdateDoctorPayload = {
-        doctor: {
-          name: value.name,
-          contactNumber: value.contactNumber,
-          address: value.address,
-          registrationNumber: value.registrationNumber,
-          experience: value.experience ? Number(value.experience) : undefined,
-          gender: value.gender,
-          appointmentFee: Number(value.appointmentFee),
-          qualification: value.qualification,
-          currentWorkingPlace: value.currentWorkingPlace,
-          designation: value.designation
-        },
-        ...(specialtyChanges.length > 0
-          ? { specialties: specialtyChanges }
-          : {})
+        id: String(doctor.id),
+        name: value.name,
+        contactNumber: value.contactNumber,
+        address: value.address,
+        registrationNumber: value.registrationNumber,
+        experience: value.experience ? Number(value.experience) : undefined,
+        gender: value.gender,
+        appointmentFee: Number(value.appointmentFee),
+        qualifications: value.qualifications,
+        currentWorkplace: value.currentWorkplace,
+        designation: value.designation,
+        specialties: value.specialties
       }
 
-      const result = await mutateAsync({
-        doctorId: String(doctor.id),
-        payload
-      })
+      const result = await mutateAsync(payload)
 
       if (!result.success) {
-        toast.add({
-          title: 'Error',
-          description: result.message || 'Failed to update doctor'
-        })
+        toast.error(result.message || 'Failed to update doctor')
         return
       }
 
-      toast.add({
-        title: 'Success',
-        description: result.message || 'Doctor updated successfully'
-      })
+      toast.success(result.message || 'Doctor updated successfully')
       onOpenChange(false)
 
       void queryClient.invalidateQueries({ queryKey: ['doctors'] })
@@ -284,9 +245,9 @@ const EditDoctorFormModal = ({
                 </form.Field>
 
                 <form.Field
-                  name='qualification'
+                  name='qualifications'
                   validators={{
-                    onChange: editDoctorFormZodSchema.shape.qualification
+                    onChange: editDoctorFormZodSchema.shape.qualifications
                   }}>
                   {(field) => (
                     <AppField
@@ -298,9 +259,9 @@ const EditDoctorFormModal = ({
                 </form.Field>
 
                 <form.Field
-                  name='currentWorkingPlace'
+                  name='currentWorkplace'
                   validators={{
-                    onChange: editDoctorFormZodSchema.shape.currentWorkingPlace
+                    onChange: editDoctorFormZodSchema.shape.currentWorkplace
                   }}>
                   {(field) => (
                     <AppField
@@ -436,14 +397,16 @@ const EditDoctorFormModal = ({
               </form.Field>
 
               <div className='flex items-center justify-end gap-3 border-t pt-4'>
-                <DialogClose>
-                  <Button
-                    type='button'
-                    variant='outline'
-                    disabled={isPending}>
-                    Cancel
-                  </Button>
-                </DialogClose>
+                <DialogClose
+                  render={
+                    <Button
+                      type='button'
+                      variant='outline'
+                      disabled={isPending}>
+                      Cancel
+                    </Button>
+                  }
+                />
 
                 <form.Subscribe
                   selector={(state) =>

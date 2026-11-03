@@ -45,8 +45,8 @@ const SpecialtiesMultiSelect = ({
       : 'Select specialties'
 
   return (
-    <div className='space-y-2'>
-      <div className='flex items-center justify-between gap-3'>
+    <div>
+      <div className='flex items-center justify-between gap-3 mb-2'>
         <Label className={cn(error && 'text-destructive')}>Specialties</Label>
         {selectedSpecialtyIds.length > 0 && (
           <div className='flex flex-wrap justify-end gap-1'>
@@ -68,23 +68,26 @@ const SpecialtiesMultiSelect = ({
       </div>
 
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger>
-          <Button
-            type='button'
-            variant='outline'
-            className={cn(
-              'w-full justify-between',
-              error && 'border-destructive'
-            )}
-            disabled={isLoadingSpecialties || specialties.length === 0}>
-            <span className='truncate text-left'>{triggerText}</span>
-            <ChevronDown className='size-4 opacity-70' />
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              type='button'
+              variant='outline'
+              className={cn(
+                'w-full sm:w-1/4 justify-between',
+                error && 'border-destructive'
+              )}
+              disabled={isLoadingSpecialties || specialties.length === 0}>
+              <span className='truncate text-left'>{triggerText}</span>
+
+              <ChevronDown className='size-4 opacity-70' />
+            </Button>
+          }
+        />
 
         <DropdownMenuContent
           align='start'
-          className='w-(--radix-dropdown-menu-trigger-width) max-h-72 overflow-y-auto'>
+          className='w-(--anchor-width) max-h-72 overflow-y-auto overscroll-contain'>
           {isLoadingSpecialties ? (
             <p className='text-muted-foreground px-2 py-1.5 text-sm'>
               Loading specialties...
@@ -100,8 +103,8 @@ const SpecialtiesMultiSelect = ({
               return (
                 <DropdownMenuItem
                   key={specialty.id}
+                  closeOnClick={false}
                   className='gap-3'
-                  onSelect={(event) => event.preventDefault()}
                   onClick={() => {
                     const nextValue = checked
                       ? selectedSpecialtyIds.filter(
@@ -110,13 +113,12 @@ const SpecialtiesMultiSelect = ({
                       : [...selectedSpecialtyIds, specialty.id]
 
                     onChange(nextValue)
-
-                    onBlur()
                   }}>
                   <Checkbox
                     checked={checked}
                     className='pointer-events-none data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-white'
                   />
+
                   <span>{specialty.title}</span>
                 </DropdownMenuItem>
               )

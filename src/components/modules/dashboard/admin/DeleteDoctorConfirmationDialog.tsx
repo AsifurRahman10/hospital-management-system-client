@@ -10,11 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog'
-import { toast } from '@/components/ui/toast'
 import { deleteDoctor } from '@/service/doctor.service'
 import { type IDoctor } from '@/types/doctor.types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 interface DeleteDoctorConfirmationDialogProps {
   open: boolean
@@ -36,32 +36,34 @@ const DeleteDoctorConfirmationDialog = ({
 
   const handleConfirmDelete = async () => {
     if (!doctor) {
-      toast.add({
-        title: 'Error',
-        description: 'Doctor data is not available.'
-      })
+      toast.error('Doctor data is not available.')
       return
     }
 
-    const result = await mutateAsync(String(doctor.id))
+    try {
+      const result = await mutateAsync(String(doctor.id))
 
-    if (!result.success) {
-      toast.add({
-        title: 'Error',
-        description: result.message || 'Failed to delete doctor'
+      if (!result.success) {
+        toast.error(result.message || 'Failed to delete doctor')
+        return
+      }
+
+      toast.success(result.message || 'Doctor deleted successfully')
+
+      onOpenChange(false)
+
+      await queryClient.invalidateQueries({
+        queryKey: ['doctors']
       })
-      return
+
+      router.refresh()
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong while deleting the doctor.'
+      )
     }
-
-    toast.add({
-      title: 'Success',
-      description: result.message || 'Doctor deleted successfully'
-    })
-    onOpenChange(false)
-
-    void queryClient.invalidateQueries({ queryKey: ['doctors'] })
-    void queryClient.refetchQueries({ queryKey: ['doctors'], type: 'active' })
-    router.refresh()
   }
 
   return (

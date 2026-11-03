@@ -21,8 +21,8 @@ export interface IDoctor {
   experience?: number
   gender: Gender
   appointmentFee: number
-  qualification: string
-  currentWorkingPlace: string
+  qualifications: string
+  currentWorkplace: string
   designation: string
   averageRating: number
   createdAt: Date
@@ -51,8 +51,8 @@ export interface ICreateDoctorPayload {
     experience?: number
     gender: Gender.MALE | Gender.FEMALE
     appointmentFee: number
-    qualification: string
-    currentWorkingPlace: string
+    qualifications: string
+    currentWorkplace: string
     designation: string
   }
   specialties: string[]
@@ -62,20 +62,21 @@ export interface IUpdateDoctorSpecialtyChange {
   specialtyId: string
   shouldDelete?: boolean
 }
+
 export interface IUpdateDoctorPayload {
-  doctor?: {
-    name?: string
-    contactNumber?: string
-    address?: string
-    registrationNumber?: string
-    experience?: number
-    gender?: Gender.MALE | Gender.FEMALE
-    appointmentFee?: number
-    qualification?: string
-    currentWorkingPlace?: string
-    designation?: string
-  }
-  specialties?: IUpdateDoctorSpecialtyChange[]
+  id: string
+  name?: string
+  profilePhoto?: string
+  contactNumber?: string
+  address?: string
+  registrationNumber?: string
+  experience?: number
+  gender?: Gender
+  appointmentFee?: number
+  qualifications?: string
+  currentWorkplace?: string
+  designation?: string
+  specialties?: string[]
 }
 
 export interface IDoctorUserDetails {

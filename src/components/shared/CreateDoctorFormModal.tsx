@@ -25,7 +25,6 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { toast } from '@/components/ui/toast'
 import { createDoctor } from '@/service/doctor.service'
 import { Gender } from '@/types/doctor.types'
 import { type ISpecialty } from '@/types/specialty.types'
@@ -38,6 +37,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
+import { toast } from 'sonner'
 
 interface CreateDoctorFormModalProps {
   specialties: ISpecialty[]
@@ -54,8 +54,8 @@ const defaultValues: ICreateDoctorFormValues = {
   experience: '',
   gender: Gender.MALE,
   appointmentFee: '',
-  qualification: '',
-  currentWorkingPlace: '',
+  qualifications: '',
+  currentWorkplace: '',
   designation: '',
   specialties: []
 }
@@ -106,8 +106,8 @@ const CreateDoctorFormModal = ({
           experience: value.experience ? Number(value.experience) : undefined,
           gender: value.gender,
           appointmentFee: Number(value.appointmentFee),
-          qualification: value.qualification,
-          currentWorkingPlace: value.currentWorkingPlace,
+          qualifications: value.qualifications,
+          currentWorkplace: value.currentWorkplace,
           designation: value.designation
         },
         specialties: value.specialties
@@ -116,19 +116,11 @@ const CreateDoctorFormModal = ({
       const result = await mutateAsync(payload)
 
       if (!result.success) {
-        toast.add({
-          title: 'Error',
-          description: result.message || 'Failed to create doctor',
-          type: 'error'
-        })
+        toast.error(result.message || 'Failed to create doctor')
         return
       }
 
-      toast.add({
-        title: 'Success',
-        description: result.message || 'Doctor created successfully',
-        type: 'success'
-      })
+      toast.success(result.message || 'Doctor created successfully')
       setOpen(false)
       form.reset()
 
@@ -164,7 +156,7 @@ const CreateDoctorFormModal = ({
         }
       />
 
-      <DialogContent className='max-h-[90vh] w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] gap-0 overflow-hidden p-0 sm:w-[calc(100vw-3rem)] sm:max-w-[calc(100vw-3rem)] md:w-[calc(100vw-4rem)] md:max-w-[calc(100vw-4rem)] lg:w-[min(92vw,78rem)] lg:max-w-[min(92vw,78rem)] xl:w-[min(88vw,88rem)] xl:max-w-[min(88vw,88rem)] 2xl:w-[min(84vw,96rem)] 2xl:max-w-[min(84vw,96rem)]'>
+      <DialogContent className='flex w-[calc(100vw-1.5rem)] max-w-[calc(100vw-1.5rem)] flex-col gap-0 overflow-hidden p-0 sm:w-[calc(100vw-3rem)] sm:max-w-[calc(100vw-3rem)] md:w-[calc(100vw-4rem)] md:max-w-[calc(100vw-4rem)] lg:w-[min(92vw,78rem)] lg:max-w-[min(92vw,78rem)] xl:w-[min(88vw,88rem)] xl:max-w-[min(88vw,88rem)] 2xl:w-[min(84vw,96rem)] 2xl:max-w-[min(84vw,96rem)]'>
         <DialogHeader className='border-b px-6 py-5 pr-14'>
           <DialogTitle>Create Doctor</DialogTitle>
           <DialogDescription>
@@ -172,18 +164,18 @@ const CreateDoctorFormModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        <ScrollArea className='max-h-[calc(90vh-5.5rem)]'>
-          <div className='px-6 py-5'>
-            <form
-              method='POST'
-              action='#'
-              noValidate
-              onSubmit={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
-                form.handleSubmit()
-              }}
-              className='space-y-5'>
+        <form
+          method='POST'
+          action='#'
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            form.handleSubmit()
+          }}
+          className='flex min-h-0 flex-1 flex-col'>
+          <ScrollArea className='min-h-0 flex-1'>
+            <div className='space-y-5 px-6 py-5'>
               <div className='grid gap-4 md:grid-cols-2'>
                 <form.Field
                   name='name'
@@ -288,9 +280,9 @@ const CreateDoctorFormModal = ({
                 </form.Field>
 
                 <form.Field
-                  name='qualification'
+                  name='qualifications'
                   validators={{
-                    onChange: createDoctorFormZodSchema.shape.qualification
+                    onChange: createDoctorFormZodSchema.shape.qualifications
                   }}>
                   {(field) => (
                     <AppField
@@ -302,10 +294,9 @@ const CreateDoctorFormModal = ({
                 </form.Field>
 
                 <form.Field
-                  name='currentWorkingPlace'
+                  name='currentWorkplace'
                   validators={{
-                    onChange:
-                      createDoctorFormZodSchema.shape.currentWorkingPlace
+                    onChange: createDoctorFormZodSchema.shape.currentWorkplace
                   }}>
                   {(field) => (
                     <AppField
@@ -439,35 +430,37 @@ const CreateDoctorFormModal = ({
                   )
                 }}
               </form.Field>
+            </div>
+          </ScrollArea>
 
-              <div className='flex items-center justify-end gap-3 border-t pt-4'>
-                <DialogClose>
-                  <Button
-                    type='button'
-                    variant='outline'
-                    disabled={isPending}>
-                    Cancel
-                  </Button>
-                </DialogClose>
+          <div className='flex shrink-0 items-center justify-end gap-3 border-t px-6 py-4'>
+            <DialogClose
+              render={
+                <Button
+                  type='button'
+                  variant='outline'
+                  disabled={isPending}>
+                  Cancel
+                </Button>
+              }
+            />
 
-                <form.Subscribe
-                  selector={(state) =>
-                    [state.canSubmit, state.isSubmitting] as const
-                  }>
-                  {([canSubmit, isSubmitting]) => (
-                    <AppSubmitButton
-                      isPending={isSubmitting || isPending}
-                      pendingLabel='Creating doctor...'
-                      disabled={!canSubmit || isLoadingSpecialties}
-                      className='w-auto min-w-36'>
-                      Create Doctor
-                    </AppSubmitButton>
-                  )}
-                </form.Subscribe>
-              </div>
-            </form>
+            <form.Subscribe
+              selector={(state) =>
+                [state.canSubmit, state.isSubmitting] as const
+              }>
+              {([canSubmit, isSubmitting]) => (
+                <AppSubmitButton
+                  isPending={isSubmitting || isPending}
+                  pendingLabel='Creating doctor...'
+                  disabled={!canSubmit || isLoadingSpecialties}
+                  className='w-auto min-w-36'>
+                  Create Doctor
+                </AppSubmitButton>
+              )}
+            </form.Subscribe>
           </div>
-        </ScrollArea>
+        </form>
       </DialogContent>
     </Dialog>
   )

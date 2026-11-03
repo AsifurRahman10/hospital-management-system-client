@@ -63,12 +63,12 @@ export const createDoctorFormZodSchema = z.object({
       (value) => Number(value) >= 0,
       'Appointment fee cannot be negative'
     ),
-  qualification: z
+  qualifications: z
     .string()
     .trim()
     .min(2, 'Qualification must be at least 2 characters')
     .max(50, 'Qualification must be at most 50 characters'),
-  currentWorkingPlace: z
+  currentWorkplace: z
     .string()
     .trim()
     .min(2, 'Current working place must be at least 2 characters')
@@ -127,12 +127,12 @@ export const createDoctorServerZodSchema = z.object({
     appointmentFee: z.coerce
       .number({ error: 'Appointment fee must be a number' })
       .nonnegative('Appointment fee cannot be negative'),
-    qualification: z
+    qualifications: z
       .string()
       .trim()
       .min(2, 'Qualification must be at least 2 characters')
       .max(50, 'Qualification must be at most 50 characters'),
-    currentWorkingPlace: z
+    currentWorkplace: z
       .string()
       .trim()
       .min(2, 'Current working place must be at least 2 characters')
@@ -193,12 +193,12 @@ export const editDoctorFormZodSchema = z.object({
       (value) => Number(value) >= 0,
       'Appointment fee cannot be negative'
     ),
-  qualification: z
+  qualifications: z
     .string()
     .trim()
     .min(2, 'Qualification must be at least 2 characters')
     .max(50, 'Qualification must be at most 50 characters'),
-  currentWorkingPlace: z
+  currentWorkplace: z
     .string()
     .trim()
     .min(2, 'Current working place must be at least 2 characters')
@@ -214,81 +214,74 @@ export const editDoctorFormZodSchema = z.object({
 })
 
 export const updateDoctorServerZodSchema = z.object({
-  doctor: z
-    .object({
-      name: z
-        .string()
-        .trim()
-        .min(5, 'Name must be at least 5 characters')
-        .max(30, 'Name must be at most 30 characters')
-        .optional(),
-      contactNumber: z
-        .string()
-        .trim()
-        .min(11, 'Contact number must be at least 11 characters')
-        .max(14, 'Contact number must be at most 14 characters')
-        .optional(),
-      address: z.preprocess(
-        emptyStringToUndefined,
-        z
-          .string()
-          .trim()
-          .min(10, 'Address must be at least 10 characters')
-          .max(100, 'Address must be at most 100 characters')
-          .optional()
-      ),
-      registrationNumber: z
-        .string()
-        .trim()
-        .min(1, 'Registration number is required')
-        .optional(),
-      experience: z.preprocess(
-        emptyStringToUndefined,
-        z.coerce
-          .number({ error: 'Experience must be an integer' })
-          .int('Experience must be an integer')
-          .nonnegative('Experience cannot be negative')
-          .optional()
-      ),
-      gender: z
-        .enum([Gender.MALE, Gender.FEMALE], {
-          message: 'Gender must be either MALE or FEMALE'
-        })
-        .optional(),
-      appointmentFee: z.preprocess(
-        emptyStringToUndefined,
-        z.coerce
-          .number({ error: 'Appointment fee must be a number' })
-          .nonnegative('Appointment fee cannot be negative')
-          .optional()
-      ),
-      qualification: z
-        .string()
-        .trim()
-        .min(2, 'Qualification must be at least 2 characters')
-        .max(50, 'Qualification must be at most 50 characters')
-        .optional(),
-      currentWorkingPlace: z
-        .string()
-        .trim()
-        .min(2, 'Current working place must be at least 2 characters')
-        .max(50, 'Current working place must be at most 50 characters')
-        .optional(),
-      designation: z
-        .string()
-        .trim()
-        .min(2, 'Designation must be at least 2 characters')
-        .max(50, 'Designation must be at most 50 characters')
-        .optional()
+  id: z.uuid('Doctor ID must be a valid UUID'),
+  name: z
+    .string()
+    .trim()
+    .min(5, 'Name must be at least 5 characters')
+    .max(30, 'Name must be at most 30 characters')
+    .optional(),
+  profilePhoto: z.string().optional(),
+  contactNumber: z
+    .string()
+    .trim()
+    .min(11, 'Contact number must be at least 11 characters')
+    .max(14, 'Contact number must be at most 14 characters')
+    .optional(),
+  address: z.preprocess(
+    emptyStringToUndefined,
+    z
+      .string()
+      .trim()
+      .min(10, 'Address must be at least 10 characters')
+      .max(100, 'Address must be at most 100 characters')
+      .optional()
+  ),
+  registrationNumber: z
+    .string()
+    .trim()
+    .min(1, 'Registration number is required')
+    .optional(),
+  experience: z.preprocess(
+    emptyStringToUndefined,
+    z.coerce
+      .number({ error: 'Experience must be an integer' })
+      .int('Experience must be an integer')
+      .nonnegative('Experience cannot be negative')
+      .optional()
+  ),
+  gender: z
+    .enum([Gender.MALE, Gender.FEMALE], {
+      message: 'Gender must be either MALE or FEMALE'
     })
     .optional(),
+  appointmentFee: z.preprocess(
+    emptyStringToUndefined,
+    z.coerce
+      .number({ error: 'Appointment fee must be a number' })
+      .nonnegative('Appointment fee cannot be negative')
+      .optional()
+  ),
+  qualifications: z
+    .string()
+    .trim()
+    .min(2, 'Qualification must be at least 2 characters')
+    .max(50, 'Qualification must be at most 50 characters')
+    .optional(),
+  currentWorkplace: z
+    .string()
+    .trim()
+    .min(2, 'Current working place must be at least 2 characters')
+    .max(50, 'Current working place must be at most 50 characters')
+    .optional(),
+  designation: z
+    .string()
+    .trim()
+    .min(2, 'Designation must be at least 2 characters')
+    .max(50, 'Designation must be at most 50 characters')
+    .optional(),
   specialties: z
-    .array(
-      z.object({
-        specialtyId: z.uuid('Specialty ID must be a valid UUID'),
-        shouldDelete: z.boolean('shouldDelete must be a boolean').optional()
-      })
-    )
+    .array(z.uuid('Specialty ID must be a valid UUID'))
     .optional()
 }) satisfies z.ZodType<IUpdateDoctorPayload>
 
