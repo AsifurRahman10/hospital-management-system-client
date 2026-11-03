@@ -3,6 +3,7 @@ import { Manrope } from 'next/font/google'
 import './globals.css'
 import QueryProviders from '@/providers/queryProviders'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { Toaster } from '@/components/ui/toast'
 
 const manrope = Manrope({
   variable: '--font-manrope',
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
       className={`${manrope.variable} h-full antialiased`}>
       <body className='min-h-full'>
         <QueryProviders>
+          <Toaster />
           <TooltipProvider>{children}</TooltipProvider>
         </QueryProviders>
       </body>
