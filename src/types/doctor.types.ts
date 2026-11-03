@@ -83,6 +83,7 @@ export interface IDoctorUserDetails {
   id?: string
   email?: string
   name?: string
+  profilePhoto?: string
   role?: string
   status?: UserStatus
   emailVerified?: boolean

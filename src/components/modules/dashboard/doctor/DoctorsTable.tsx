@@ -2,7 +2,6 @@
 
 import DeleteDoctorConfirmationDialog from '@/components/modules/dashboard/admin/DeleteDoctorConfirmationDialog'
 import EditDoctorFormModal from '@/components/modules/dashboard/admin/EditDoctorFormModal'
-import ViewDoctorProfileDialog from '@/components/modules/dashboard/admin/ViewDoctorProfileDialog'
 import DateCell from '@/components/modules/dashboard/DateCell'
 import StatusBadgeCell from '@/components/modules/dashboard/StatusBadgeCell'
 import UserInfoCell from '@/components/modules/dashboard/UserInfoCell'
@@ -28,7 +27,7 @@ import { ISpecialty } from '@/types/specialty.types'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
 import { RotateCcw, Star } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 
 const DEFAULT_PAGE = 1
@@ -45,6 +44,7 @@ const DoctorsTable = () => {
   type TableFeatures = ReturnType<typeof tableFeatures>
   const columnHelper = createColumnHelper<TableFeatures, IDoctor>()
   const searchParams = useSearchParams()
+  const router = useRouter()
 
   const doctorColumns = columnHelper.columns([
     columnHelper.accessor('name', {
@@ -159,17 +159,22 @@ const DoctorsTable = () => {
   }, [specialtiesResponse])
 
   const {
-    viewingItem,
     editingItem,
     deletingItem,
-    isViewDialogOpen,
     isEditModalOpen,
     isDeleteDialogOpen,
-    onViewOpenChange,
     onEditOpenChange,
     onDeleteOpenChange,
     tableActions
-  } = useRowActionModalState<IDoctor>()
+  } = useRowActionModalState<IDoctor>({ enableView: false })
+  const doctorTableActions = useMemo(
+    () => ({
+      ...tableActions,
+      onView: (doctor: IDoctor) =>
+        router.push(`/admin/dashboard/doctors-management/${doctor.id}`)
+    }),
+    [router, tableActions]
+  )
 
   const {
     queryStringFromUrl,
@@ -359,7 +364,7 @@ const DoctorsTable = () => {
             />
           }
           meta={meta}
-          actions={tableActions}
+          actions={doctorTableActions}
         />
       </section>
       <EditDoctorFormModal
@@ -376,11 +381,6 @@ const DoctorsTable = () => {
         doctor={deletingItem}
       />
 
-      <ViewDoctorProfileDialog
-        open={isViewDialogOpen}
-        onOpenChange={onViewOpenChange}
-        doctor={viewingItem}
-      />
     </>
   )
 }
