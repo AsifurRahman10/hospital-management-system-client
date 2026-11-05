@@ -45,6 +45,7 @@ export interface MultiSelectFilterConfig extends BaseFilterConfig {
 
 export interface RangeFilterConfig extends BaseFilterConfig {
   type: 'range'
+  inputType?: 'number' | 'datetime-local'
 }
 
 export type DataTableFilterConfig =
@@ -262,7 +263,7 @@ const RangeFilterControl = ({
               {RANGE_OPERATOR_LABEL[operator]}
             </Label>
             <Input
-              type='number'
+              type={filter.inputType ?? 'number'}
               value={rangeValue[operator] ?? ''}
               onChange={(event) => {
                 const nextValue = event.target.value

@@ -90,14 +90,14 @@ export const adminNavItems: NavSection[] = [
     title: 'Hospital Management',
     items: [
       {
-        title: 'Appointments',
-        href: '/admin/dashboard/appointments-management',
-        icon: 'Calendar'
-      },
-      {
         title: 'Schedules',
         href: '/admin/dashboard/schedules-management',
         icon: 'Clock'
+      },
+      {
+        title: 'Appointments',
+        href: '/admin/dashboard/appointments-management',
+        icon: 'Calendar'
       },
       {
         title: 'Specialties',
