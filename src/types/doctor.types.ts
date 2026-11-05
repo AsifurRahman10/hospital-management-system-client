@@ -1,13 +1,9 @@
+import { UserStatus } from '@/types/user.types'
+
 export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
   OTHER = 'OTHER'
-}
-
-export enum UserStatus {
-  ACTIVE = 'ACTIVE',
-  BLOCKED = 'BLOCKED',
-  DELETED = 'DELETED'
 }
 
 export interface IDoctor {
@@ -27,6 +23,7 @@ export interface IDoctor {
   averageRating: number
   createdAt: Date
   user: {
+    id: string
     status: UserStatus
   }
   doctorSpecialties: Array<{

@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge'
-import { UserStatus } from '@/types/doctor.types'
+import { UserStatus } from '@/types/user.types'
 
 interface IStatusBadgeCellProps {
   status: UserStatus
@@ -11,11 +11,11 @@ const StatusBadgeCell = ({ status }: IStatusBadgeCellProps) => {
       variant={
         status === UserStatus.ACTIVE
           ? 'default'
-          : status === UserStatus.BLOCKED
+          : status === UserStatus.BLOCK
             ? 'destructive'
             : 'secondary'
       }>
-      <span className='text-sm capitalize'>{status.toLowerCase()}</span>
+      <span className='text-sm capitalize'>{status?.toLowerCase()}</span>
     </Badge>
   )
 }

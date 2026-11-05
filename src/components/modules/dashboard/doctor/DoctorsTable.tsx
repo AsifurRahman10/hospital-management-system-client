@@ -5,6 +5,7 @@ import EditDoctorFormModal from '@/components/modules/dashboard/admin/EditDoctor
 import DateCell from '@/components/modules/dashboard/DateCell'
 import StatusBadgeCell from '@/components/modules/dashboard/StatusBadgeCell'
 import UserInfoCell from '@/components/modules/dashboard/UserInfoCell'
+import ChangeUserStatusDialog from '@/components/shared/ChangeUserStatusDialog'
 import CreateDoctorFormModal from '@/components/shared/CreateDoctorFormModal'
 import DataTable from '@/components/shared/DataTable'
 import {
@@ -21,14 +22,22 @@ import {
 } from '@/hooks/useServerManagedDataTableFilters'
 import { useServerManagedDataTableSearch } from '@/hooks/useServerManagedDataTableSearch'
 import { getAllSpecialties, getDoctors } from '@/service/doctor.service'
+import { changeUserStatus } from '@/service/user.service'
 import { PaginationMeta } from '@/types/api.types'
 import { IDoctor } from '@/types/doctor.types'
 import { ISpecialty } from '@/types/specialty.types'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { UserStatus } from '@/types/user.types'
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
 import { RotateCcw, Star } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 const DEFAULT_PAGE = 1
 const DEFAULT_LIMIT = 10
@@ -45,6 +54,9 @@ const DoctorsTable = () => {
   const columnHelper = createColumnHelper<TableFeatures, IDoctor>()
   const searchParams = useSearchParams()
   const router = useRouter()
+  const queryClient = useQueryClient()
+  const [statusTarget, setStatusTarget] = useState<IDoctor | null>(null)
+  const [statusValue, setStatusValue] = useState<UserStatus>(UserStatus.ACTIVE)
 
   const doctorColumns = columnHelper.columns([
     columnHelper.accessor('name', {
@@ -167,13 +179,46 @@ const DoctorsTable = () => {
     onDeleteOpenChange,
     tableActions
   } = useRowActionModalState<IDoctor>({ enableView: false })
+
+  const statusMutation = useMutation({
+    mutationFn: ({ doctor, status }: { doctor: IDoctor; status: UserStatus }) =>
+      changeUserStatus({
+        userId: doctor.user.id,
+        userStatus: status
+      }),
+    onSuccess: async (result) => {
+      if (!result.success) {
+        toast.error(result.message || 'Failed to change doctor status')
+        return
+      }
+
+      toast.success(result.message || 'Doctor status updated')
+      setStatusTarget(null)
+      await queryClient.invalidateQueries({ queryKey: ['doctors'] })
+      await queryClient.refetchQueries({
+        queryKey: ['doctors'],
+        type: 'active'
+      })
+    },
+    onError: (mutationError) =>
+      toast.error(
+        mutationError instanceof Error
+          ? mutationError.message
+          : 'Failed to change doctor status'
+      )
+  })
+
   const doctorTableActions = useMemo(
     () => ({
       ...tableActions,
       onView: (doctor: IDoctor) =>
-        router.push(`/admin/dashboard/doctors-management/${doctor.id}`)
+        router.push(`/admin/dashboard/doctors-management/${doctor.id}`),
+      onStatusChange: (doctor: IDoctor) => {
+        setStatusTarget(doctor)
+        setStatusValue(doctor.user.status)
+      }
     }),
-    [router, tableActions]
+    [router, setStatusTarget, setStatusValue, tableActions]
   )
 
   const {
@@ -381,6 +426,21 @@ const DoctorsTable = () => {
         doctor={deletingItem}
       />
 
+      <ChangeUserStatusDialog
+        open={statusTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) setStatusTarget(null)
+        }}
+        userName={statusTarget?.name}
+        status={statusValue}
+        onStatusChange={setStatusValue}
+        onSubmit={() => {
+          if (statusTarget) {
+            statusMutation.mutate({ doctor: statusTarget, status: statusValue })
+          }
+        }}
+        isPending={statusMutation.isPending}
+      />
     </>
   )
 }

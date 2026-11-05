@@ -59,6 +59,8 @@ interface DataTableProps<TData extends RowData> {
     onView?: (row: TData) => void
     onEdit?: (row: TData) => void
     onDelete?: (row: TData) => void
+    onStatusChange?: (row: TData) => void
+    onRoleChange?: (row: TData) => void
   }
   sorting?: {
     state: SortingState
@@ -152,6 +154,20 @@ const DataTable = <TData extends RowData>({
                         onClick={() => actions.onDelete?.(rowData)}
                         className='text-destructive'>
                         Delete
+                      </DropdownMenuItem>
+                    )}
+
+                    {actions.onStatusChange && (
+                      <DropdownMenuItem
+                        onClick={() => actions.onStatusChange?.(rowData)}>
+                        Change status
+                      </DropdownMenuItem>
+                    )}
+
+                    {actions.onRoleChange && (
+                      <DropdownMenuItem
+                        onClick={() => actions.onRoleChange?.(rowData)}>
+                        Change role
                       </DropdownMenuItem>
                     )}
                   </DropdownMenuContent>
