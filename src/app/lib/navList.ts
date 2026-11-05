@@ -109,16 +109,16 @@ export const adminNavItems: NavSection[] = [
         href: '/admin/dashboard/doctor-schedules-management',
         icon: 'CalendarClock'
       },
-      {
-        title: 'Doctor Specialties',
-        href: '/admin/dashboard/doctor-specialties-management',
-        icon: 'Stethoscope'
-      },
-      {
-        title: 'Payments',
-        href: '/admin/dashboard/payments-management',
-        icon: 'CreditCard'
-      },
+      // {
+      //   title: 'Doctor Specialties',
+      //   href: '/admin/dashboard/doctor-specialties-management',
+      //   icon: 'Stethoscope'
+      // },
+      // {
+      //   title: 'Payments',
+      //   href: '/admin/dashboard/payments-management',
+      //   icon: 'CreditCard'
+      // },
       {
         title: 'Prescriptions',
         href: '/admin/dashboard/prescriptions-management',
