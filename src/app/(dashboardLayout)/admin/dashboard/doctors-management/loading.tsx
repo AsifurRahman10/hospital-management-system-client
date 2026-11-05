@@ -1,5 +1,5 @@
-const AdminManagementLoading = () => {
-  return <div>AdminManagementLoading</div>
+const DoctorManagementLoading = () => {
+  return <div>DoctorManagementLoading</div>
 }
 
-export default AdminManagementLoading
+export default DoctorManagementLoading

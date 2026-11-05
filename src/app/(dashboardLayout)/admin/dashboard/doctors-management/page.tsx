@@ -6,7 +6,7 @@ import {
   QueryClient
 } from '@tanstack/react-query'
 
-const AdminManagementPage = async ({
+const DoctorManagementPage = async ({
   searchParams
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -54,4 +54,4 @@ const AdminManagementPage = async ({
   )
 }
 
-export default AdminManagementPage
+export default DoctorManagementPage
