@@ -1,5 +1,6 @@
 import AdminDashboardContent from '@/components/modules/dashboard/admin/AdminDashboardContent'
 import { getStats } from '@/service/dashboard.service'
+import { requireUser } from '@/app/lib/session'
 import {
   dehydrate,
   HydrationBoundary,
@@ -7,6 +8,9 @@ import {
 } from '@tanstack/react-query'
 
 const AdminDashboardPage = async () => {
+  const userInfo = await requireUser()
+  const user = userInfo?.data?.user ?? userInfo?.data ?? userInfo
+
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
@@ -17,7 +21,7 @@ const AdminDashboardPage = async () => {
   })
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <AdminDashboardContent />
+      <AdminDashboardContent user={user} />
     </HydrationBoundary>
   )
 }

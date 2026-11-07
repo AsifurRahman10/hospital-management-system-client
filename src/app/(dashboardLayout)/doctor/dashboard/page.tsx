@@ -1,5 +1,8 @@
 import { AttentionItem } from '@/components/shared/AttentionItem'
 import { MetricCard } from '@/components/shared/MetricCard'
+import DashboardHeader from '@/components/modules/dashboard/DashboardHeader'
+import { requireUser } from '@/app/lib/session'
+import Link from 'next/link'
 import {
   ArrowUpRightIcon,
   CalendarDaysIcon,
@@ -33,30 +36,25 @@ const appointments = [
 ]
 
 const activity = [42, 58, 49, 72, 64, 86, 78, 92, 83, 96, 88, 100]
-const DoctorDashboardPage = () => {
-  // const
+
+const DoctorDashboardPage = async () => {
+  const userInfo = await requireUser()
+  const user = userInfo?.data?.user ?? userInfo?.data ?? userInfo
+
   return (
     <div className='min-h-full bg-background px-4 py-6 md:px-8 md:py-8'>
       <div className='mx-auto flex w-full max-w-[1480px] flex-col gap-7'>
-        <section className='flex flex-col justify-between gap-4 md:flex-row md:items-end'>
-          <div>
-            <p className='mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary'>
-              Thursday, October 16, 2025
-            </p>
-            <h1 className='text-3xl font-extrabold tracking-tight text-foreground md:text-4xl'>
-              Good morning, Dr. Chen
-            </h1>
-            <p className='mt-2 text-sm text-muted-foreground'>
-              Here is what needs your attention today.
-            </p>
-          </div>
-          <button
-            className='inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5'
-            type='button'>
-            <PlusIcon className='size-4' />
-            New appointment
-          </button>
-        </section>
+        <DashboardHeader
+          user={user}
+          action={
+            <Link
+              href='/doctor/dashboard/appointments'
+              className='inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5'>
+              <PlusIcon className='size-4' />
+              View appointments
+            </Link>
+          }
+        />
 
         <section className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
           <MetricCard
