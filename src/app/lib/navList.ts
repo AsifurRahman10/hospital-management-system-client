@@ -16,26 +16,24 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
           title: 'Dashboard',
           href: defaultDashboard,
           icon: 'LayoutDashboard'
-        },
-        {
-          title: 'My Profile',
-          href: `/my-profile`,
-          icon: 'User'
-        }
-      ]
-    },
-    {
-      title: 'Settings',
-      items: [
-        {
-          title: 'Change Password',
-          href: 'change-password',
-          icon: 'Settings'
         }
       ]
     }
   ]
 }
+
+export const settingsNavItems: NavSection[] = [
+  {
+    title: 'Settings',
+    items: [
+      {
+        title: 'My Profile',
+        href: '/my-profile',
+        icon: 'User'
+      }
+    ]
+  }
+]
 
 export const doctorNavItems: NavSection[] = [
   {
@@ -172,12 +170,12 @@ export const getNavItemsByRole = (role: UserRole): NavSection[] => {
   switch (role) {
     case 'SUPER_ADMIN':
     case 'ADMIN':
-      return [...commonNavItems, ...adminNavItems]
+      return [...commonNavItems, ...adminNavItems, ...settingsNavItems]
 
     case 'DOCTOR':
-      return [...commonNavItems, ...doctorNavItems]
+      return [...commonNavItems, ...doctorNavItems, ...settingsNavItems]
 
     case 'PATIENT':
-      return [...commonNavItems, ...patientNavItems]
+      return [...commonNavItems, ...patientNavItems, ...settingsNavItems]
   }
 }

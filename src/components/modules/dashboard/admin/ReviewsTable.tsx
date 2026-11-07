@@ -25,6 +25,7 @@ const ReviewsTable = () => {
   const columns = columnHelper.columns([
     columnHelper.accessor('patient', {
       header: 'Patient',
+      enableSorting: false,
       cell: ({ row }) => (
         <UserInfoCell
           name={row.original.patient?.name ?? 'Unknown patient'}
@@ -35,6 +36,7 @@ const ReviewsTable = () => {
     }),
     columnHelper.accessor('doctor', {
       header: 'Doctor',
+      enableSorting: false,
       cell: ({ row }) => (
         <UserInfoCell
           name={row.original.doctor?.name ?? 'Unknown doctor'}
@@ -45,6 +47,7 @@ const ReviewsTable = () => {
     }),
     columnHelper.accessor('rating', {
       header: 'Rating',
+      enableSorting: false,
       cell: ({ getValue }) => {
         const rating = getValue()
         return (
@@ -59,6 +62,7 @@ const ReviewsTable = () => {
     }),
     columnHelper.accessor('comment', {
       header: 'Review Comment',
+      enableSorting: false,
       cell: ({ getValue }) => {
         const comment = getValue()
         return (
@@ -72,6 +76,7 @@ const ReviewsTable = () => {
     }),
     columnHelper.accessor('createdAt', {
       header: 'Reviewed On',
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.createdAt ? (
           <DateCell

@@ -38,3 +38,29 @@ export interface ICreateSchedulePayload {
   startTime: string
   endTime: string
 }
+
+export interface IDoctorSchedule {
+  id?: string
+  doctorId: string
+  scheduleId: string
+  isBooked: boolean
+  createdAt: string | Date
+  updatedAt: string | Date
+  doctor?: {
+    id: string | number
+    name: string
+    email: string
+    profilePhoto?: string
+    contactNumber?: string
+    designation?: string
+    [key: string]: unknown
+  } | null
+  schedule?: {
+    id: string
+    startDateTime: string
+    endDateTime: string
+    createdAt?: string | Date
+    updatedAt?: string | Date
+    [key: string]: unknown
+  } | null
+}
