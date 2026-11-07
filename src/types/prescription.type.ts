@@ -16,3 +16,14 @@ export interface IPrescription {
   doctor?: IDoctor
   appointment?: IAppointment
 }
+
+export interface ICreatePrescriptionPayload {
+  appointmentId: string
+  instructions: string
+  followUpDate: string
+}
+
+export interface IUpdatePrescriptionPayload {
+  instructions?: string
+  followUpDate?: string
+}

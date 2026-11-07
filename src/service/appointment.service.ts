@@ -18,6 +18,21 @@ export const getAppointments = async (queryString: string) => {
   }
 }
 
+export const getMyAppointments = async (queryString?: string) => {
+  try {
+    const endpoint = queryString
+      ? `/appointment/my-appointments?${queryString}`
+      : '/appointment/my-appointments'
+    const appointments = await httpClient.get<ApiResponse<IAppointment[]>>(
+      endpoint
+    )
+    return appointments
+  } catch (error) {
+    console.log('Error fetching my appointments:', error)
+    throw error
+  }
+}
+
 export const changeAppointmentStatus = async (
   appointmentId: string,
   status: AppointmentStatus

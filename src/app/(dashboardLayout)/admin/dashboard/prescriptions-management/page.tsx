@@ -11,7 +11,7 @@ const PrescriptionsManagementPage = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['prescriptions'],
-    queryFn: getPrescriptions,
+    queryFn: () => getPrescriptions(),
     staleTime: 1000 * 60 * 60,
     gcTime: 1000 * 60 * 60 * 6
   })

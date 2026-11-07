@@ -112,7 +112,7 @@ const PrescriptionsTable = () => {
 
   const { data, isLoading, isFetching, isError, error, refetch } = useQuery({
     queryKey: ['prescriptions'] as const,
-    queryFn: getPrescriptions,
+    queryFn: () => getPrescriptions(),
     placeholderData: keepPreviousData
   })
 
