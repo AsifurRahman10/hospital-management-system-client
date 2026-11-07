@@ -11,3 +11,22 @@ export const getReviews = async () => {
     throw error
   }
 }
+
+export const getMyReviews = async (queryString?: string) => {
+  try {
+    const endpoint = queryString
+      ? `/review/my-reviews?${queryString}`
+      : '/review/my-reviews'
+    return await httpClient.get<IReview[]>(endpoint)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error?.response?.status === 404) {
+      const fallbackEndpoint = queryString
+        ? `/my-reviews?${queryString}`
+        : '/my-reviews'
+      return await httpClient.get<IReview[]>(fallbackEndpoint)
+    }
+    console.log('Error fetching my reviews:', error)
+    throw error
+  }
+}
