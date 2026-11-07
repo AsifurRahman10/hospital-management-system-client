@@ -1,14 +1,6 @@
 'use client'
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
+import AppModal from '@/components/shared/AppModal'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -19,6 +11,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { UserStatus } from '@/types/user.types'
+import { ShieldCheck } from 'lucide-react'
 
 interface ChangeUserStatusDialogProps {
   open: boolean
@@ -40,57 +33,48 @@ const ChangeUserStatusDialog = ({
   isPending = false
 }: ChangeUserStatusDialogProps) => {
   return (
-    <Dialog
+    <AppModal
       open={open}
-      onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Change user status</DialogTitle>
-          <DialogDescription>
-            Choose the new account status for {userName ?? 'this user'}.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className='space-y-2 py-2'>
-          <Label htmlFor='user-status'>Account status</Label>
-          <Select
-            value={status}
-            onValueChange={(value) => onStatusChange(value as UserStatus)}>
-            <SelectTrigger
-              id='user-status'
-              className='w-full'>
-              <SelectValue placeholder='Select account status' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='ACTIVE'>ACTIVE</SelectItem>
-              <SelectItem value='BLOCK'>BLOCK</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className='text-xs text-muted-foreground'>
-            Deleted accounts can only be handled through the delete action.
-          </p>
-        </div>
-
-        <DialogFooter>
-          <DialogClose
-            render={
-              <Button
-                type='button'
-                variant='outline'
-                disabled={isPending}>
-                Cancel
-              </Button>
-            }
-          />
+      onOpenChange={onOpenChange}
+      size='md'
+      title='Change user status'
+      description={`Choose the new account status for ${userName ?? 'this user'}.`}
+      icon={<ShieldCheck className='size-5' />}
+      footer={
+        <div className='flex items-center justify-end gap-2.5'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => onOpenChange(false)}
+            disabled={isPending}>
+            Cancel
+          </Button>
           <Button
             type='button'
             onClick={onSubmit}
             disabled={isPending}>
             {isPending ? 'Updating...' : 'Update status'}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      }>
+      <div className='space-y-2 py-2'>
+        <Label htmlFor='user-status'>Account status</Label>
+        <Select
+          value={status}
+          onValueChange={(value) => onStatusChange(value as UserStatus)}>
+          <SelectTrigger
+            id='user-status'
+            className='w-full'>
+            <SelectValue placeholder='Select account status' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={UserStatus.ACTIVE}>Active</SelectItem>
+            <SelectItem value={UserStatus.BLOCK}>Blocked</SelectItem>
+            <SelectItem value={UserStatus.DELETED}>Deleted</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </AppModal>
   )
 }
 

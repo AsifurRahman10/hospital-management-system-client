@@ -1,15 +1,7 @@
 'use client'
 
+import AppModal from '@/components/shared/AppModal'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import {
   Select,
@@ -19,6 +11,7 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { UserRole } from '@/types/user.types'
+import { UserCog } from 'lucide-react'
 
 interface ChangeUserRoleDialogProps {
   open: boolean
@@ -40,57 +33,48 @@ const ChangeUserRoleDialog = ({
   isPending = false
 }: ChangeUserRoleDialogProps) => {
   return (
-    <Dialog
+    <AppModal
       open={open}
-      onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Change user role</DialogTitle>
-          <DialogDescription>
-            Choose the new role for {userName ?? 'this user'}.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className='space-y-2 py-2'>
-          <Label htmlFor='user-role'>Account role</Label>
-          <Select
-            value={role}
-            onValueChange={(value) => onRoleChange(value as UserRole)}>
-            <SelectTrigger
-              id='user-role'
-              className='w-full'>
-              <SelectValue placeholder='Select account role' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-              <SelectItem value={UserRole.SUPER_ADMIN}>Super Admin</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className='text-xs text-muted-foreground'>
-            You cannot change your own role.
-          </p>
-        </div>
-
-        <DialogFooter>
-          <DialogClose
-            render={
-              <Button
-                type='button'
-                variant='outline'
-                disabled={isPending}>
-                Cancel
-              </Button>
-            }
-          />
+      onOpenChange={onOpenChange}
+      size='md'
+      title='Change user role'
+      description={`Choose the new role for ${userName ?? 'this user'}.`}
+      icon={<UserCog className='size-5' />}
+      footer={
+        <div className='flex items-center justify-end gap-2.5'>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => onOpenChange(false)}
+            disabled={isPending}>
+            Cancel
+          </Button>
           <Button
             type='button'
             onClick={onSubmit}
             disabled={isPending}>
             {isPending ? 'Updating...' : 'Update role'}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      }>
+      <div className='space-y-2 py-2'>
+        <Label htmlFor='user-role'>Account role</Label>
+        <Select
+          value={role}
+          onValueChange={(value) => onRoleChange(value as UserRole)}>
+          <SelectTrigger
+            id='user-role'
+            className='w-full'>
+            <SelectValue placeholder='Select account role' />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+            <SelectItem value={UserRole.DOCTOR}>Doctor</SelectItem>
+            <SelectItem value={UserRole.PATIENT}>Patient</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </AppModal>
   )
 }
 
