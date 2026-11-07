@@ -12,14 +12,14 @@ import {
 import { Plus, StethoscopeIcon } from 'lucide-react'
 import { NavSection } from '@/types/dashboard.type'
 import { getNavItemsByRole } from '@/app/lib/navList'
-import { verifyUserWithToken } from '@/service/authVerification.service'
 import { UserRole } from '@/utils/authUtils'
+import { requireUser } from '@/app/lib/session'
 
 export async function AppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const userInfo = await verifyUserWithToken()
-  const user = userInfo?.data ?? userInfo
+  const userInfo = await requireUser()
+  const user = userInfo?.data?.user ?? userInfo?.data ?? userInfo
   const role = user?.role as UserRole | undefined
   const navItems: NavSection[] = role ? getNavItemsByRole(role) : []
 

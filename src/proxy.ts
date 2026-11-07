@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  SESSION_COOKIE_NAME,
-  verifyUserFromRequest
-} from '@/service/authVerification.service'
+
 import {
   getRouteOwner,
   isAuthRoute,
   UserRole,
   getDefaultDashboardRoute
 } from '@/utils/authUtils'
+import {
+  verifyUserFromRequest,
+  SESSION_COOKIE_NAME
+} from '@/service/authVerification.service'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -16,6 +17,7 @@ export async function proxy(request: NextRequest) {
   const routerOwner = getRouteOwner(pathname)
   const isAuth = isAuthRoute(pathname)
 
+  // Public non-auth route: allow immediately without session verification
   if (!isAuth && routerOwner === null) {
     return NextResponse.next()
   }
@@ -24,14 +26,23 @@ export async function proxy(request: NextRequest) {
     .getAll()
     .some(({ name }) => name === SESSION_COOKIE_NAME)
 
+  // Optimization 1: On auth routes (/login, /register), if no session cookie exists, allow immediately (0ms)
   if (isAuth && !hasSessionCookie) {
     return NextResponse.next()
   }
 
-  try {
-    const data = await verifyUserFromRequest(request)
+  // Optimization 2: On protected routes, if no session cookie exists, redirect immediately to login (0ms)
+  if (!isAuth && !hasSessionCookie) {
+    const loginUrl = new URL('/login', request.url)
+    loginUrl.searchParams.set('redirect', pathname + request.nextUrl.search)
+    return NextResponse.redirect(loginUrl)
+  }
 
-    const role = data?.data?.role as UserRole | undefined
+  try {
+    // Verify session once with backend using the request's cookies
+    const data = await verifyUserFromRequest(request)
+    const user = data?.data?.user
+    const role = user?.role as UserRole | undefined
 
     if (!data?.data || !role) {
       if (isAuth) {
@@ -40,22 +51,31 @@ export async function proxy(request: NextRequest) {
 
       const loginUrl = new URL('/login', request.url)
       loginUrl.searchParams.set('redirect', pathname + request.nextUrl.search)
-
       return NextResponse.redirect(loginUrl)
     }
 
     const normalizedRole: UserRole = role === 'SUPER_ADMIN' ? 'ADMIN' : role
 
+    // Authenticated user trying to access /login, /register, etc. -> redirect to dashboard
     if (isAuth) {
       return NextResponse.redirect(
         new URL(getDefaultDashboardRoute(normalizedRole), request.url)
       )
     }
 
+    // Common protected routes (e.g., /my-profile, /change-password) accessible to all authenticated roles
     if (routerOwner === 'COMMON') {
-      return NextResponse.next()
+      const requestHeaders = new Headers(request.headers)
+      requestHeaders.set('x-user-payload', JSON.stringify(user))
+
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders
+        }
+      })
     }
 
+    // Role-based access control check
     if (
       ['ADMIN', 'DOCTOR', 'PATIENT'].includes(routerOwner ?? '') &&
       routerOwner !== normalizedRole
@@ -65,7 +85,16 @@ export async function proxy(request: NextRequest) {
       )
     }
 
-    return NextResponse.next()
+    // Optimization 3: Forward the verified user data via request headers to Server Components.
+    // Downstream components (like AppSidebar and Pages) can read this in 0ms with zero duplicate HTTP calls.
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-user-payload', JSON.stringify(user))
+
+    return NextResponse.next({
+      request: {
+        headers: requestHeaders
+      }
+    })
   } catch (error) {
     console.error('Authentication verification failed:', error)
 

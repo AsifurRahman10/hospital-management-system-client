@@ -12,7 +12,7 @@ const verifySession = async (cookieHeader: string) => {
     return null
   }
 
-  const response = await fetch(`${API_BASE_URL}/api/v1/auth/me`, {
+  const response = await fetch(`${API_BASE_URL}/api/v1/auth/get-session`, {
     headers: {
       cookie: cookieHeader
     },
