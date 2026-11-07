@@ -54,10 +54,7 @@ const formatScheduleDate = (startDateTime?: string) => {
       })
 }
 
-const formatScheduleTime = (
-  startDateTime?: string,
-  endDateTime?: string
-) => {
+const formatScheduleTime = (startDateTime?: string, endDateTime?: string) => {
   if (!startDateTime) return 'N/A'
   const start = new Date(startDateTime)
   const end = endDateTime ? new Date(endDateTime) : null
@@ -80,10 +77,7 @@ const formatScheduleTime = (
   return startTimeStr
 }
 
-const getScheduleDuration = (
-  startDateTime?: string,
-  endDateTime?: string
-) => {
+const getScheduleDuration = (startDateTime?: string, endDateTime?: string) => {
   if (!startDateTime || !endDateTime) return null
   const start = new Date(startDateTime)
   const end = new Date(endDateTime)
@@ -142,16 +136,12 @@ const MyDoctorSchedulesTable = () => {
     defaultLimit: DEFAULT_LIMIT
   })
 
-  const {
-    deletingItem,
-    isDeleteDialogOpen,
-    onDeleteOpenChange,
-    tableActions
-  } = useRowActionModalState<IDoctorSchedule>({
-    enableView: false,
-    enableEdit: false,
-    enableDelete: true
-  })
+  const { deletingItem, isDeleteDialogOpen, onDeleteOpenChange, tableActions } =
+    useRowActionModalState<IDoctorSchedule>({
+      enableView: false,
+      enableEdit: false,
+      enableDelete: true
+    })
 
   const queryString = queryStringFromUrl
 
@@ -175,7 +165,9 @@ const MyDoctorSchedulesTable = () => {
     if (Array.isArray(responseData)) return responseData
     if (
       'data' in responseData &&
-      Array.isArray((responseData as unknown as { data: IDoctorSchedule[] }).data)
+      Array.isArray(
+        (responseData as unknown as { data: IDoctorSchedule[] }).data
+      )
     ) {
       return (responseData as unknown as { data: IDoctorSchedule[] }).data
     }
@@ -251,7 +243,7 @@ const MyDoctorSchedulesTable = () => {
                   <Calendar className='size-4' />
                 </div>
                 <div>
-                  <p className='font-semibold text-foreground'>
+                  <p className='text-foreground'>
                     {formatScheduleDate(startDateTime)}
                   </p>
                   <p className='font-mono text-[10px] text-muted-foreground'>
@@ -338,8 +330,6 @@ const MyDoctorSchedulesTable = () => {
       ]),
     [columnHelper]
   )
-
-
 
   return (
     <section className='mx-auto w-full max-w-[1600px] space-y-5 px-4 py-5 md:px-8 md:py-7'>
