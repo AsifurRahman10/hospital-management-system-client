@@ -180,9 +180,9 @@ export const EditProfileModal = ({
           return
         }
 
-        toast.success(res?.message || 'Profile updated successfully.')
-        await queryClient.invalidateQueries({ queryKey: ['my-profile'] })
         onOpenChange(false)
+        toast.success(res?.message || 'Profile updated successfully.')
+        void queryClient.invalidateQueries({ queryKey: ['my-profile'] })
       } catch (err: unknown) {
         const message =
           err instanceof Error ? err.message : 'Failed to update profile.'
