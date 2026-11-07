@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiErrorResponse } from '@/types/api.types'
-import { ILoginResponse } from '@/types/auth.types'
+import { ILoginResponse, ILogoutResponse } from '@/types/auth.types'
 import { ILoginPayload, loginZodSchema } from '@/validation/auth.validation'
 import { redirect } from 'next/navigation'
 
@@ -52,6 +52,37 @@ export const loginAction = async (
     return {
       success: false,
       message: `Login failed: ${error.message}`
+    }
+  }
+}
+
+export const logoutAction = async (): Promise<
+  ILogoutResponse | ApiErrorResponse
+> => {
+  try {
+    const response = await httpClient.post('/auth/logout')
+    if (response.success) {
+      redirect('/')
+    }
+
+    return {
+      success: false,
+      message: response.message || 'Logout failed'
+    }
+  } catch (error: any) {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'digest' in error &&
+      typeof error.digest === 'string' &&
+      error.digest.startsWith('NEXT_REDIRECT')
+    ) {
+      throw error
+    }
+    console.error('Logout failed:', error)
+    return {
+      success: false,
+      message: `Logout failed: ${error.message}`
     }
   }
 }

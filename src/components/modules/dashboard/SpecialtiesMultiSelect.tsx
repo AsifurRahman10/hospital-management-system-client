@@ -29,7 +29,6 @@ const SpecialtiesMultiSelect = ({
   specialties,
   selectedSpecialtyIds,
   onChange,
-  onBlur,
   isLoadingSpecialties = false,
   error,
   getErrorMessage

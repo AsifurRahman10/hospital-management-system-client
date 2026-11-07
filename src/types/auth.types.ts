@@ -11,3 +11,9 @@ export interface ILoginResponse {
     emailVerified: boolean
   }
 }
+
+export interface ILogoutResponse {
+  success: boolean
+  message: string
+  data: null
+}

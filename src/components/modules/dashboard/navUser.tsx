@@ -16,14 +16,17 @@ import {
   SidebarMenuItem,
   useSidebar
 } from '@/components/ui/sidebar'
+import { logoutAction } from '@/service/auth.service'
+import { useMutation } from '@tanstack/react-query'
 import {
   ChevronsUpDownIcon,
-  SparklesIcon,
   BadgeCheckIcon,
   CreditCardIcon,
-  BellIcon,
+  LoaderCircleIcon,
   LogOutIcon
 } from 'lucide-react'
+import Link from 'next/link'
+import { toast } from 'sonner'
 
 export function NavUser({
   user
@@ -35,6 +38,32 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: () => logoutAction()
+  })
+
+  const handleLogout = async () => {
+    try {
+      const result = await mutateAsync()
+      if (!result.success) {
+        toast.error(result.message || 'Logout failed')
+      }
+      toast.success('Logged out successfully')
+    } catch (error) {
+      if (
+        error &&
+        typeof error === 'object' &&
+        'digest' in error &&
+        typeof error.digest === 'string' &&
+        error.digest.startsWith('NEXT_REDIRECT')
+      ) {
+        throw error
+      }
+
+      console.error('Logout failed:', error)
+      toast.error('Logout failed')
+    }
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -83,23 +112,31 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheckIcon />
-                Account
-              </DropdownMenuItem>
+              <Link href={'/my-profile'}>
+                <DropdownMenuItem>
+                  <BadgeCheckIcon />
+                  Account
+                </DropdownMenuItem>
+              </Link>
               <DropdownMenuItem>
                 <CreditCardIcon />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              {/* <DropdownMenuItem>
                 <BellIcon />
                 Notifications
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOutIcon />
-              Log out
+            <DropdownMenuItem
+              onClick={() => handleLogout()}
+              disabled={isPending}>
+              {isPending ? (
+                <LoaderCircleIcon className='animate-spin' />
+              ) : (
+                <LogOutIcon />
+              )}
+              {isPending ? 'Logging out...' : 'Log out'}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
