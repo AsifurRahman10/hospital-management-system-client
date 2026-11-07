@@ -46,12 +46,21 @@ const toDate = (value: string | null) => {
   return Number.isNaN(date.getTime()) ? undefined : date
 }
 
-const toIsoDateTime = (date: Date | undefined, time: string) => {
+const toIsoDateTime = (
+  date: Date | undefined,
+  timeStr: string,
+  isEnd = false
+) => {
   if (!date) return ''
-  const [hours, minutes] = time.split(':').map(Number)
-  const localDate = new Date(date)
-  localDate.setHours(hours, minutes, 0, 0)
-  return localDate.toISOString()
+  const [hours, minutes] = timeStr.split(':').map(Number)
+  const d = new Date(date)
+  d.setHours(
+    Number.isFinite(hours) ? hours : isEnd ? 23 : 0,
+    Number.isFinite(minutes) ? minutes : isEnd ? 59 : 0,
+    isEnd ? 59 : 0,
+    isEnd ? 999 : 0
+  )
+  return d.toISOString()
 }
 
 const getDateRangeLabel = (range: DateRange | undefined) => {
@@ -68,8 +77,12 @@ const ScheduleDateRangeFilter = ({
   searchParams: ReturnType<typeof useSearchParams>
   updateParams: ReturnType<typeof useServerManagedDataTable>['updateParams']
 }) => {
-  const initialFrom = toDate(searchParams.get('startDateTime'))
-  const initialTo = toDate(searchParams.get('endDateTime'))
+  const initialFrom = toDate(
+    searchParams.get('startDateTime[gte]') || searchParams.get('startDateTime')
+  )
+  const initialTo = toDate(
+    searchParams.get('endDateTime[lte]') || searchParams.get('endDateTime')
+  )
   const [open, setOpen] = useState(false)
   const [range, setRange] = useState<DateRange | undefined>({
     from: initialFrom,
@@ -91,12 +104,20 @@ const ScheduleDateRangeFilter = ({
       (params) => {
         params.delete('startDateTime')
         params.delete('endDateTime')
+        params.delete('startDateTime[gte]')
+        params.delete('endDateTime[lte]')
 
         if (range?.from) {
-          params.set('startDateTime', toIsoDateTime(range.from, startTime))
+          params.set(
+            'startDateTime[gte]',
+            toIsoDateTime(range.from, startTime, false)
+          )
         }
         if (range?.to) {
-          params.set('endDateTime', toIsoDateTime(range.to, endTime))
+          params.set(
+            'endDateTime[lte]',
+            toIsoDateTime(range.to, endTime, true)
+          )
         }
       },
       { resetPage: true }
@@ -112,6 +133,8 @@ const ScheduleDateRangeFilter = ({
       (params) => {
         params.delete('startDateTime')
         params.delete('endDateTime')
+        params.delete('startDateTime[gte]')
+        params.delete('endDateTime[lte]')
       },
       { resetPage: true }
     )

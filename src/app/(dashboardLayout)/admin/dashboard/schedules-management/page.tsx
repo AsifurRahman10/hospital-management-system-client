@@ -13,6 +13,9 @@ const SchedulesManagementPage = async ({
 }) => {
   const queryParamsObjects = await searchParams
 
+  const serializeKey = (key: string) =>
+    encodeURIComponent(key).replace(/%5B/g, '[').replace(/%5D/g, ']')
+
   const queryString = Object.keys(queryParamsObjects)
     .map((key) => {
       const value = queryParamsObjects[key]
@@ -23,12 +26,12 @@ const SchedulesManagementPage = async ({
       if (Array.isArray(value)) {
         return value
           .map(
-            (item) => `${encodeURIComponent(key)}=${encodeURIComponent(item)}`
+            (item) => `${serializeKey(key)}=${encodeURIComponent(item)}`
           )
           .join('&')
       }
 
-      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+      return `${serializeKey(key)}=${encodeURIComponent(value)}`
     })
     .filter(Boolean)
     .join('&')

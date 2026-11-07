@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@/app/lib/utils'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -10,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 export type ModalSize =
   | 'sm'
@@ -28,7 +27,7 @@ interface AppModalProps {
   title: ReactNode
   description?: ReactNode
   icon?: ReactNode
-  trigger?: ReactNode
+  trigger?: ReactElement
   children: ReactNode
   footer?: ReactNode
   size?: ModalSize
@@ -66,7 +65,7 @@ export const AppModal = ({
     <Dialog
       open={open}
       onOpenChange={onOpenChange}>
-      {trigger && <DialogTrigger render={<>{trigger}</>} />}
+      {trigger && <DialogTrigger render={trigger} />}
       <DialogContent
         showCloseButton={showCloseButton}
         className={cn(
