@@ -6,10 +6,9 @@ import {
   UserRole,
   getDefaultDashboardRoute
 } from '@/utils/authUtils'
-import {
-  verifyUserFromRequest,
-  SESSION_COOKIE_NAME
-} from '@/service/authVerification.service'
+import { requireUser } from '@/app/lib/session'
+
+const SESSION_COOKIE_NAME = 'better-auth.session_token'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -40,7 +39,7 @@ export async function proxy(request: NextRequest) {
 
   try {
     // Verify session once with backend using the request's cookies
-    const data = await verifyUserFromRequest(request)
+    const data = await requireUser()
     const user = data?.data?.user
     const role = user?.role as UserRole | undefined
 
