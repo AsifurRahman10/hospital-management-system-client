@@ -22,7 +22,7 @@ const HeroSection = () => {
         aria-hidden='true'
       />
 
-      <div className='max-w-[540px] md:py-8'>
+      <div className='md:py-8'>
         <h1
           id='hero-title'
           className='text-[40px] font-extrabold leading-[1.12] text-foreground sm:text-[48px] lg:text-[54px]'>
@@ -92,7 +92,7 @@ const HeroSection = () => {
       </div>
 
       <div
-        className='relative mx-auto w-full max-w-[500px] md:ml-auto'
+        className='relative mx-auto w-full md:ml-auto'
         aria-label='Life Hospital modern facilities and specialist care team'>
         <div className='grid grid-cols-[1.15fr_1fr] gap-3'>
           <div className='grid min-h-[320px] grid-rows-[0.8fr_1fr] gap-3 md:min-h-[360px]'>
