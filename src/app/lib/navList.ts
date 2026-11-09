@@ -139,12 +139,12 @@ export const patientNavItems: NavSection[] = [
         title: 'My Appointments',
         href: '/dashboard/my-appointments',
         icon: 'Calendar'
-      },
-      {
-        title: 'Book Appointment',
-        href: '/dashboard/book-appointments',
-        icon: 'ClipboardList'
       }
+      // {
+      //   title: 'Book Appointment',
+      //   href: '/dashboard/book-appointments',
+      //   icon: 'ClipboardList'
+      // }
     ]
   },
   {

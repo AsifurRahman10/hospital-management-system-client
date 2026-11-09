@@ -61,6 +61,10 @@ interface DataTableProps<TData extends RowData> {
     onDelete?: (row: TData) => void
     onStatusChange?: (row: TData) => void
     onRoleChange?: (row: TData) => void
+    canChangeStatus?: (row: TData) => boolean
+    canDelete?: (row: TData) => boolean
+    statusChangeLabel?: (row: TData) => string
+    statusChangeClassName?: (row: TData) => string
   }
   sorting?: {
     state: SortingState
@@ -149,20 +153,29 @@ const DataTable = <TData extends RowData>({
                       </DropdownMenuItem>
                     )}
 
-                    {actions.onDelete && (
-                      <DropdownMenuItem
-                        onClick={() => actions.onDelete?.(rowData)}
-                        className='text-destructive'>
-                        Delete
-                      </DropdownMenuItem>
-                    )}
+                    {actions.onDelete &&
+                      (!actions.canDelete ||
+                        actions.canDelete(rowData)) && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onDelete?.(rowData)}
+                          className='text-destructive'>
+                          Delete
+                        </DropdownMenuItem>
+                      )}
 
-                    {actions.onStatusChange && (
-                      <DropdownMenuItem
-                        onClick={() => actions.onStatusChange?.(rowData)}>
-                        Change status
-                      </DropdownMenuItem>
-                    )}
+                    {actions.onStatusChange &&
+                      (!actions.canChangeStatus ||
+                        actions.canChangeStatus(rowData)) && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onStatusChange?.(rowData)}
+                          className={
+                            actions.statusChangeClassName?.(rowData) ?? ''
+                          }>
+                          {actions.statusChangeLabel
+                            ? actions.statusChangeLabel(rowData)
+                            : 'Change status'}
+                        </DropdownMenuItem>
+                      )}
 
                     {actions.onRoleChange && (
                       <DropdownMenuItem
