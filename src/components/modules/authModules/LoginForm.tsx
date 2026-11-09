@@ -41,14 +41,13 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
   const router = useRouter()
 
   const [serverError, setServerError] = useState<string | null>(null)
-  const [isRedirecting, setIsRedirecting] = useState(false)
   const [isGoogleRedirecting, setIsGoogleRedirecting] = useState(false)
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: (payload: ILoginPayload) => loginAction(payload, redirectPath)
   })
 
-  const isLoading = isPending || isRedirecting
+  const isLoading = isPending
 
   const form = useForm({
     defaultValues: {
@@ -62,6 +61,17 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
       try {
         const result = await mutateAsync(value)
 
+        // Email verification required
+        if (result.requiresVerification && result.redirectTo) {
+          toast.warning(
+            result.message || 'Please verify your email address to continue.'
+          )
+
+          form.reset()
+          router.replace(result.redirectTo)
+          return
+        }
+
         if (!result.success) {
           setServerError(result.message)
           toast.error(result.message)
@@ -70,9 +80,8 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
 
         toast.success('Logged in successfully!')
 
-        setIsRedirecting(true)
-        router.replace(result.redirectTo)
-        router.refresh()
+        form.reset()
+        window.location.assign(result.redirectTo)
       } catch (error: unknown) {
         const message =
           error instanceof Error

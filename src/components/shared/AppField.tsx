@@ -92,6 +92,7 @@ export default function AppField({
           placeholder={placeholder}
           autoComplete={autoComplete}
           disabled={disabled}
+          suppressHydrationWarning
           onBlur={field.handleBlur}
           onChange={(event) => field.handleChange(event.target.value)}
           aria-invalid={hasError}

@@ -55,6 +55,22 @@ export async function proxy(request: NextRequest) {
 
     const normalizedRole: UserRole = role === 'SUPER_ADMIN' ? 'ADMIN' : role
 
+    // Check if user's email is not verified
+    if (user.emailVerified === false) {
+      // Allow unverified users to access /verify-email
+      if (pathname === '/verify-email') {
+        return NextResponse.next()
+      }
+
+      // Block access to private services until email is verified
+      const verifyUrl = new URL('/verify-email', request.url)
+      if (user.email) {
+        verifyUrl.searchParams.set('email', user.email)
+      }
+      verifyUrl.searchParams.set('unverified', 'true')
+      return NextResponse.redirect(verifyUrl)
+    }
+
     // Authenticated user trying to access /login, /register, etc. -> redirect to dashboard
     if (isAuth) {
       return NextResponse.redirect(
