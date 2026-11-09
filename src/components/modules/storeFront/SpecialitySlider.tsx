@@ -6,10 +6,11 @@ import {
   CarouselNext,
   CarouselPrevious
 } from '@/components/ui/carousel'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getSpecialties } from '@/service/specialty.service'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const PRELOADED_ICONS: Record<string, string> = {
   cardio: 'HeartPulse',
@@ -53,7 +54,47 @@ function resolveSpecialtyIcon(specialty: { icon?: string; title: string }) {
   )
 }
 
-const SpecialtySlider = async () => {
+const SpecialtySliderSkeleton = () => {
+  return (
+    <section
+      id='services'
+      aria-labelledby='specialties-title'
+      className='w-full px-6 py-16 md:py-20'>
+      <div className='mx-auto max-w-3/4'>
+        <div className='mb-10 text-left'>
+          <div className='inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary'>
+            <span className='size-2 rounded-full bg-accent' />
+            Clinical Departments
+          </div>
+          <h2
+            id='specialties-title'
+            className='mt-3 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl md:text-4xl'>
+            Top Searched Specialities
+          </h2>
+          <p className='mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground'>
+            Explore our specialized hospital departments, diagnostic services,
+            and multidisciplinary medical teams.
+          </p>
+        </div>
+
+        <div className='relative px-4 sm:px-8'>
+          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className='flex flex-col items-center justify-center p-2'>
+                <Skeleton className='size-28 rounded-full sm:size-32' />
+                <Skeleton className='mt-3.5 h-4 w-20 rounded-md' />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+const SpecialtySliderContent = async () => {
   const res = await getSpecialties().catch(() => null)
   const specialties = res?.data || []
 
@@ -114,8 +155,10 @@ const SpecialtySlider = async () => {
                           <Image
                             src={specialty.icon!}
                             alt={specialty.title}
-                            fill
-                            className='object-cover rounded-full transition-transform duration-300 group-hover:scale-110'
+                            width={44}
+                            height={44}
+                            unoptimized
+                            className='size-11 object-contain transition-transform duration-300 group-hover:scale-110'
                           />
                         ) : Icon ? (
                           <Icon
@@ -139,6 +182,14 @@ const SpecialtySlider = async () => {
         </div>
       </div>
     </section>
+  )
+}
+
+const SpecialtySlider = () => {
+  return (
+    <Suspense fallback={<SpecialtySliderSkeleton />}>
+      <SpecialtySliderContent />
+    </Suspense>
   )
 }
 
