@@ -1,31 +1,40 @@
 'use server'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiErrorResponse } from '@/types/api.types'
+import { ApiErrorResponse, ApiResponse } from '@/types/api.types'
 import { ILoginResponse, ILogoutResponse } from '@/types/auth.types'
 import { ILoginPayload, loginZodSchema } from '@/validation/auth.validation'
 import { redirect } from 'next/navigation'
 
+export type LoginActionResult =
+  | { success: true; redirectTo: string }
+  | { success: false; message: string }
+
+const getSafeRedirectPath = (path?: string): string => {
+  if (path && path.startsWith('/') && !path.startsWith('//')) {
+    return path
+  }
+  return '/'
+}
+
 export const loginAction = async (
   payload: ILoginPayload,
   redirectPath?: string
-): Promise<ILoginResponse | ApiErrorResponse> => {
+): Promise<LoginActionResult> => {
   const parsedPayload = loginZodSchema.safeParse(payload)
 
   if (!parsedPayload.success) {
-    const firstError = parsedPayload.error.issues[0].message || 'Invalid input'
     return {
       success: false,
-      message: firstError
+      message: parsedPayload.error.issues[0]?.message || 'Invalid input'
     }
   }
 
   try {
-    const response = await httpClient.post<ILoginResponse>(
-      '/auth/login',
-      parsedPayload.data
-    )
+    const response: ApiResponse<ILoginResponse> =
+      await httpClient.post<ILoginResponse>('/auth/login', parsedPayload.data)
 
     if (!response.success) {
       return {
@@ -34,24 +43,16 @@ export const loginAction = async (
       }
     }
 
-    if (redirectPath) {
-      redirect(redirectPath)
-    } else {
-      redirect('/')
+    return {
+      success: true,
+      redirectTo: getSafeRedirectPath(redirectPath)
     }
   } catch (error: any) {
-    if (
-      error &&
-      typeof error === 'object' &&
-      'digest' in error &&
-      typeof error.digest === 'string' &&
-      error.digest.startsWith('NEXT_REDIRECT')
-    ) {
-      throw error
-    }
+    console.error('Login failed:', error)
+
     return {
       success: false,
-      message: `Login failed: ${error.message}`
+      message: error.message || 'Login failed. Please try again.'
     }
   }
 }
@@ -59,30 +60,25 @@ export const loginAction = async (
 export const logoutAction = async (): Promise<
   ILogoutResponse | ApiErrorResponse
 > => {
+  let response: ILogoutResponse
+
   try {
-    const response = await httpClient.post('/auth/logout')
-    if (response.success) {
-      redirect('/')
+    response = await httpClient.post('/auth/logout')
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message || 'Logout failed'
+      }
     }
+  } catch (error: any) {
+    console.error('Logout failed:', error)
 
     return {
       success: false,
-      message: response.message || 'Logout failed'
-    }
-  } catch (error: any) {
-    if (
-      error &&
-      typeof error === 'object' &&
-      'digest' in error &&
-      typeof error.digest === 'string' &&
-      error.digest.startsWith('NEXT_REDIRECT')
-    ) {
-      throw error
-    }
-    console.error('Logout failed:', error)
-    return {
-      success: false,
-      message: `Logout failed: ${error.message}`
+      message: error.message || 'Logout failed'
     }
   }
+
+  redirect('/')
 }
