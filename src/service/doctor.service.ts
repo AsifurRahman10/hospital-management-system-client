@@ -81,3 +81,16 @@ export const getDoctorById = async (id: string) => {
     throw error
   }
 }
+
+export const getBestDoctors = async () => {
+  try {
+    return await httpClient.get<IDoctor[]>('/doctor/best-doctors')
+  } catch (error) {
+    try {
+      return await httpClient.get<IDoctor[]>('/best-doctors')
+    } catch {
+      console.log('Error fetching best doctors:', error)
+      throw error
+    }
+  }
+}
