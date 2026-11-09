@@ -154,12 +154,12 @@ export const patientNavItems: NavSection[] = [
         title: 'My Prescriptions',
         href: '/dashboard/my-prescriptions',
         icon: 'FileText'
-      },
-      {
-        title: 'Health Records',
-        href: '/dashboard/health-records',
-        icon: 'Activity'
       }
+      // {
+      //   title: 'Health Records',
+      //   href: '/dashboard/health-records',
+      //   icon: 'Activity'
+      // }
     ]
   }
 ]
