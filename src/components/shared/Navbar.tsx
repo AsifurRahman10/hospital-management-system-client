@@ -3,16 +3,17 @@ import { ArrowUpRight, Plus } from 'lucide-react'
 import CustomButton from '@/components/shared/CustomButton'
 
 const navigation = [
-  { href: '#about', label: 'About us' },
-  { href: '#services', label: 'Services' },
-  { href: '#contact', label: 'Contacts' }
+  { href: '/doctors', label: 'Doctors' },
+  { href: '/#about', label: 'About us' },
+  { href: '/#services', label: 'Services' },
+  { href: '/#contact', label: 'Contacts' }
 ]
 
 export function Navbar() {
   return (
     <header className='mx-auto flex min-h-20.5 w-full max-w-3/4 items-center justify-between gap-2 px-4 md:gap-4 md:px-[5%] lg:px-[60px]'>
       <Link
-        href='#top'
+        href='/'
         aria-label='Life Hospital home'
         className='inline-flex shrink-0 items-center gap-2 text-[15px] font-extrabold text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
         <span className='grid size-8 place-items-center rounded-sm bg-primary text-white'>

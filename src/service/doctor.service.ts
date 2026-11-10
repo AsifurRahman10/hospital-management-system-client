@@ -10,7 +10,7 @@ import {
 } from '@/types/doctor.types'
 import { ISpecialty } from '@/types/specialty.types'
 
-export const getDoctors = async (queryString: string) => {
+export const getDoctors = async (queryString?: string) => {
   try {
     const doctors = await httpClient.get<ApiResponse<IDoctor[]>>(
       queryString ? `/doctor?${queryString}` : '/doctor'

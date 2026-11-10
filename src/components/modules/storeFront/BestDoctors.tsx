@@ -8,22 +8,8 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { getBestDoctors } from '@/service/doctor.service'
 import { IDoctor } from '@/types/doctor.types'
-import { User } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import { DoctorCard } from '@/components/modules/storeFront/DoctorCard'
 import React, { Suspense } from 'react'
-
-function isValidDoctorImage(url?: string): boolean {
-  if (!url) return false
-  if (url.includes('example.com')) return false
-  if (url.startsWith('/')) return true
-  try {
-    const parsed = new URL(url)
-    return parsed.hostname === 'res.cloudinary.com'
-  } catch {
-    return false
-  }
-}
 
 const fallbackDoctors: Partial<IDoctor>[] = [
   {
@@ -72,7 +58,7 @@ const BestDoctorsSkeleton = () => {
             <h2
               id='best-doctors-title'
               className='mt-1 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl md:text-4xl'>
-              Meet our qualified doctors
+              Meet some of our qualified doctors
             </h2>
           </div>
           <div className='flex items-center gap-2'>
@@ -135,7 +121,7 @@ const BestDoctorsContent = async () => {
               <h2
                 id='best-doctors-title'
                 className='mt-1 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl md:text-4xl'>
-                Meet our qualified doctors
+                Meet some of our qualified doctors
               </h2>
             </div>
             <div className='flex items-center gap-2'>
@@ -146,50 +132,16 @@ const BestDoctorsContent = async () => {
 
           {/* Doctors Carousel Row */}
           <CarouselContent className='-ml-4 py-2'>
-            {doctors.map((doctor) => {
-              const specialty =
-                doctor.doctorSpecialties?.[0]?.specialty?.title ||
-                doctor.designation ||
-                'Specialist Physician'
-              const hasValidImage = isValidDoctorImage(doctor.profilePhoto)
-
-              return (
-                <CarouselItem
-                  key={doctor.id}
-                  className='basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4'>
-                  <Link
-                    href='#contact'
-                    className='group block rounded-[24px] border border-border/50 bg-[#f8fafc] p-3 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-border hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
-                    <div className='relative aspect-square w-full overflow-hidden rounded-[18px] bg-muted'>
-                      {hasValidImage ? (
-                        <Image
-                          src={doctor.profilePhoto!}
-                          alt={doctor.name || 'Doctor'}
-                          fill
-                          sizes='(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw'
-                          className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        />
-                      ) : (
-                        <div className='flex size-full items-center justify-center bg-secondary/50 text-primary/60'>
-                          <User
-                            className='size-14'
-                            aria-hidden='true'
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div className='px-1 pt-3 pb-1'>
-                      <h3 className='line-clamp-1 text-sm font-bold text-foreground transition-colors group-hover:text-primary sm:text-base'>
-                        {doctor.name}
-                      </h3>
-                      <p className='mt-0.5 line-clamp-1 text-xs text-muted-foreground'>
-                        {specialty}
-                      </p>
-                    </div>
-                  </Link>
-                </CarouselItem>
-              )
-            })}
+            {doctors.map((doctor) => (
+              <CarouselItem
+                key={doctor.id}
+                className='basis-1/2 pl-4 sm:basis-1/3 lg:basis-1/4'>
+                <DoctorCard
+                  doctor={doctor}
+                  variant='compact'
+                />
+              </CarouselItem>
+            ))}
           </CarouselContent>
         </Carousel>
       </div>

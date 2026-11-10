@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Navbar } from '@/components/shared/Navbar'
 import HeroSection from '@/components/modules/storeFront/HeroSection'
 import { AboutUs } from '@/components/modules/storeFront/AboutUs'
@@ -11,7 +10,6 @@ export default function Home() {
   return (
     <>
       <div className='bg-background'>
-        <Navbar />
         <main>
           <HeroSection />
         </main>
@@ -24,7 +22,6 @@ export default function Home() {
       <BestDoctors />
 
       <ContactUs />
-      <Footer />
     </>
   )
 }
