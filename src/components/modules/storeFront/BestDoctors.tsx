@@ -48,8 +48,8 @@ const BestDoctorsSkeleton = () => {
   return (
     <section
       aria-labelledby='best-doctors-title'
-      className='w-full px-6 py-12 md:py-16'>
-      <div className='mx-auto max-w-3/4'>
+      className='w-full py-12 md:py-16'>
+      <div className='container-custom'>
         <div className='mb-8 flex items-end justify-between'>
           <div>
             <span className='text-xs font-bold uppercase tracking-wider text-accent'>
@@ -104,8 +104,8 @@ const BestDoctorsContent = async () => {
   return (
     <section
       aria-labelledby='best-doctors-title'
-      className='w-full px-6 py-12 md:py-16 bg-white'>
-      <div className='mx-auto max-w-3/4'>
+      className='w-full py-12 md:py-16 bg-white'>
+      <div className='container-custom'>
         <Carousel
           opts={{
             align: 'start',

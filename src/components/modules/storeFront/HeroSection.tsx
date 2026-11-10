@@ -15,7 +15,7 @@ const HeroSection = () => {
   return (
     <section
       aria-labelledby='hero-title'
-      className='relative mx-auto grid w-full max-w-3/4 items-center gap-12 px-6 pb-20 pt-10 md:min-h-[calc(100vh-81px)] md:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] md:gap-10 md:px-[5%] md:pb-16 md:pt-8 lg:gap-16 lg:px-[60px]'>
+      className='container-custom relative grid items-center gap-12 pb-20 pt-10 md:min-h-[calc(100vh-81px)] md:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] md:gap-10 md:pb-16 md:pt-8 lg:gap-16'>
       {/* Decorative ambient glow */}
       <div
         className='pointer-events-none absolute -top-12 left-1/4 -z-10 size-96 rounded-full bg-primary/10 blur-3xl'

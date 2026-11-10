@@ -11,7 +11,6 @@ import {
   Stethoscope,
   X
 } from 'lucide-react'
-import React from 'react'
 import { DoctorCard, DoctorCardSkeleton } from './DoctorCard'
 import {
   DesktopFilterSidebar,
@@ -49,8 +48,8 @@ export const DoctorsLoaderGrid = ({
 export const DoctorDirectorySkeleton = () => (
   <section
     aria-labelledby='doctors-directory-title'
-    className='w-full px-4 py-8 sm:px-6 md:py-12 lg:px-8'>
-    <div className='mx-auto max-w-7xl space-y-8'>
+    className='w-full py-8 md:py-12'>
+    <div className='space-y-8'>
       <div>
         <p className='text-xs font-bold uppercase tracking-wider text-primary'>
           Browse through the doctors specialist.
@@ -63,23 +62,6 @@ export const DoctorDirectorySkeleton = () => (
       </div>
 
       <div className='flex items-start gap-8'>
-        <aside className='hidden w-72 shrink-0 md:block lg:w-80'>
-          <div className='rounded-2xl border border-border/70 bg-card p-5 space-y-4 shadow-xs'>
-            <div className='flex items-center justify-between border-b border-border/70 pb-3'>
-              <Skeleton className='h-4 w-28 rounded' />
-            </div>
-            <Skeleton className='h-10 w-full rounded-xl' />
-            <div className='space-y-2 pt-2'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  className='h-10 w-full rounded-xl'
-                />
-              ))}
-            </div>
-          </div>
-        </aside>
-
         <div className='flex-1 space-y-6'>
           <div className='flex items-center justify-between'>
             <Skeleton className='h-5 w-40 rounded' />
@@ -134,8 +116,8 @@ export const DoctorDirectory = () => {
   return (
     <section
       aria-labelledby='doctors-directory-title'
-      className='w-full px-4 py-8 sm:px-6 md:py-12 lg:px-8'>
-      <div className='mx-auto max-w-7xl space-y-8'>
+      className='w-full py-8 md:py-12'>
+      <div className='space-y-8'>
         {/* Header */}
         <div className='flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between'>
           <div>

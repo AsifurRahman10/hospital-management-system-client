@@ -46,3 +46,19 @@ export const deleteOwnDoctorSchedule = async (id: string) => {
     throw error
   }
 }
+
+export const getDoctorSchedulesByDoctorId = async (
+  doctorId: string | number,
+  queryString?: string
+) => {
+  try {
+    const endpoint = queryString
+      ? `/doctorSchedule/${doctorId}?${queryString}`
+      : `/doctorSchedule/${doctorId}`
+    const response = await httpClient.get<ApiResponse<IDoctorSchedule[]>>(endpoint)
+    return response
+  } catch (error) {
+    console.log('Error fetching doctor schedules by doctor id:', error)
+    throw error
+  }
+}

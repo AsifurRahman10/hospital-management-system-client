@@ -42,8 +42,9 @@ const ContactUs = () => {
     <section
       id='contact'
       aria-labelledby='contact-title'
-      className='w-full px-4 py-16 md:py-24'>
-      <div className='mx-auto max-w-3/4 rounded-[32px] border border-border/80 bg-card p-6 shadow-[0_8px_35px_rgba(0,0,0,0.03)] sm:p-10 md:rounded-[40px] md:p-12 lg:p-16'>
+      className='w-full py-16 md:py-24'>
+      <div className='container-custom'>
+        <div className='rounded-[32px] border border-border/80 bg-card p-6 shadow-[0_8px_35px_rgba(0,0,0,0.03)] sm:p-10 md:rounded-[40px] md:p-12 lg:p-16'>
         <div className='grid items-start gap-12 lg:grid-cols-[1.05fr_1fr] lg:gap-14 xl:gap-20'>
           {/* Left Column: Framer-style Contact Information Stack */}
           <div>
@@ -274,7 +275,8 @@ const ContactUs = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   )
 }
 

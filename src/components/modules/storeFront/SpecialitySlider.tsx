@@ -60,8 +60,8 @@ function getSpecialtyIcon(specialty: Specialty) {
 // Loading skeleton
 function SpecialtySliderSkeleton() {
   return (
-    <section className='w-full px-6 py-16 md:py-20'>
-      <div className='mx-auto max-w-6xl'>
+    <section className='w-full py-16 md:py-20'>
+      <div className='container-custom'>
         <div className='mb-10 flex flex-col items-center'>
           <Skeleton className='h-6 w-36 rounded-full' />
           <Skeleton className='mt-4 h-9 w-64 rounded-md' />
@@ -98,8 +98,8 @@ async function SpecialtySliderContent() {
     <section
       id='services'
       aria-labelledby='specialties-title'
-      className='w-full px-6 py-16 md:py-20'>
-      <div className='mx-auto max-w-6xl'>
+      className='w-full py-16 md:py-20'>
+      <div className='container-custom'>
         {/* Section Header */}
         <div className='mb-10 text-center'>
           <div className='inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary'>

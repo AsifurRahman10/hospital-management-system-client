@@ -11,7 +11,7 @@ const navigation = [
 
 export function Navbar() {
   return (
-    <header className='mx-auto flex min-h-20.5 w-full max-w-3/4 items-center justify-between gap-2 px-4 md:gap-4 md:px-[5%] lg:px-[60px]'>
+    <header className='container-custom flex min-h-20.5 items-center justify-between gap-2 md:gap-4'>
       <Link
         href='/'
         aria-label='Life Hospital home'

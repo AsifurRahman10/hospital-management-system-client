@@ -30,7 +30,7 @@ export function useDoctorFilters() {
   const searchParams = useSearchParams()
 
   // Sidebar toggle state
-  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(true)
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false)
   const [isMobileSheetOpen, setIsMobileSheetOpen] = useState(false)
 
   // Filter state from URL
@@ -76,7 +76,14 @@ export function useDoctorFilters() {
     }
     if (page > 1) params.set('page', String(page))
     return params.toString()
-  }, [appliedSearch, selectedSpecialty, selectedGender, sortBy, sortOrder, page])
+  }, [
+    appliedSearch,
+    selectedSpecialty,
+    selectedGender,
+    sortBy,
+    sortOrder,
+    page
+  ])
 
   // Sync URL
   useEffect(() => {

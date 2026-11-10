@@ -7,8 +7,9 @@ export const AboutUs = () => {
     <section
       id='about'
       aria-labelledby='about-title'
-      className='w-full px-4 py-12 md:py-20 bg-white'>
-      <div className='relative mx-auto max-w-3/4 overflow-hidden rounded-[28px] border border-border/70 bg-background p-6 shadow-[0_4px_30px_rgba(0,0,0,0.03)] sm:p-10 md:rounded-[36px] md:px-12 lg:px-16'>
+      className='w-full py-12 md:py-20 bg-white'>
+      <div className='container-custom'>
+        <div className='relative overflow-hidden rounded-[28px] border border-border/70 bg-background p-6 shadow-[0_4px_30px_rgba(0,0,0,0.03)] sm:p-10 md:rounded-[36px] md:p-12 lg:p-16'>
         {/* Faded background watermark */}
         <div
           className='pointer-events-none absolute right-4 top-2 select-none text-6xl font-black uppercase tracking-tight text-slate-200/60 sm:text-7xl md:right-10 md:top-4 md:text-8xl lg:text-9xl'
@@ -146,6 +147,7 @@ export const AboutUs = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   )
 }

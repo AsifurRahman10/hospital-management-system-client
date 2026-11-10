@@ -60,7 +60,7 @@ async function DoctorDirectoryData({ searchParams }: DoctorsPageProps) {
 
 const DoctorsPage = ({ searchParams }: DoctorsPageProps) => {
   return (
-    <div className='min-h-screen bg-background font-sans text-foreground antialiased selection:bg-primary/10 selection:text-primary'>
+    <div className='min-h-screen container-custom  bg-background font-sans text-foreground antialiased selection:bg-primary/10 selection:text-primary'>
       <main id='main-content'>
         <Suspense fallback={<DoctorDirectorySkeleton />}>
           <DoctorDirectoryData searchParams={searchParams} />
