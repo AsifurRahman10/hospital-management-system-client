@@ -1,22 +1,10 @@
-import {
-  Gender,
-  ICreateDoctorPayload,
-  IUpdateDoctorPayload
-} from '@/types/doctor.types'
+import { Gender } from '@/types/doctor.types'
 import { z } from 'zod'
-
-const emptyStringToUndefined = (value: unknown) => {
-  if (typeof value === 'string' && value.trim() === '') {
-    return undefined
-  }
-
-  return value
-}
 
 export const createDoctorFormZodSchema = z.object({
   password: z
     .string()
-    .min(6, 'Password must be at least 6 characters')
+    .min(8, 'Password must be at least 8 characters')
     .max(20, 'Password must be at most 20 characters'),
   name: z
     .string()
@@ -83,71 +71,6 @@ export const createDoctorFormZodSchema = z.object({
     .min(1, 'At least one specialty is required')
 })
 
-export const createDoctorServerZodSchema = z.object({
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(20, 'Password must be at most 20 characters'),
-  doctor: z.object({
-    name: z
-      .string()
-      .trim()
-      .min(5, 'Name must be at least 5 characters')
-      .max(30, 'Name must be at most 30 characters'),
-    email: z.email('Invalid email address'),
-    contactNumber: z
-      .string()
-      .trim()
-      .min(11, 'Contact number must be at least 11 characters')
-      .max(14, 'Contact number must be at most 14 characters'),
-    address: z.preprocess(
-      emptyStringToUndefined,
-      z
-        .string()
-        .trim()
-        .min(10, 'Address must be at least 10 characters')
-        .max(100, 'Address must be at most 100 characters')
-        .optional()
-    ),
-    registrationNumber: z
-      .string()
-      .trim()
-      .min(1, 'Registration number is required'),
-    experience: z.preprocess(
-      emptyStringToUndefined,
-      z.coerce
-        .number({ error: 'Experience must be an integer' })
-        .int('Experience must be an integer')
-        .nonnegative('Experience cannot be negative')
-        .optional()
-    ),
-    gender: z.enum([Gender.MALE, Gender.FEMALE], {
-      message: 'Gender must be either MALE or FEMALE'
-    }),
-    appointmentFee: z.coerce
-      .number({ error: 'Appointment fee must be a number' })
-      .nonnegative('Appointment fee cannot be negative'),
-    qualifications: z
-      .string()
-      .trim()
-      .min(2, 'Qualification must be at least 2 characters')
-      .max(50, 'Qualification must be at most 50 characters'),
-    currentWorkplace: z
-      .string()
-      .trim()
-      .min(2, 'Current working place must be at least 2 characters')
-      .max(50, 'Current working place must be at most 50 characters'),
-    designation: z
-      .string()
-      .trim()
-      .min(2, 'Designation must be at least 2 characters')
-      .max(50, 'Designation must be at most 50 characters')
-  }),
-  specialties: z
-    .array(z.uuid('Please select a valid specialty'))
-    .min(1, 'At least one specialty is required')
-}) satisfies z.ZodType<ICreateDoctorPayload>
-
 export const editDoctorFormZodSchema = z.object({
   name: z
     .string()
@@ -212,78 +135,6 @@ export const editDoctorFormZodSchema = z.object({
     .array(z.uuid('Please select a valid specialty'))
     .min(1, 'At least one specialty is required')
 })
-
-export const updateDoctorServerZodSchema = z.object({
-  id: z.uuid('Doctor ID must be a valid UUID'),
-  name: z
-    .string()
-    .trim()
-    .min(5, 'Name must be at least 5 characters')
-    .max(30, 'Name must be at most 30 characters')
-    .optional(),
-  profilePhoto: z.string().optional(),
-  contactNumber: z
-    .string()
-    .trim()
-    .min(11, 'Contact number must be at least 11 characters')
-    .max(14, 'Contact number must be at most 14 characters')
-    .optional(),
-  address: z.preprocess(
-    emptyStringToUndefined,
-    z
-      .string()
-      .trim()
-      .min(10, 'Address must be at least 10 characters')
-      .max(100, 'Address must be at most 100 characters')
-      .optional()
-  ),
-  registrationNumber: z
-    .string()
-    .trim()
-    .min(1, 'Registration number is required')
-    .optional(),
-  experience: z.preprocess(
-    emptyStringToUndefined,
-    z.coerce
-      .number({ error: 'Experience must be an integer' })
-      .int('Experience must be an integer')
-      .nonnegative('Experience cannot be negative')
-      .optional()
-  ),
-  gender: z
-    .enum([Gender.MALE, Gender.FEMALE], {
-      message: 'Gender must be either MALE or FEMALE'
-    })
-    .optional(),
-  appointmentFee: z.preprocess(
-    emptyStringToUndefined,
-    z.coerce
-      .number({ error: 'Appointment fee must be a number' })
-      .nonnegative('Appointment fee cannot be negative')
-      .optional()
-  ),
-  qualifications: z
-    .string()
-    .trim()
-    .min(2, 'Qualification must be at least 2 characters')
-    .max(50, 'Qualification must be at most 50 characters')
-    .optional(),
-  currentWorkplace: z
-    .string()
-    .trim()
-    .min(2, 'Current working place must be at least 2 characters')
-    .max(50, 'Current working place must be at most 50 characters')
-    .optional(),
-  designation: z
-    .string()
-    .trim()
-    .min(2, 'Designation must be at least 2 characters')
-    .max(50, 'Designation must be at most 50 characters')
-    .optional(),
-  specialties: z
-    .array(z.uuid('Specialty ID must be a valid UUID'))
-    .optional()
-}) satisfies z.ZodType<IUpdateDoctorPayload>
 
 export type ICreateDoctorFormValues = z.infer<typeof createDoctorFormZodSchema>
 export type IEditDoctorFormValues = z.infer<typeof editDoctorFormZodSchema>

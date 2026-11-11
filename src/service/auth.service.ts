@@ -213,20 +213,10 @@ export const resendVerificationEmailAction = async (
   }
 
   try {
-    let response: ApiResponse<any>
-    try {
-      response = await httpClient.post('/auth/resend-verification-email', {
-        email
-      })
-    } catch (err: any) {
-      if (err?.response?.status === 404) {
-        response = await httpClient.post('/auth/send-verification-email', {
-          email
-        })
-      } else {
-        throw err
-      }
-    }
+    const response = await httpClient.post<any>(
+      '/auth/resend-verification-email',
+      { email }
+    )
 
     if (!response.success) {
       return {

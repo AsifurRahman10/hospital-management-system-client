@@ -2,6 +2,7 @@ import DoctorDirectory, {
   DoctorDirectorySkeleton
 } from '@/components/modules/storeFront/DoctorDirectory'
 import { getAllSpecialties, getDoctors } from '@/service/doctor.service'
+import { buildQueryString } from '@/utils/queryStringUtils'
 import {
   dehydrate,
   HydrationBoundary,
@@ -15,24 +16,7 @@ interface DoctorsPageProps {
 
 async function DoctorDirectoryData({ searchParams }: DoctorsPageProps) {
   const queryParamsObjects = await searchParams
-
-  const queryString = Object.keys(queryParamsObjects)
-    .map((key) => {
-      const value = queryParamsObjects[key]
-      if (value === undefined) {
-        return ''
-      }
-
-      if (Array.isArray(value)) {
-        return value
-          .map((v) => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`)
-          .join('&')
-      }
-
-      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    })
-    .filter(Boolean)
-    .join('&')
+  const queryString = buildQueryString(queryParamsObjects)
 
   const queryClient = new QueryClient()
 

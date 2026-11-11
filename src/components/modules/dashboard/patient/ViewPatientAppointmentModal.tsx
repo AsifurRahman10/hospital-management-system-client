@@ -4,7 +4,7 @@ import AppModal from '@/components/shared/AppModal'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import { format } from 'date-fns'
 import {
   Ban,

@@ -19,11 +19,12 @@ interface LoginFormProps {
   redirectPath?: string
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+const API_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || process.env.NEXT_PUBLIC_API_URL
 
 export const getGoogleLoginUrl = (redirectPath = '/dashboard'): string => {
   if (!API_URL) {
-    throw new Error('NEXT_PUBLIC_API_URL is not configured')
+    throw new Error('API URL is not configured')
   }
 
   if (!redirectPath.startsWith('/') || redirectPath.startsWith('//')) {

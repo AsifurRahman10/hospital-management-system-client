@@ -1,5 +1,4 @@
 import DoctorSchedulesTable from '@/components/modules/dashboard/admin/DoctorSchedulesTable'
-import { getDoctorWiseSchedules } from '@/service/doctorSchedule.service'
 import { getDoctors } from '@/service/doctor.service'
 import {
   dehydrate,
@@ -7,31 +6,7 @@ import {
   QueryClient
 } from '@tanstack/react-query'
 
-const DoctorSchedulesManagementPage = async ({
-  searchParams
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) => {
-  const queryParamsObjects = await searchParams
-
-  const queryString = Object.keys(queryParamsObjects)
-    .map((key) => {
-      const value = queryParamsObjects[key]
-      if (value === undefined) {
-        return ''
-      }
-
-      if (Array.isArray(value)) {
-        return value
-          .map((v) => `${encodeURIComponent(key)}=${encodeURIComponent(v)}`)
-          .join('&')
-      }
-
-      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    })
-    .filter(Boolean)
-    .join('&')
-
+const DoctorSchedulesManagementPage = async () => {
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({

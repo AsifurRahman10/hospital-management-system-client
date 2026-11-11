@@ -1,5 +1,6 @@
 import PatientAppointmentsTable from '@/components/modules/dashboard/patient/PatientAppointmentsTable'
 import { getMyAppointments } from '@/service/appointment.service'
+import { buildQueryString } from '@/utils/queryStringUtils'
 import {
   dehydrate,
   HydrationBoundary,
@@ -12,27 +13,7 @@ const MyAppointmentsPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) => {
   const queryParamsObjects = await searchParams
-
-  const serializeKey = (key: string) =>
-    encodeURIComponent(key).replace(/%5B/g, '[').replace(/%5D/g, ']')
-
-  const queryString = Object.keys(queryParamsObjects)
-    .map((key) => {
-      const value = queryParamsObjects[key]
-      if (value === undefined) {
-        return ''
-      }
-
-      if (Array.isArray(value)) {
-        return value
-          .map((item) => `${serializeKey(key)}=${encodeURIComponent(item)}`)
-          .join('&')
-      }
-
-      return `${serializeKey(key)}=${encodeURIComponent(value)}`
-    })
-    .filter(Boolean)
-    .join('&')
+  const queryString = buildQueryString(queryParamsObjects)
 
   const queryClient = new QueryClient()
 

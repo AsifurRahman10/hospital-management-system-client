@@ -8,7 +8,6 @@ import {
   IDoctorDetails,
   IUpdateDoctorPayload
 } from '@/types/doctor.types'
-import { ISpecialty } from '@/types/specialty.types'
 
 export const getDoctors = async (queryString?: string) => {
   try {
@@ -22,15 +21,9 @@ export const getDoctors = async (queryString?: string) => {
   }
 }
 
-export const getAllSpecialties = async () => {
-  try {
-    const specialties = await httpClient.get<ISpecialty[]>('/specialty')
-    return specialties
-  } catch (error) {
-    console.log('Error fetching specialties:', error)
-    throw error
-  }
-}
+import { getSpecialties } from '@/service/specialty.service'
+
+export const getAllSpecialties = async () => getSpecialties()
 
 export const createDoctor = async (payload: ICreateDoctorPayload) => {
   try {

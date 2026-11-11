@@ -354,7 +354,7 @@ const DataTable = <TData extends RowData>({
             </TableHeader>
 
             <TableBody>
-              {isLoading || isFetching || isUpdating ? (
+              {(isLoading || isUpdating) && data.length === 0 ? (
                 Array.from({ length: 5 }).map((_, index) => (
                   <TableRow
                     key={`skeleton-${index}`}

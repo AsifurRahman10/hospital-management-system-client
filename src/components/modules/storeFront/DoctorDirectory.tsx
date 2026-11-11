@@ -3,7 +3,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import {
   ChevronLeft,
   ChevronRight,

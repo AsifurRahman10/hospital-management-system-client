@@ -30,7 +30,7 @@ import {
 } from '@/types/appointment.type'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import { Clock, Plus, RotateCcw, Video } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'

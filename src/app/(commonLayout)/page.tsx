@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/shared/Navbar'
 import HeroSection from '@/components/modules/storeFront/HeroSection'
 import { AboutUs } from '@/components/modules/storeFront/AboutUs'
 import SpecialtySlider from '@/components/modules/storeFront/SpecialitySlider'

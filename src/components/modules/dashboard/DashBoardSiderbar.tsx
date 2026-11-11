@@ -26,7 +26,7 @@ export async function AppSidebar({
   const sidebarUser = {
     name: user?.name ?? 'Life.care user',
     email: user?.email ?? '',
-    avatar: user?.image ?? ''
+    image: user?.image ?? null
   }
   return (
     <Sidebar

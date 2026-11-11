@@ -1,7 +1,6 @@
 'use server'
 
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiResponse } from '@/types/api.types'
 import {
   AppointmentStatus,
   IAppointment,
@@ -10,7 +9,7 @@ import {
 
 export const getAppointments = async (queryString: string) => {
   try {
-    const appointments = await httpClient.get<ApiResponse<IAppointment[]>>(
+    const appointments = await httpClient.get<IAppointment[]>(
       queryString
         ? `/appointment/all-appointments?${queryString}`
         : '/appointment/all-appointments'
@@ -28,7 +27,7 @@ export const getMyAppointments = async (queryString?: string) => {
       ? `/appointment/my-appointments?${queryString}`
       : '/appointment/my-appointments'
     const appointments =
-      await httpClient.get<ApiResponse<IAppointment[]>>(endpoint)
+      await httpClient.get<IAppointment[]>(endpoint)
     return appointments
   } catch (error) {
     console.log('Error fetching my appointments:', error)

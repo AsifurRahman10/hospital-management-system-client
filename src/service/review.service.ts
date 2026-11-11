@@ -1,7 +1,6 @@
 'use server'
 
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiResponse } from '@/types/api.types'
 import { IReview } from '@/types/review.type'
 
 export interface ICreateReviewPayload {
@@ -30,14 +29,7 @@ export const getMyReviews = async (queryString?: string) => {
       ? `/review/my-reviews?${queryString}`
       : '/review/my-reviews'
     return await httpClient.get<IReview[]>(endpoint)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    if (error?.response?.status === 404) {
-      const fallbackEndpoint = queryString
-        ? `/my-reviews?${queryString}`
-        : '/my-reviews'
-      return await httpClient.get<IReview[]>(fallbackEndpoint)
-    }
+  } catch (error) {
     console.log('Error fetching my reviews:', error)
     throw error
   }
@@ -45,7 +37,7 @@ export const getMyReviews = async (queryString?: string) => {
 
 export const createReview = async (payload: ICreateReviewPayload) => {
   try {
-    return await httpClient.post<ApiResponse<IReview>>('/review', payload)
+    return await httpClient.post<IReview>('/review', payload)
   } catch (error) {
     console.log('Error creating review:', error)
     throw error
@@ -57,7 +49,7 @@ export const updateReview = async (
   payload: IUpdateReviewPayload
 ) => {
   try {
-    return await httpClient.patch<ApiResponse<IReview>>(
+    return await httpClient.patch<IReview>(
       `/review/${id}`,
       payload
     )
@@ -69,7 +61,7 @@ export const updateReview = async (
 
 export const deleteReview = async (id: string) => {
   try {
-    return await httpClient.delete<ApiResponse<unknown>>(`/review/${id}`)
+    return await httpClient.delete<unknown>(`/review/${id}`)
   } catch (error) {
     console.log('Error deleting review:', error)
     throw error

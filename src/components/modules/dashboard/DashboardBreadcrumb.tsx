@@ -12,7 +12,7 @@ import {
 import { usePathname } from 'next/navigation'
 
 const segmentLabels: Record<string, string> = {
-  appoinments: 'Appointments'
+  appointments: 'Appointments'
 }
 
 const formatSegment = (segment: string) =>
@@ -30,7 +30,10 @@ const DashboardBreadcrumb = () => {
     <Breadcrumb className='hidden sm:block'>
       <BreadcrumbList>
         {segments.map((segment, index) => {
-          const href = `/${segments.slice(0, index + 1).join('/')}`
+          const href =
+            index === 0 && (segment === 'admin' || segment === 'doctor')
+              ? `/${segment}/dashboard`
+              : `/${segments.slice(0, index + 1).join('/')}`
           const isCurrent = index === segments.length - 1
 
           return (

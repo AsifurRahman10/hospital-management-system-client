@@ -1,5 +1,6 @@
 import PatientsTable from '@/components/modules/dashboard/admin/PatientsTable'
 import { getPatients } from '@/service/patient.service'
+import { buildQueryString } from '@/utils/queryStringUtils'
 import {
   dehydrate,
   HydrationBoundary,
@@ -12,26 +13,7 @@ const PatientsManagementPage = async ({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) => {
   const queryParamsObjects = await searchParams
-
-  const queryString = Object.keys(queryParamsObjects)
-    .map((key) => {
-      const value = queryParamsObjects[key]
-      if (value === undefined) {
-        return ''
-      }
-
-      if (Array.isArray(value)) {
-        return value
-          .map(
-            (item) => `${encodeURIComponent(key)}=${encodeURIComponent(item)}`
-          )
-          .join('&')
-      }
-
-      return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    })
-    .filter(Boolean)
-    .join('&')
+  const queryString = buildQueryString(queryParamsObjects)
 
   const queryClient = new QueryClient()
 

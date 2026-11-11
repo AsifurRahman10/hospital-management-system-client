@@ -32,13 +32,12 @@ export async function Navbar() {
       <NavbarLinks />
       <div className='flex gap-6 justify-center items-center'>
         <NavbarAuth user={userData} />
-        <Link href='/doctors'>
-          <CustomButton
-            className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
-            text='Make appointment'
-            icon={<ArrowUpRight />}
-          />
-        </Link>
+        <CustomButton
+          href='/doctors'
+          className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
+          text='Make appointment'
+          icon={<ArrowUpRight />}
+        />
       </div>
     </header>
   )

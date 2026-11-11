@@ -8,7 +8,7 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { ISpecialty } from '@/types/specialty.types'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import {
   Check,
   PanelLeftClose,

@@ -4,7 +4,7 @@ import { Briefcase, Star, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 
 export function isValidDoctorImage(url?: string): boolean {
   if (!url) return false
