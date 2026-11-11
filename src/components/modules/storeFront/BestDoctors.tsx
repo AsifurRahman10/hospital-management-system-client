@@ -11,39 +11,6 @@ import { IDoctor } from '@/types/doctor.types'
 import { DoctorCard } from '@/components/modules/storeFront/DoctorCard'
 import React, { Suspense } from 'react'
 
-const fallbackDoctors: Partial<IDoctor>[] = [
-  {
-    id: 1,
-    name: 'Dr. Darrell Steward',
-    designation: 'Senior Cardiologist',
-    profilePhoto: '/images/hero-dentist.jpg'
-  },
-  {
-    id: 2,
-    name: 'Dr. Jacob Jones',
-    designation: 'Neurology Specialist',
-    profilePhoto: '/images/hero-detail.jpg'
-  },
-  {
-    id: 3,
-    name: 'Dr. Jane Cooper',
-    designation: 'Pediatric Specialist',
-    profilePhoto: '/images/hero-dentist.jpg'
-  },
-  {
-    id: 4,
-    name: 'Dr. Kristin Watson',
-    designation: 'Orthopedic Surgeon',
-    profilePhoto: '/images/hero-clinic.jpg'
-  },
-  {
-    id: 5,
-    name: 'Dr. Ronald Richards',
-    designation: 'General Physician',
-    profilePhoto: '/images/hero-dentist.jpg'
-  }
-]
-
 const BestDoctorsSkeleton = () => {
   return (
     <section
@@ -95,10 +62,6 @@ const BestDoctorsContent = async () => {
     }
   } catch (error) {
     console.warn('Unable to load best doctors from API, using fallback:', error)
-  }
-
-  if (doctors.length === 0) {
-    doctors = fallbackDoctors
   }
 
   return (

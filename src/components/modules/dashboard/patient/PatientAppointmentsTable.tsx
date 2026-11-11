@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
 import DateCell from '@/components/modules/dashboard/DateCell'
@@ -26,7 +27,8 @@ import { cn } from 'cn'
 import { Clock, Plus, RotateCcw, Video } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 const DEFAULT_PAGE = 1
 const DEFAULT_LIMIT = 10
@@ -40,6 +42,29 @@ const PatientAppointmentsTable = () => {
   type TableFeatures = ReturnType<typeof tableFeatures>
   const columnHelper = createColumnHelper<TableFeatures, IAppointment>()
   const searchParams = useSearchParams()
+
+  const payment = searchParams.get('payment')
+  const appointmentId = searchParams.get('appointment_id')
+  const paymentId = searchParams.get('payment_id')
+  const processedPaymentRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (payment !== 'success' || !appointmentId || !paymentId) {
+      return
+    }
+
+    // Prevent duplicate toast for the same payment
+    if (processedPaymentRef.current === paymentId) {
+      return
+    }
+
+    processedPaymentRef.current = paymentId
+
+    toast.success('Payment successful! Your appointment is confirmed.', {
+      id: `payment-success-${paymentId}`,
+      description: 'Your invoice has been sent to your email.',
+      duration: 5000
+    })
+  }, [payment, appointmentId, paymentId])
 
   const [viewingAppointment, setViewingAppointment] =
     useState<IAppointment | null>(null)

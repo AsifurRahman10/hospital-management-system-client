@@ -31,3 +31,22 @@ export interface IAppointment {
     schedule?: ISchedule
   }
 }
+
+export interface IAppointmentBookingNow {
+  appointmentData: IAppointment
+  paymentData: PaymentData
+  paymentUrl: string
+}
+
+export interface PaymentData {
+  id: string
+  amount: number
+  transactionId: string
+  stripeEventId: string
+  invoiceUrl: string
+  status: string
+  paymentGatewayData: JSON
+  createdAt: string
+  updatedAt: string
+  appointmentId: string
+}

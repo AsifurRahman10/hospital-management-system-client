@@ -41,7 +41,7 @@ export const DoctorDetailsView = ({ doctor }: DoctorDetailsViewProps) => {
         <div className='overflow-hidden rounded-xl border border-border/80  shadow-xs'>
           <div className='flex flex-col md:flex-row'>
             {/* Left: Photo on primary background */}
-            <div className='relative flex shrink-0 items-end justify-center bg-primary px-8 pt-8 md:w-72 lg:w-80'>
+            <div className='relative flex shrink-0 items-end justify-center '>
               {hasValidImage ? (
                 <Image
                   src={doctor.profilePhoto!}
@@ -49,7 +49,7 @@ export const DoctorDetailsView = ({ doctor }: DoctorDetailsViewProps) => {
                   width={280}
                   height={320}
                   priority
-                  className='relative z-10 h-auto max-h-72 w-auto object-contain md:max-h-80'
+                  className='relative z-10 w-auto object-cover md:max-h-80 '
                 />
               ) : (
                 <div className='relative z-10 flex size-52 items-center justify-center text-white/50 md:size-60'>
