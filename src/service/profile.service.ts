@@ -3,14 +3,30 @@
 import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiResponse } from '@/types/api.types'
 import { IProfile } from '@/types/profile.types'
+import axios from 'axios'
+import { cookies } from 'next/headers'
 
-export const getMe = async (): Promise<ApiResponse<IProfile>> => {
+const SESSION_COOKIE_NAME = 'better-auth.session_token'
+
+export const getMe = async (): Promise<ApiResponse<IProfile> | null> => {
   try {
+    const cookieStore = await cookies()
+    const hasSession = cookieStore.has(SESSION_COOKIE_NAME)
+    if (!hasSession) {
+      return null
+    }
+
     const response = await httpClient.get<IProfile>('/auth/me')
     return response
-  } catch (error) {
+  } catch (error: unknown) {
+    if (
+      axios.isAxiosError(error) &&
+      (error.response?.status === 401 || error.response?.status === 403)
+    ) {
+      return null
+    }
     console.error('Error fetching user profile:', error)
-    throw error
+    return null
   }
 }
 

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { ArrowUpRight, Plus } from 'lucide-react'
 import CustomButton from '@/components/shared/CustomButton'
+import { getMe } from '@/service/profile.service'
+import { NavbarAuth } from '@/components/shared/NavbarAuth'
 
 const navigation = [
   { href: '/doctors', label: 'Doctors' },
@@ -9,7 +11,15 @@ const navigation = [
   { href: '/#contact', label: 'Contacts' }
 ]
 
-export function Navbar() {
+export async function Navbar() {
+  let userData = null
+  try {
+    const isUserLoggedIn = await getMe()
+    userData = isUserLoggedIn?.data ?? null
+  } catch {
+    userData = null
+  }
+
   return (
     <header className='container-custom flex min-h-20.5 items-center justify-between gap-2 md:gap-4'>
       <Link
@@ -38,11 +48,7 @@ export function Navbar() {
         ))}
       </nav>
       <div className='flex gap-6 justify-center items-center'>
-        <Link
-          href='/login'
-          className='text-sm font-semibold text-primary'>
-          Login
-        </Link>
+        <NavbarAuth user={userData} />
         <Link href='#contact'>
           <CustomButton
             className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm'
