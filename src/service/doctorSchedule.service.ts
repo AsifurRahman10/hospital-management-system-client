@@ -18,7 +18,17 @@ export const getDoctorWiseSchedules = async (queryString: string) => {
   }
 }
 
-export const getDoctorSchedules = getDoctorWiseSchedules
+export const getAllDoctorSchedules = async (queryString: string) => {
+  try {
+    const schedules = await httpClient.get<ApiResponse<IDoctorSchedule[]>>(
+      queryString ? `/doctorSchedule?${queryString}` : '/doctorSchedule'
+    )
+    return schedules
+  } catch (error) {
+    console.log('Error fetching doctor schedules:', error)
+    throw error
+  }
+}
 
 export const createDoctorWiseSchedule = async (payload: {
   scheduleIds: string[]
@@ -55,7 +65,8 @@ export const getDoctorSchedulesByDoctorId = async (
     const endpoint = queryString
       ? `/doctorSchedule/${doctorId}?${queryString}`
       : `/doctorSchedule/${doctorId}`
-    const response = await httpClient.get<ApiResponse<IDoctorSchedule[]>>(endpoint)
+    const response =
+      await httpClient.get<ApiResponse<IDoctorSchedule[]>>(endpoint)
     return response
   } catch (error) {
     console.log('Error fetching doctor schedules by doctor id:', error)

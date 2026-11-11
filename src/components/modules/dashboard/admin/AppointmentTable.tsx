@@ -256,6 +256,7 @@ const AppointmentTable = () => {
   })
 
   const appointmentResponseData = appointmentDataResponse?.data
+  console.log(appointmentResponseData)
   const appointments =
     (Array.isArray(appointmentResponseData)
       ? appointmentResponseData

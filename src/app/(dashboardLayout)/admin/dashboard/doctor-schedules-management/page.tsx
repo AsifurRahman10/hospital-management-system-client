@@ -35,13 +35,6 @@ const DoctorSchedulesManagementPage = async ({
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: ['doctor-schedules', queryString],
-    queryFn: () => getDoctorWiseSchedules(queryString),
-    staleTime: 1000 * 60 * 60, // 1 hour
-    gcTime: 1000 * 60 * 60 * 6 // 6 hours
-  })
-
-  await queryClient.prefetchQuery({
     queryKey: ['doctors-list'],
     queryFn: () => getDoctors('limit=100'),
     staleTime: 1000 * 60 * 60, // 1 hour

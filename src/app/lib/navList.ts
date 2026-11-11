@@ -154,6 +154,11 @@ export const patientNavItems: NavSection[] = [
         title: 'My Prescriptions',
         href: '/dashboard/my-prescriptions',
         icon: 'FileText'
+      },
+      {
+        title: 'Reviews',
+        href: '/dashboard/my-reviews',
+        icon: 'Star'
       }
       // {
       //   title: 'Health Records',

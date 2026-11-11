@@ -14,7 +14,7 @@ import {
   useServerManagedDataTableFilters
 } from '@/hooks/useServerManagedDataTableFilters'
 import { useServerManagedDataTableSearch } from '@/hooks/useServerManagedDataTableSearch'
-import { getDoctorWiseSchedules } from '@/service/doctorSchedule.service'
+import { getAllDoctorSchedules } from '@/service/doctorSchedule.service'
 import { getDoctors } from '@/service/doctor.service'
 import { PaginationMeta } from '@/types/api.types'
 import { IDoctor } from '@/types/doctor.types'
@@ -45,10 +45,7 @@ const formatScheduleDate = (startDateTime?: string) => {
       })
 }
 
-const formatScheduleTime = (
-  startDateTime?: string,
-  endDateTime?: string
-) => {
+const formatScheduleTime = (startDateTime?: string, endDateTime?: string) => {
   if (!startDateTime) return ''
   const start = new Date(startDateTime)
   const end = endDateTime ? new Date(endDateTime) : null
@@ -71,10 +68,7 @@ const formatScheduleTime = (
   return startTimeStr
 }
 
-const getScheduleDuration = (
-  startDateTime?: string,
-  endDateTime?: string
-) => {
+const getScheduleDuration = (startDateTime?: string, endDateTime?: string) => {
   if (!startDateTime || !endDateTime) return null
   const start = new Date(startDateTime)
   const end = new Date(endDateTime)
@@ -116,7 +110,7 @@ const DoctorSchedulesTable = () => {
   } = useQuery({
     queryKey: ['doctor-schedules', queryString] as const,
     queryFn: ({ queryKey: [, queryString] }) =>
-      getDoctorWiseSchedules(queryString),
+      getAllDoctorSchedules(queryString),
     placeholderData: keepPreviousData
   })
 
@@ -131,7 +125,11 @@ const DoctorSchedulesTable = () => {
   const doctors = useMemo<IDoctor[]>(() => {
     const data = doctorsResponse?.data
     if (Array.isArray(data)) return data
-    if (data && 'data' in data && Array.isArray((data as unknown as { data: IDoctor[] }).data)) {
+    if (
+      data &&
+      'data' in data &&
+      Array.isArray((data as unknown as { data: IDoctor[] }).data)
+    ) {
       return (data as unknown as { data: IDoctor[] }).data
     }
     return []
@@ -140,7 +138,13 @@ const DoctorSchedulesTable = () => {
   const responseData = doctorSchedulesResponse?.data
   const doctorSchedules: IDoctorSchedule[] = useMemo(() => {
     if (Array.isArray(responseData)) return responseData
-    if (responseData && 'data' in responseData && Array.isArray((responseData as unknown as { data: IDoctorSchedule[] }).data)) {
+    if (
+      responseData &&
+      'data' in responseData &&
+      Array.isArray(
+        (responseData as unknown as { data: IDoctorSchedule[] }).data
+      )
+    ) {
       return (responseData as unknown as { data: IDoctorSchedule[] }).data
     }
     return []
@@ -244,56 +248,53 @@ const DoctorSchedulesTable = () => {
             </span>
           )
         }),
-        columnHelper.accessor(
-          (row) => row.schedule?.startDateTime,
-          {
-            id: 'schedule.startDateTime',
-            header: 'Schedule Time',
-            enableSorting: true,
-            cell: ({ row }) => {
-              const schedule = row.original.schedule
-              if (!schedule?.startDateTime) {
-                return (
-                  <span className='text-xs text-muted-foreground'>
-                    No schedule assigned
-                  </span>
-                )
-              }
-
-              const formattedDate = formatScheduleDate(schedule.startDateTime)
-              const formattedTime = formatScheduleTime(
-                schedule.startDateTime,
-                schedule.endDateTime
-              )
-              const duration = getScheduleDuration(
-                schedule.startDateTime,
-                schedule.endDateTime
-              )
-
+        columnHelper.accessor((row) => row.schedule?.startDateTime, {
+          id: 'schedule.startDateTime',
+          header: 'Schedule Time',
+          enableSorting: true,
+          cell: ({ row }) => {
+            const schedule = row.original.schedule
+            if (!schedule?.startDateTime) {
               return (
-                <div className='flex flex-col gap-1'>
-                  <div className='flex items-center gap-1.5 text-sm font-medium text-foreground'>
-                    <CalendarClock className='h-3.5 w-3.5 text-primary' />
-                    <span>{formattedDate}</span>
-                  </div>
-                  {formattedTime && (
-                    <div className='flex items-center gap-2 text-xs text-muted-foreground'>
-                      <Clock className='h-3 w-3' />
-                      <span>{formattedTime}</span>
-                      {duration && (
-                        <Badge
-                          variant='outline'
-                          className='h-4 px-1.5 text-[10px]'>
-                          {duration}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-                </div>
+                <span className='text-xs text-muted-foreground'>
+                  No schedule assigned
+                </span>
               )
             }
+
+            const formattedDate = formatScheduleDate(schedule.startDateTime)
+            const formattedTime = formatScheduleTime(
+              schedule.startDateTime,
+              schedule.endDateTime
+            )
+            const duration = getScheduleDuration(
+              schedule.startDateTime,
+              schedule.endDateTime
+            )
+
+            return (
+              <div className='flex flex-col gap-1'>
+                <div className='flex items-center gap-1.5 text-sm font-medium text-foreground'>
+                  <CalendarClock className='h-3.5 w-3.5 text-primary' />
+                  <span>{formattedDate}</span>
+                </div>
+                {formattedTime && (
+                  <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+                    <Clock className='h-3 w-3' />
+                    <span>{formattedTime}</span>
+                    {duration && (
+                      <Badge
+                        variant='outline'
+                        className='h-4 px-1.5 text-[10px]'>
+                        {duration}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
           }
-        ),
+        }),
         columnHelper.accessor('isBooked', {
           id: 'isBooked',
           header: 'Status',
