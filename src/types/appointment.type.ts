@@ -38,13 +38,18 @@ export interface IAppointmentBookingNow {
   paymentUrl: string
 }
 
+export enum IPaymentStatus {
+  PAID = 'PAID',
+  UNPAID = 'UNPAID'
+}
+
 export interface PaymentData {
   id: string
   amount: number
   transactionId: string
   stripeEventId: string
   invoiceUrl: string
-  status: string
+  status: IPaymentStatus
   paymentGatewayData: JSON
   createdAt: string
   updatedAt: string

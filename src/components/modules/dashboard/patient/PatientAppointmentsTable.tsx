@@ -18,9 +18,16 @@ import {
   useServerManagedDataTableFilters
 } from '@/hooks/useServerManagedDataTableFilters'
 import { useServerManagedDataTableSearch } from '@/hooks/useServerManagedDataTableSearch'
-import { getMyAppointments } from '@/service/appointment.service'
+import {
+  getMyAppointments,
+  initiateAppointmentPayment
+} from '@/service/appointment.service'
 import { PaginationMeta } from '@/types/api.types'
-import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
+import {
+  AppointmentStatus,
+  IAppointment,
+  IPaymentStatus
+} from '@/types/appointment.type'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
 import { cn } from 'cn'
@@ -65,6 +72,27 @@ const PatientAppointmentsTable = () => {
       duration: 5000
     })
   }, [payment, appointmentId, paymentId])
+
+  const handlePayNow = async (appointment: IAppointment) => {
+    try {
+      if (!appointment.doctorScheduleId) {
+        toast.error('Unable to initiate payment. Please try again.')
+        return
+      }
+
+      const response = await initiateAppointmentPayment(
+        appointment.id,
+        appointment.doctorId,
+        appointment.doctorScheduleId
+      )
+
+      if (response.data && response.data.paymentUrl) {
+        window.location.href = response.data.paymentUrl
+      }
+    } catch (error) {
+      toast.error('Unable to initiate payment. Please try again.')
+    }
+  }
 
   const [viewingAppointment, setViewingAppointment] =
     useState<IAppointment | null>(null)
@@ -364,7 +392,12 @@ const PatientAppointmentsTable = () => {
       canChangeStatus: (appointment: IAppointment) =>
         appointment.status === AppointmentStatus.SCHEDULED,
       statusChangeLabel: () => 'Cancel appointment',
-      statusChangeClassName: () => 'text-destructive focus:text-destructive'
+      statusChangeClassName: () => 'text-destructive focus:text-destructive',
+      canPayNow: (appointment: IAppointment) =>
+        appointment.paymentStatus?.toUpperCase() === IPaymentStatus.UNPAID &&
+        appointment.status === AppointmentStatus.SCHEDULED,
+
+      onPayNow: handlePayNow
     }),
     []
   )

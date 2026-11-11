@@ -86,3 +86,23 @@ export const bookNowPayLater = async (doctorId: string, scheduleId: string) => {
     throw error
   }
 }
+
+export const initiateAppointmentPayment = async (
+  appointmentId: string,
+  doctorId: string,
+  scheduleId: string
+) => {
+  try {
+    const response = await httpClient.post<IAppointmentBookingNow>(
+      `/appointment/initiate-payment/${appointmentId}`,
+      {
+        doctorId,
+        scheduleId
+      }
+    )
+    return response
+  } catch (error) {
+    console.log('Error creating appointment:', error)
+    throw error
+  }
+}
