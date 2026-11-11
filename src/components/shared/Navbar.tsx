@@ -3,13 +3,7 @@ import { ArrowUpRight, Plus } from 'lucide-react'
 import CustomButton from '@/components/shared/CustomButton'
 import { getMe } from '@/service/profile.service'
 import { NavbarAuth } from '@/components/shared/NavbarAuth'
-
-const navigation = [
-  { href: '/doctors', label: 'Doctors' },
-  { href: '/#about', label: 'About us' },
-  { href: '/#services', label: 'Services' },
-  { href: '/#contact', label: 'Contacts' }
-]
+import { NavbarLinks } from '@/components/shared/NavbarLinks'
 
 export async function Navbar() {
   let userData = null
@@ -35,23 +29,12 @@ export async function Navbar() {
         </span>
         <span>Life Hospital</span>
       </Link>
-      <nav
-        aria-label='Main navigation'
-        className='hidden items-center gap-7 md:flex'>
-        {navigation.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className='text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
+      <NavbarLinks />
       <div className='flex gap-6 justify-center items-center'>
         <NavbarAuth user={userData} />
-        <Link href='#contact'>
+        <Link href='/doctors'>
           <CustomButton
-            className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm'
+            className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
             text='Make appointment'
             icon={<ArrowUpRight />}
           />

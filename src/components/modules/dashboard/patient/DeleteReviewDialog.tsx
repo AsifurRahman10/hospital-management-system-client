@@ -24,7 +24,7 @@ export const DeleteReviewDialog = ({
   const queryClient = useQueryClient()
   const router = useRouter()
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: deleteReview
+    mutationFn: (id: string) => deleteReview(id)
   })
 
   const handleConfirmDelete = async () => {

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { getMyAppointments } from '@/service/appointment.service'
-import { createReview } from '@/service/review.service'
+import { createReview, ICreateReviewPayload } from '@/service/review.service'
 import { IAppointment } from '@/types/appointment.type'
 import { createReviewZodSchema } from '@/validation/review.validation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -75,7 +75,7 @@ export const GiveReviewModal = ({
   }, [appointmentsData])
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: createReview
+    mutationFn: (payload: ICreateReviewPayload) => createReview(payload)
   })
 
   const resetForm = () => {
