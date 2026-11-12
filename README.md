@@ -4,6 +4,14 @@ A modern, full-featured, enterprise-grade Hospital Management System frontend bu
 
 Designed to streamline clinical and administrative operations, Life Hospital delivers tailored workflows for **Patients**, **Doctors**, **Admins**, and the **Public**. It combines a patient-friendly storefront and appointment booking engine with secure, role-based dashboards, clinical records, interactive analytics, and doctor schedule management.
 
+## 🎬 Demo & Links
+
+- **Backend API:** https://hospital-management-system-back-end-pw45.onrender.com/
+
+[![Life Hospital Demo — click to watch with music](public/images/hms-demo.gif)](https://res.cloudinary.com/dsa8ooidh/video/upload/v1794488912/HMS_Video_with_music_w1mppj.mp4)
+
+> Click the preview above to watch the full 1080p video with music.
+
 ## 🚀 Portals & Core Features
 
 ### 1. 🌐 Public Patient Portal & Storefront
