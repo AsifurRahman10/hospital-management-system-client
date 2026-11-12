@@ -6,11 +6,15 @@ import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiErrorResponse, ApiResponse } from '@/types/api.types'
 import { ILoginResponse, ILogoutResponse } from '@/types/auth.types'
 import {
+  IForgotPasswordPayload,
   ILoginPayload,
   IRegisterPayload,
+  IResetPasswordPayload,
   IVerifyEmailPayload,
+  forgotPasswordZodSchema,
   loginZodSchema,
   registerZodSchema,
+  resetPasswordZodSchema,
   verifyEmailZodSchema
 } from '@/validation/auth.validation'
 import { redirect } from 'next/navigation'
@@ -35,6 +39,25 @@ export type VerifyEmailActionResult =
 export type ResendVerificationActionResult =
   | { success: true; message: string }
   | { success: false; message: string }
+
+export type ForgotPasswordActionResult =
+  | { success: true; redirectTo: string; message: string }
+  | { success: false; message: string }
+
+export type ResetPasswordActionResult =
+  | { success: true; redirectTo: string; message: string }
+  | { success: false; message: string }
+
+const extractApiErrorMessage = (error: any, fallback: string): string => {
+  const responseData = error?.response?.data
+  return (
+    responseData?.message ||
+    responseData?.error ||
+    (typeof responseData === 'string' && responseData) ||
+    error?.message ||
+    fallback
+  )
+}
 
 const getSafeRedirectPath = (path?: string): string => {
   if (path && path.startsWith('/') && !path.startsWith('//')) {
@@ -273,4 +296,90 @@ export const logoutAction = async (): Promise<
   }
 
   redirect('/')
+}
+
+export const forgotPasswordAction = async (
+  payload: IForgotPasswordPayload
+): Promise<ForgotPasswordActionResult> => {
+  const parsedPayload = forgotPasswordZodSchema.safeParse(payload)
+
+  if (!parsedPayload.success) {
+    return {
+      success: false,
+      message: parsedPayload.error.issues[0]?.message || 'Invalid input'
+    }
+  }
+
+  try {
+    const response = await httpClient.post<any>(
+      '/auth/forget-password',
+      parsedPayload.data
+    )
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message || 'Failed to send password reset code'
+      }
+    }
+
+    return {
+      success: true,
+      message:
+        response.message || 'Password reset code sent! Please check your email.',
+      redirectTo: `/reset-password?email=${encodeURIComponent(parsedPayload.data.email)}`
+    }
+  } catch (error: any) {
+    console.error('Forgot password failed:', error)
+    return {
+      success: false,
+      message: extractApiErrorMessage(
+        error,
+        'Failed to send password reset code. Please try again.'
+      )
+    }
+  }
+}
+
+export const resetPasswordAction = async (
+  payload: IResetPasswordPayload
+): Promise<ResetPasswordActionResult> => {
+  const parsedPayload = resetPasswordZodSchema.safeParse(payload)
+
+  if (!parsedPayload.success) {
+    return {
+      success: false,
+      message: parsedPayload.error.issues[0]?.message || 'Invalid input'
+    }
+  }
+
+  try {
+    const response = await httpClient.post<any>(
+      '/auth/reset-password',
+      parsedPayload.data
+    )
+
+    if (!response.success) {
+      return {
+        success: false,
+        message: response.message || 'Password reset failed'
+      }
+    }
+
+    return {
+      success: true,
+      message:
+        response.message || 'Password reset successfully! You can now log in.',
+      redirectTo: '/login'
+    }
+  } catch (error: any) {
+    console.error('Reset password failed:', error)
+    return {
+      success: false,
+      message: extractApiErrorMessage(
+        error,
+        'Password reset failed. Please try again.'
+      )
+    }
+  }
 }
