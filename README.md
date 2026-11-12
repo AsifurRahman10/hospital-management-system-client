@@ -160,10 +160,10 @@ cd hms-frontend
 Create a `.env` file in the root directory (or update the existing one):
 
 ```env
-NEXT_PUBLIC_API_BASE_URL=https://hospital-management-system-back-end-pw45.onrender.com
+NEXT_API_BASE_URL=https://hospital-management-system-back-end-pw45.onrender.com
 ```
 
-> **Note**: Update `NEXT_PUBLIC_API_BASE_URL` to point to your local or deployed backend API server.
+> **Note**: Update `NEXT_API_BASE_URL` to point to your local or deployed backend API server.
 
 ### 3. Install Dependencies
 

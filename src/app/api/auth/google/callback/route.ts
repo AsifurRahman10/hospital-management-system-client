@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   loginFallbackUrl.searchParams.set('authError', 'google_login_failed')
 
   const apiUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL || process.env.NEXT_PUBLIC_API_URL
+    process.env.NEXT_API_BASE_URL || process.env.NEXT_PUBLIC_API_URL
 
   if (!token || !apiUrl) {
     return NextResponse.redirect(loginFallbackUrl)

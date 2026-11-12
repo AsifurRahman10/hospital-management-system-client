@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  process.env.NEXT_API_BASE_URL ||
   process.env.NEXT_PUBLIC_API_URL ||
   'http://localhost:5000'
 if (!API_URL) {
