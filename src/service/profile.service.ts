@@ -3,14 +3,21 @@
 import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiResponse } from '@/types/api.types'
 import { IProfile } from '@/types/profile.types'
+import axios from 'axios'
 
-export const getMe = async (): Promise<ApiResponse<IProfile>> => {
+export const getMe = async (): Promise<ApiResponse<IProfile> | null> => {
   try {
     const response = await httpClient.get<IProfile>('/auth/me')
     return response
-  } catch (error) {
+  } catch (error: unknown) {
+    if (
+      axios.isAxiosError(error) &&
+      (error.response?.status === 401 || error.response?.status === 403)
+    ) {
+      return null
+    }
     console.error('Error fetching user profile:', error)
-    throw error
+    return null
   }
 }
 

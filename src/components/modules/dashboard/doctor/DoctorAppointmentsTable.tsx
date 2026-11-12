@@ -11,7 +11,7 @@ import {
 } from '@/components/shared/DataTableFilters'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import { useServerManagedDataTable } from '@/hooks/useServerManagedDataTable'
 import {
   serverManagedFilter,

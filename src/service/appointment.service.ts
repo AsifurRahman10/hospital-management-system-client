@@ -1,12 +1,15 @@
 'use server'
 
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiResponse } from '@/types/api.types'
-import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
+import {
+  AppointmentStatus,
+  IAppointment,
+  IAppointmentBookingNow
+} from '@/types/appointment.type'
 
 export const getAppointments = async (queryString: string) => {
   try {
-    const appointments = await httpClient.get<ApiResponse<IAppointment[]>>(
+    const appointments = await httpClient.get<IAppointment[]>(
       queryString
         ? `/appointment/all-appointments?${queryString}`
         : '/appointment/all-appointments'
@@ -23,9 +26,8 @@ export const getMyAppointments = async (queryString?: string) => {
     const endpoint = queryString
       ? `/appointment/my-appointments?${queryString}`
       : '/appointment/my-appointments'
-    const appointments = await httpClient.get<ApiResponse<IAppointment[]>>(
-      endpoint
-    )
+    const appointments =
+      await httpClient.get<IAppointment[]>(endpoint)
     return appointments
   } catch (error) {
     console.log('Error fetching my appointments:', error)
@@ -45,6 +47,61 @@ export const changeAppointmentStatus = async (
     return response
   } catch (error) {
     console.log('Error changing appointment status:', error)
+    throw error
+  }
+}
+
+export const bookAppointmentNow = async (
+  doctorId: string,
+  scheduleId: string
+) => {
+  try {
+    const response = await httpClient.post<IAppointmentBookingNow>(
+      '/appointment/book-appointment',
+      {
+        doctorId,
+        scheduleId
+      }
+    )
+    return response
+  } catch (error) {
+    console.log('Error creating appointment:', error)
+    throw error
+  }
+}
+
+export const bookNowPayLater = async (doctorId: string, scheduleId: string) => {
+  try {
+    const response = await httpClient.post<IAppointmentBookingNow>(
+      '/appointment/book-appointment-with-pay-later',
+      {
+        doctorId,
+        scheduleId
+      }
+    )
+    return response
+  } catch (error) {
+    console.log('Error creating appointment:', error)
+    throw error
+  }
+}
+
+export const initiateAppointmentPayment = async (
+  appointmentId: string,
+  doctorId: string,
+  scheduleId: string
+) => {
+  try {
+    const response = await httpClient.post<IAppointmentBookingNow>(
+      `/appointment/initiate-payment/${appointmentId}`,
+      {
+        doctorId,
+        scheduleId
+      }
+    )
+    return response
+  } catch (error) {
+    console.log('Error creating appointment:', error)
     throw error
   }
 }

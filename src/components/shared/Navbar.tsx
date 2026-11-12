@@ -1,18 +1,32 @@
 import Link from 'next/link'
 import { ArrowUpRight, Plus } from 'lucide-react'
 import CustomButton from '@/components/shared/CustomButton'
+import { getMe } from '@/service/profile.service'
+import { NavbarAuth } from '@/components/shared/NavbarAuth'
+import { MobileNavbar, NavbarLinks } from '@/components/shared/NavbarLinks'
+import { cookies } from 'next/headers'
+import { isAuthSessionCookieName } from '@/utils/authCookieNames'
 
-const navigation = [
-  { href: '#about', label: 'About us' },
-  { href: '#services', label: 'Services' },
-  { href: '#contact', label: 'Contacts' }
-]
+export async function Navbar() {
+  let userData = null
+  const cookieStore = await cookies()
+  const hasSessionCookie = cookieStore
+    .getAll()
+    .some(({ name }) => isAuthSessionCookieName(name))
 
-export function Navbar() {
+  if (hasSessionCookie) {
+    try {
+      const isUserLoggedIn = await getMe()
+      userData = isUserLoggedIn?.data ?? null
+    } catch {
+      userData = null
+    }
+  }
+
   return (
-    <header className='mx-auto flex min-h-20.5 w-full max-w-3/4 items-center justify-between gap-2 px-4 md:gap-4 md:px-[5%] lg:px-[60px]'>
+    <header className='container-custom flex min-h-20.5 items-center justify-between gap-2 md:gap-4'>
       <Link
-        href='#top'
+        href='/'
         aria-label='Life Hospital home'
         className='inline-flex shrink-0 items-center gap-2 text-[15px] font-extrabold text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
         <span className='grid size-8 place-items-center rounded-sm bg-primary text-white'>
@@ -24,31 +38,16 @@ export function Navbar() {
         </span>
         <span>Life Hospital</span>
       </Link>
-      <nav
-        aria-label='Main navigation'
-        className='hidden items-center gap-7 md:flex'>
-        {navigation.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className='text-sm font-medium text-foreground transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-      <div className='flex gap-6 justify-center items-center'>
-        <Link
-          href='/login'
-          className='text-sm font-semibold text-primary'>
-          Login
-        </Link>
-        <Link href='#contact'>
-          <CustomButton
-            className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm'
-            text='Make appointment'
-            icon={<ArrowUpRight />}
-          />
-        </Link>
+      <NavbarLinks />
+      <div className='flex items-center justify-center gap-3 md:gap-6'>
+        <NavbarAuth user={userData} />
+        <CustomButton
+          href='/doctors'
+          className='hidden md:inline-flex bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
+          text='Make appointment'
+          icon={<ArrowUpRight />}
+        />
+        <MobileNavbar />
       </div>
     </header>
   )

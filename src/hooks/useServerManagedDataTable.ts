@@ -99,11 +99,8 @@ export const useServerManagedDataTable = ({
 
       const nextUrl = nextQuery ? `${pathname}?${nextQuery}` : pathname
 
-      // Update URL immediately for optimistic UX, then refresh server components.
-      window.history.pushState(null, '', nextUrl)
-
       startRouteRefreshTransition(() => {
-        router.refresh()
+        router.replace(nextUrl, { scroll: false })
       })
     },
     [pathname, router, startRouteRefreshTransition]

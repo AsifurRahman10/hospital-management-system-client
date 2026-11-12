@@ -139,12 +139,12 @@ export const patientNavItems: NavSection[] = [
         title: 'My Appointments',
         href: '/dashboard/my-appointments',
         icon: 'Calendar'
-      },
-      {
-        title: 'Book Appointment',
-        href: '/dashboard/book-appointments',
-        icon: 'ClipboardList'
       }
+      // {
+      //   title: 'Book Appointment',
+      //   href: '/dashboard/book-appointments',
+      //   icon: 'ClipboardList'
+      // }
     ]
   },
   {
@@ -156,10 +156,15 @@ export const patientNavItems: NavSection[] = [
         icon: 'FileText'
       },
       {
-        title: 'Health Records',
-        href: '/dashboard/health-records',
-        icon: 'Activity'
+        title: 'Reviews',
+        href: '/dashboard/my-reviews',
+        icon: 'Star'
       }
+      // {
+      //   title: 'Health Records',
+      //   href: '/dashboard/health-records',
+      //   icon: 'Activity'
+      // }
     ]
   }
 ]

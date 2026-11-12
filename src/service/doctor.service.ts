@@ -8,9 +8,8 @@ import {
   IDoctorDetails,
   IUpdateDoctorPayload
 } from '@/types/doctor.types'
-import { ISpecialty } from '@/types/specialty.types'
 
-export const getDoctors = async (queryString: string) => {
+export const getDoctors = async (queryString?: string) => {
   try {
     const doctors = await httpClient.get<ApiResponse<IDoctor[]>>(
       queryString ? `/doctor?${queryString}` : '/doctor'
@@ -22,15 +21,9 @@ export const getDoctors = async (queryString: string) => {
   }
 }
 
-export const getAllSpecialties = async () => {
-  try {
-    const specialties = await httpClient.get<ISpecialty[]>('/specialty')
-    return specialties
-  } catch (error) {
-    console.log('Error fetching specialties:', error)
-    throw error
-  }
-}
+import { getSpecialties } from '@/service/specialty.service'
+
+export const getAllSpecialties = async () => getSpecialties()
 
 export const createDoctor = async (payload: ICreateDoctorPayload) => {
   try {
@@ -79,5 +72,18 @@ export const getDoctorById = async (id: string) => {
   } catch (error) {
     console.log('Error fetching doctor by id:', error)
     throw error
+  }
+}
+
+export const getBestDoctors = async () => {
+  try {
+    return await httpClient.get<IDoctor[]>('/doctor/best-doctors')
+  } catch (error) {
+    try {
+      return await httpClient.get<IDoctor[]>('/best-doctors')
+    } catch {
+      console.log('Error fetching best doctors:', error)
+      throw error
+    }
   }
 }

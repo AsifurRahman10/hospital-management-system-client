@@ -48,8 +48,8 @@ export const ChangePasswordModal = ({
         return
       }
 
-      if (!value.newPassword || value.newPassword.length < 6) {
-        toast.error('New password must be at least 6 characters long.')
+      if (!value.newPassword || value.newPassword.length < 8) {
+        toast.error('New password must be at least 8 characters long.')
         return
       }
 
@@ -174,8 +174,8 @@ export const ChangePasswordModal = ({
           name='newPassword'
           validators={{
             onChange: ({ value }) =>
-              !value || value.length < 6
-                ? 'Password must be at least 6 characters'
+              !value || value.length < 8
+                ? 'Password must be at least 8 characters'
                 : undefined
           }}>
           {(field) => (
@@ -183,7 +183,7 @@ export const ChangePasswordModal = ({
               field={field}
               label='New Password'
               type='password'
-              placeholder='Enter new password (min. 6 chars)'
+              placeholder='Enter new password (min. 8 chars)'
               disabled={isPending}
             />
           )}

@@ -7,16 +7,8 @@ import { ICreateSchedulePayload, ISchedule } from '@/types/schedule.types'
 export const getSchedules = async (queryString: string) => {
   try {
     const endpoint = queryString ? `/schedule?${queryString}` : '/schedule'
-    const schedules = await httpClient.get<ApiResponse<ISchedule[]>>(endpoint)
-    return schedules
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    if (error?.response?.status === 404) {
-      const fallbackEndpoint = queryString
-        ? `/schedules?${queryString}`
-        : '/schedules'
-      return await httpClient.get<ApiResponse<ISchedule[]>>(fallbackEndpoint)
-    }
+    return await httpClient.get<ApiResponse<ISchedule[]>>(endpoint)
+  } catch (error) {
     console.log('Error fetching schedules:', error)
     throw error
   }

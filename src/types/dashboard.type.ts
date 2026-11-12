@@ -50,8 +50,14 @@ export interface DoctorDashboardStats extends BaseDashboardStats {
   appointmentStatusDistribution: PieChartData[]
 }
 
+export interface PatientDashboardStats extends BaseDashboardStats {
+  reviewCount: number
+  appointmentStatusDistribution: PieChartData[]
+}
+
 export interface DashboardStatsByRole {
   SUPER_ADMIN: AdminDashboardStats
   ADMIN: AdminDashboardStats
   DOCTOR: DoctorDashboardStats
+  PATIENT: PatientDashboardStats
 }

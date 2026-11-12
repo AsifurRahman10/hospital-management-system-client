@@ -61,6 +61,12 @@ interface DataTableProps<TData extends RowData> {
     onDelete?: (row: TData) => void
     onStatusChange?: (row: TData) => void
     onRoleChange?: (row: TData) => void
+    canChangeStatus?: (row: TData) => boolean
+    canDelete?: (row: TData) => boolean
+    statusChangeLabel?: (row: TData) => string
+    statusChangeClassName?: (row: TData) => string
+    canPayNow?: (row: TData) => boolean
+    onPayNow?: (row: TData) => void
   }
   sorting?: {
     state: SortingState
@@ -128,17 +134,26 @@ const DataTable = <TData extends RowData>({
                   <DropdownMenuTrigger
                     className={buttonVariants({
                       variant: 'ghost',
-                      className: 'h-8 w-8 p-0'
+                      className: 'h-8 p-0'
                     })}>
                     <span className='sr-only'>Open menu</span>
                     <MoreHorizontal className='h-4 w-4' />
                   </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align='end'>
+                  <DropdownMenuContent
+                    align='end'
+                    className='min-w-40'>
                     {actions.onView && (
                       <DropdownMenuItem
                         onClick={() => actions.onView?.(rowData)}>
                         View
+                      </DropdownMenuItem>
+                    )}
+
+                    {actions.canPayNow?.(rowData) && (
+                      <DropdownMenuItem
+                        onClick={() => actions.onPayNow?.(rowData)}>
+                        Pay Now
                       </DropdownMenuItem>
                     )}
 
@@ -149,20 +164,26 @@ const DataTable = <TData extends RowData>({
                       </DropdownMenuItem>
                     )}
 
-                    {actions.onDelete && (
-                      <DropdownMenuItem
-                        onClick={() => actions.onDelete?.(rowData)}
-                        className='text-destructive'>
-                        Delete
-                      </DropdownMenuItem>
-                    )}
+                    {actions.onDelete &&
+                      (!actions.canDelete || actions.canDelete(rowData)) && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onDelete?.(rowData)}
+                          className='text-destructive'>
+                          Delete
+                        </DropdownMenuItem>
+                      )}
 
-                    {actions.onStatusChange && (
-                      <DropdownMenuItem
-                        onClick={() => actions.onStatusChange?.(rowData)}>
-                        Change status
-                      </DropdownMenuItem>
-                    )}
+                    {actions.onStatusChange &&
+                      (!actions.canChangeStatus ||
+                        actions.canChangeStatus(rowData)) && (
+                        <DropdownMenuItem
+                          onClick={() => actions.onStatusChange?.(rowData)}
+                          className={`${actions.statusChangeClassName?.(rowData) ?? ''} whitespace-nowrap `}>
+                          {actions.statusChangeLabel
+                            ? actions.statusChangeLabel(rowData)
+                            : 'Change status'}
+                        </DropdownMenuItem>
+                      )}
 
                     {actions.onRoleChange && (
                       <DropdownMenuItem
@@ -333,7 +354,7 @@ const DataTable = <TData extends RowData>({
             </TableHeader>
 
             <TableBody>
-              {isLoading || isFetching || isUpdating ? (
+              {(isLoading || isUpdating) && data.length === 0 ? (
                 Array.from({ length: 5 }).map((_, index) => (
                   <TableRow
                     key={`skeleton-${index}`}

@@ -3,7 +3,7 @@
 import AppModal from '@/components/shared/AppModal'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { cn } from 'cn'
+import { cn } from '@/app/lib/utils'
 import { Separator } from '@/components/ui/separator'
 import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
 import { format } from 'date-fns'

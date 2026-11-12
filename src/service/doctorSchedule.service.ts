@@ -1,12 +1,11 @@
 'use server'
 
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiResponse } from '@/types/api.types'
 import { IDoctorSchedule } from '@/types/schedule.types'
 
 export const getDoctorWiseSchedules = async (queryString: string) => {
   try {
-    const schedules = await httpClient.get<ApiResponse<IDoctorSchedule[]>>(
+    const schedules = await httpClient.get<IDoctorSchedule[]>(
       queryString
         ? `/doctorSchedule/doctor-wise-schedules?${queryString}`
         : '/doctorSchedule/doctor-wise-schedules'
@@ -18,13 +17,23 @@ export const getDoctorWiseSchedules = async (queryString: string) => {
   }
 }
 
-export const getDoctorSchedules = getDoctorWiseSchedules
+export const getAllDoctorSchedules = async (queryString: string) => {
+  try {
+    const schedules = await httpClient.get<IDoctorSchedule[]>(
+      queryString ? `/doctorSchedule?${queryString}` : '/doctorSchedule'
+    )
+    return schedules
+  } catch (error) {
+    console.log('Error fetching doctor schedules:', error)
+    throw error
+  }
+}
 
 export const createDoctorWiseSchedule = async (payload: {
   scheduleIds: string[]
 }) => {
   try {
-    const response = await httpClient.post<ApiResponse<unknown>>(
+    const response = await httpClient.post<unknown>(
       '/doctorSchedule/create-doctor-wise-schedule',
       payload
     )
@@ -37,12 +46,29 @@ export const createDoctorWiseSchedule = async (payload: {
 
 export const deleteOwnDoctorSchedule = async (id: string) => {
   try {
-    const response = await httpClient.delete<ApiResponse<null>>(
+    const response = await httpClient.delete<null>(
       `/doctorSchedule/delete-own-doctor-schedule/${id}`
     )
     return response
   } catch (error) {
     console.log('Error deleting doctor schedule:', error)
+    throw error
+  }
+}
+
+export const getDoctorSchedulesByDoctorId = async (
+  doctorId: string | number,
+  queryString?: string
+) => {
+  try {
+    const endpoint = queryString
+      ? `/doctorSchedule/${doctorId}?${queryString}`
+      : `/doctorSchedule/${doctorId}`
+    const response =
+      await httpClient.get<IDoctorSchedule[]>(endpoint)
+    return response
+  } catch (error) {
+    console.log('Error fetching doctor schedules by doctor id:', error)
     throw error
   }
 }

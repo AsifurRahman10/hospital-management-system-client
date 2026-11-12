@@ -1,7 +1,6 @@
 'use server'
 
 import { httpClient } from '@/app/lib/axios/httpClient'
-import { ApiResponse } from '@/types/api.types'
 import {
   ICreatePrescriptionPayload,
   IPrescription,
@@ -13,7 +12,7 @@ export const getPrescriptions = async (queryString?: string) => {
     const endpoint = queryString
       ? `/prescription?${queryString}`
       : '/prescription'
-    return await httpClient.get<ApiResponse<IPrescription[]>>(endpoint)
+    return await httpClient.get<IPrescription[]>(endpoint)
   } catch (error) {
     console.log('Error fetching prescriptions:', error)
     throw error
@@ -22,7 +21,7 @@ export const getPrescriptions = async (queryString?: string) => {
 
 export const getMyPrescriptions = async () => {
   try {
-    const response = await httpClient.get<ApiResponse<IPrescription[]>>(
+    const response = await httpClient.get<IPrescription[]>(
       '/prescription/my-prescriptions'
     )
     return response
@@ -36,19 +35,12 @@ export const createPrescription = async (
   payload: ICreatePrescriptionPayload
 ) => {
   try {
-    const response = await httpClient.post<ApiResponse<IPrescription>>(
+    const response = await httpClient.post<IPrescription>(
       '/prescription',
       payload
     )
     return response
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    if (error?.response?.status === 404) {
-      return await httpClient.post<ApiResponse<IPrescription>>(
-        '/prescription/create-prescription',
-        payload
-      )
-    }
+  } catch (error) {
     console.log('Error creating prescription:', error)
     throw error
   }
@@ -59,7 +51,7 @@ export const updatePrescription = async (
   payload: IUpdatePrescriptionPayload
 ) => {
   try {
-    const response = await httpClient.patch<ApiResponse<IPrescription>>(
+    const response = await httpClient.patch<IPrescription>(
       `/prescription/${id}`,
       payload
     )
@@ -72,7 +64,7 @@ export const updatePrescription = async (
 
 export const deletePrescription = async (id: string) => {
   try {
-    const response = await httpClient.delete<ApiResponse<null>>(
+    const response = await httpClient.delete<null>(
       `/prescription/${id}`
     )
     return response

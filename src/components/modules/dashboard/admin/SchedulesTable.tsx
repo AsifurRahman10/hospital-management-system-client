@@ -114,10 +114,7 @@ const ScheduleDateRangeFilter = ({
           )
         }
         if (range?.to) {
-          params.set(
-            'endDateTime[lte]',
-            toIsoDateTime(range.to, endTime, true)
-          )
+          params.set('endDateTime[lte]', toIsoDateTime(range.to, endTime, true))
         }
       },
       { resetPage: true }
@@ -239,6 +236,7 @@ const SchedulesTable = () => {
     }),
     columnHelper.accessor('doctorSchedules', {
       header: 'Doctor Slots',
+      enableSorting: false,
       cell: ({ getValue }) => (
         <span className='text-sm'>{getValue()?.length ?? 0}</span>
       )
@@ -247,12 +245,14 @@ const SchedulesTable = () => {
       (row) => row.doctorSchedules?.filter((item) => item.isBooked).length ?? 0,
       {
         id: 'bookedCount',
+        enableSorting: false,
         header: 'Booked',
         cell: ({ getValue }) => <span className='text-sm'>{getValue()}</span>
       }
     ),
     columnHelper.accessor('appointments', {
       header: 'Appointments',
+      enableSorting: false,
       cell: ({ getValue }) => (
         <span className='text-sm'>{getValue()?.length ?? 0}</span>
       )

@@ -6,9 +6,8 @@ import {
   UserRole,
   getDefaultDashboardRoute
 } from '@/utils/authUtils'
-import { requireUser } from '@/app/lib/session'
-
-const SESSION_COOKIE_NAME = 'better-auth.session_token'
+import { getSession } from '@/app/lib/session'
+import { isAuthSessionCookieName } from '@/utils/authCookieNames'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -23,7 +22,7 @@ export async function proxy(request: NextRequest) {
 
   const hasSessionCookie = request.cookies
     .getAll()
-    .some(({ name }) => name === SESSION_COOKIE_NAME)
+    .some(({ name }) => isAuthSessionCookieName(name))
 
   // Optimization 1: On auth routes (/login, /register), if no session cookie exists, allow immediately (0ms)
   if (isAuth && !hasSessionCookie) {
@@ -39,7 +38,7 @@ export async function proxy(request: NextRequest) {
 
   try {
     // Verify session once with backend using the request's cookies
-    const data = await requireUser()
+    const data = await getSession()
     const user = data?.data?.user
     const role = user?.role as UserRole | undefined
 
@@ -54,6 +53,22 @@ export async function proxy(request: NextRequest) {
     }
 
     const normalizedRole: UserRole = role === 'SUPER_ADMIN' ? 'ADMIN' : role
+
+    // Check if user's email is not verified
+    if (user.emailVerified === false) {
+      // Allow unverified users to access /verify-email
+      if (pathname === '/verify-email') {
+        return NextResponse.next()
+      }
+
+      // Block access to private services until email is verified
+      const verifyUrl = new URL('/verify-email', request.url)
+      if (user.email) {
+        verifyUrl.searchParams.set('email', user.email)
+      }
+      verifyUrl.searchParams.set('unverified', 'true')
+      return NextResponse.redirect(verifyUrl)
+    }
 
     // Authenticated user trying to access /login, /register, etc. -> redirect to dashboard
     if (isAuth) {

@@ -1,35 +1,32 @@
 import { cookies } from 'next/headers'
 
-const SESSION_COOKIE_NAME = 'better-auth.session_token'
 type SetCookieHeader = string | string[] | undefined
+type CookieSetter = Pick<Awaited<ReturnType<typeof cookies>>, 'set'>
 
-const getSetCookieHeaders = (header: SetCookieHeader) => {
-  if (Array.isArray(header)) {
-    return header
-  }
+export const syncResponseCookies = async (
+  header: SetCookieHeader,
+  targetStore?: CookieSetter
+) => {
+  const setCookieHeaders = Array.isArray(header)
+    ? header
+    : header
+      ? [header]
+      : []
 
-  return header ? [header] : []
-}
+  if (!setCookieHeaders.length) return
 
-export const syncResponseCookies = async (header: SetCookieHeader) => {
-  const setCookieHeaders = getSetCookieHeaders(header)
-
-  if (setCookieHeaders.length === 0) {
-    return
-  }
-
-  const cookieStore = await cookies()
+  const cookieStore = targetStore ?? (await cookies())
 
   for (const cookie of setCookieHeaders) {
     const [nameValue, ...attributes] = cookie.split(';')
     const separatorIndex = nameValue.indexOf('=')
 
-    if (separatorIndex < 1) {
-      continue
-    }
+    if (separatorIndex < 1) continue
 
     const name = nameValue.slice(0, separatorIndex).trim()
     const rawValue = nameValue.slice(separatorIndex + 1).trim()
+
+    // Decode the cookie value once
     let value = rawValue
 
     try {
@@ -38,31 +35,58 @@ export const syncResponseCookies = async (header: SetCookieHeader) => {
       value = rawValue
     }
 
-    if (name !== SESSION_COOKIE_NAME) {
-      continue
+    const options: {
+      path: string
+      httpOnly: boolean
+      secure: boolean
+      sameSite: 'lax' | 'strict' | 'none'
+      maxAge?: number
+      expires?: Date
+    } = {
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
     }
 
-    const options: Parameters<typeof cookieStore.set>[2] = {}
-
     for (const attribute of attributes) {
-      const [rawKey, ...rawValue] = attribute.trim().split('=')
-      const key = rawKey.toLowerCase()
-      const value = rawValue.join('=').trim()
+      const [key, ...parts] = attribute.trim().split('=')
+      const attributeValue = parts.join('=').trim()
 
-      if (key === 'path' && value) options.path = value
-      if (key === 'domain' && value) options.domain = value
-      if (key === 'max-age' && value) options.maxAge = Number(value)
-      if (key === 'expires' && value) options.expires = new Date(value)
-      if (key === 'secure') options.secure = true
-      if (key === 'httponly') options.httpOnly = true
-      if (
-        key === 'samesite' &&
-        ['lax', 'strict', 'none'].includes(value.toLowerCase())
-      ) {
-        options.sameSite = value.toLowerCase() as 'lax' | 'strict' | 'none'
+      switch (key.toLowerCase()) {
+        case 'path':
+          options.path = attributeValue || '/'
+          break
+
+        case 'max-age':
+          options.maxAge = Number(attributeValue)
+          break
+
+        case 'expires':
+          options.expires = new Date(attributeValue)
+          break
+
+        case 'httponly':
+          options.httpOnly = true
+          break
+
+        case 'secure':
+          options.secure = true
+          break
+
+        case 'samesite':
+          if (
+            ['lax', 'strict', 'none'].includes(attributeValue.toLowerCase())
+          ) {
+            options.sameSite = attributeValue.toLowerCase() as
+              | 'lax'
+              | 'strict'
+              | 'none'
+          }
+          break
       }
     }
 
-    cookieStore.set(name, value, options)
+    await cookieStore.set(name, value, options)
   }
 }
