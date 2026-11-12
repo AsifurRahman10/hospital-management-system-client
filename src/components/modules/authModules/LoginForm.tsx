@@ -172,7 +172,7 @@ const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
           )}
         </form.Field>
 
-        <div className='flex items-center justify-between text-[13px]'>
+        {/* <div className='flex items-center justify-between text-[13px]'>
           <label className='flex cursor-pointer items-center gap-2.5'>
             <Checkbox disabled={isSocialLoading} />
             Remember me
@@ -183,7 +183,7 @@ const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
             className='hover:text-primary'>
             Forgot Password?
           </Link>
-        </div>
+        </div> */}
 
         <Button
           type='submit'
