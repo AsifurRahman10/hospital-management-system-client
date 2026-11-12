@@ -6,6 +6,7 @@ Designed to streamline clinical and administrative operations, Life Hospital del
 
 ## 🎬 Demo & Links
 
+- **Frontend URL:** https://hospital-management-system-client-d21ty12sc.vercel.app/
 - **Backend API:** https://hospital-management-system-back-end-pw45.onrender.com/
 
 [![Life Hospital Demo — click to watch with music](public/images/hms-demo.gif)](https://res.cloudinary.com/dsa8ooidh/video/upload/v1794488912/HMS_Video_with_music_w1mppj.mp4)
