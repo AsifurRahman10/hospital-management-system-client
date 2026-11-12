@@ -11,18 +11,10 @@ import { createDoctorWiseSchedule } from '@/service/doctorSchedule.service'
 import { getSchedules } from '@/service/schedule.service'
 import { ISchedule } from '@/types/schedule.types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  addDays,
-  endOfDay,
-  format,
-  isSameDay,
-  parseISO,
-  startOfDay
-} from 'date-fns'
+import { addDays, endOfDay, format, startOfDay } from 'date-fns'
 import {
   CalendarDays,
   CalendarIcon,
-  Check,
   CheckCircle2,
   Clock,
   LoaderCircle,

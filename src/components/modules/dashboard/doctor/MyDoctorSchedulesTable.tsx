@@ -22,15 +22,7 @@ import { PaginationMeta } from '@/types/api.types'
 import { IDoctorSchedule } from '@/types/schedule.types'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
-import {
-  Calendar,
-  CalendarClock,
-  Clock,
-  RotateCcw,
-  Sun,
-  Sunrise,
-  Sunset
-} from 'lucide-react'
+import { Calendar, Clock, RotateCcw, Sun, Sunrise, Sunset } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useMemo } from 'react'
 

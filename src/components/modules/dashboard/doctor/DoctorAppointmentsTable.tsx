@@ -24,14 +24,14 @@ import {
 } from '@/service/appointment.service'
 import { PaginationMeta } from '@/types/api.types'
 import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
 import {
-  CalendarClock,
-  Clock,
-  RotateCcw,
-  Video
-} from 'lucide-react'
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query'
+import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
+import { Clock, RotateCcw, Video } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
@@ -395,8 +395,7 @@ const DoctorAppointmentsTable = () => {
             Patient Appointments
           </h1>
           <p className='mt-1 text-sm text-muted-foreground'>
-            Manage your patient consultation bookings, attendance, and
-            statuses.
+            Manage your patient consultation bookings, attendance, and statuses.
           </p>
         </div>
         <div className='flex items-center gap-3'>

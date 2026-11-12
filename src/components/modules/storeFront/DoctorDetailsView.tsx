@@ -3,7 +3,6 @@
 import { IDoctorDetails } from '@/types/doctor.types'
 import { format } from 'date-fns'
 import {
-  ArrowLeft,
   GraduationCap,
   MapPin,
   Phone,
@@ -13,8 +12,7 @@ import {
   User
 } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { isValidDoctorImage } from './DoctorCard'
 import { DoctorSchedulePicker } from './DoctorSchedulePicker'
 

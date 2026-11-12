@@ -8,8 +8,7 @@ import {
   parseISO,
   startOfDay,
   endOfDay,
-  addDays,
-  isBefore
+  addDays
 } from 'date-fns'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import type { DateRange } from 'react-day-picker'
@@ -26,23 +25,19 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import {
   CalendarDays,
-  CalendarRange,
   Clock,
   Sun,
   Sunrise,
   Sunset,
   CalendarCheck,
   RefreshCw,
-  Sparkles,
-  Calendar as CalendarIcon,
-  CheckCircle2
+  Calendar as CalendarIcon
 } from 'lucide-react'
 
 type PeriodType = 'Morning' | 'Afternoon' | 'Evening'

@@ -8,7 +8,6 @@ import {
   DataTableFilterConfig,
   DataTableFilterValues
 } from '@/components/shared/DataTableFilters'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useServerManagedDataTable } from '@/hooks/useServerManagedDataTable'
 import {
@@ -21,7 +20,7 @@ import { PaginationMeta } from '@/types/api.types'
 import { IReview } from '@/types/review.type'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
-import { Calendar, RotateCcw, Star, ThumbsUp } from 'lucide-react'
+import { RotateCcw, Star } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useMemo, useState } from 'react'
 

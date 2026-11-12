@@ -1,3 +1,4 @@
+import { cn } from '@/app/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,7 +9,6 @@ import {
   SheetTitle
 } from '@/components/ui/sheet'
 import { ISpecialty } from '@/types/specialty.types'
-import { cn } from '@/app/lib/utils'
 import {
   Check,
   PanelLeftClose,
@@ -18,7 +18,6 @@ import {
   SlidersHorizontal,
   X
 } from 'lucide-react'
-import React from 'react'
 
 // Shared pill button style
 const pillClass = (active: boolean) =>

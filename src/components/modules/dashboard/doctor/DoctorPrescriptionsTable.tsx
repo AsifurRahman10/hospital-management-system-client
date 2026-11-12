@@ -20,12 +20,7 @@ import {
   tableFeatures
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import {
-  CalendarCheck,
-  Download,
-  FileText,
-  RotateCcw
-} from 'lucide-react'
+import { CalendarCheck, Download, RotateCcw } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
 const formatDate = (dateStr?: string | Date) => {
@@ -232,8 +227,7 @@ const DoctorPrescriptionsTable = () => {
             Prescriptions
           </h1>
           <p className='mt-1 text-sm text-muted-foreground'>
-            Browse and manage all medical prescriptions issued to your
-            patients.
+            Browse and manage all medical prescriptions issued to your patients.
           </p>
         </div>
         <div className='flex items-center gap-3'>

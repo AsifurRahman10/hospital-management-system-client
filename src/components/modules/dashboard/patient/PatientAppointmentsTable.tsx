@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
+import { cn } from '@/app/lib/utils'
 import DateCell from '@/components/modules/dashboard/DateCell'
 import UserInfoCell from '@/components/modules/dashboard/UserInfoCell'
 import CancelAppointmentDialog from '@/components/modules/dashboard/patient/CancelAppointmentDialog'
@@ -30,7 +31,6 @@ import {
 } from '@/types/appointment.type'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { createColumnHelper, tableFeatures } from '@tanstack/react-table'
-import { cn } from '@/app/lib/utils'
 import { Clock, Plus, RotateCcw, Video } from 'lucide-react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'

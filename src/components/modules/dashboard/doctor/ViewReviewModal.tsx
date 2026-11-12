@@ -1,18 +1,10 @@
 'use client'
 
 import AppModal from '@/components/shared/AppModal'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
 import { IReview } from '@/types/review.type'
 import { format } from 'date-fns'
-import {
-  Calendar,
-  Clock,
-  MessageSquare,
-  Star,
-  User
-} from 'lucide-react'
+import { Calendar, MessageSquare, Star, User } from 'lucide-react'
 
 interface ViewReviewModalProps {
   open: boolean
@@ -131,7 +123,9 @@ const ViewReviewModal = ({
           </p>
           <div className='rounded-lg bg-muted/40 p-3'>
             <p className='text-sm leading-relaxed text-foreground italic'>
-              {review.comment ? `"${review.comment}"` : 'No written feedback provided.'}
+              {review.comment
+                ? `"${review.comment}"`
+                : 'No written feedback provided.'}
             </p>
           </div>
         </div>
@@ -145,7 +139,9 @@ const ViewReviewModal = ({
             <div className='grid grid-cols-1 gap-2 text-xs sm:grid-cols-2'>
               {schedule?.startDateTime && (
                 <div>
-                  <span className='text-muted-foreground'>Consultation Date:</span>
+                  <span className='text-muted-foreground'>
+                    Consultation Date:
+                  </span>
                   <p className='font-semibold text-foreground'>
                     {formatDate(schedule.startDateTime)}
                   </p>

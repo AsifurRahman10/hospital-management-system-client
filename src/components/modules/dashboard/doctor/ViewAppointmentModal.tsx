@@ -1,16 +1,14 @@
 'use client'
 
+import { cn } from '@/app/lib/utils'
 import AppModal from '@/components/shared/AppModal'
 import { Badge } from '@/components/ui/badge'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { cn } from '@/app/lib/utils'
-import { Separator } from '@/components/ui/separator'
-import { AppointmentStatus, IAppointment } from '@/types/appointment.type'
+import { IAppointment } from '@/types/appointment.type'
 import { format } from 'date-fns'
 import {
   Calendar,
   CalendarCheck,
-  CheckCircle2,
   Clock,
   CreditCard,
   Mail,
@@ -103,10 +101,10 @@ const ViewAppointmentModal = ({
   if (!appointment) return null
 
   const patient = appointment.patient
-  const schedule =
-    appointment.schedule || appointment.doctorSchedule?.schedule
+  const schedule = appointment.schedule || appointment.doctorSchedule?.schedule
   const statusMeta = getStatusBadge(appointment.status)
-  const isPaid = String(appointment.paymentStatus || '').toUpperCase() === 'PAID'
+  const isPaid =
+    String(appointment.paymentStatus || '').toUpperCase() === 'PAID'
 
   return (
     <AppModal
@@ -166,7 +164,9 @@ const ViewAppointmentModal = ({
           </div>
 
           <div className='flex items-center gap-2'>
-            <span className='font-semibold text-muted-foreground'>Payment:</span>
+            <span className='font-semibold text-muted-foreground'>
+              Payment:
+            </span>
             <Badge
               variant={isPaid ? 'default' : 'destructive'}
               className={
@@ -259,10 +259,7 @@ const ViewAppointmentModal = ({
               href={`/video-call/${appointment.videoCallingId}`}
               target='_blank'
               rel='noopener noreferrer'
-              className={cn(
-                buttonVariants({ size: 'sm' }),
-                'h-7 text-xs'
-              )}>
+              className={cn(buttonVariants({ size: 'sm' }), 'h-7 text-xs')}>
               Launch Video Call
             </a>
           </div>
