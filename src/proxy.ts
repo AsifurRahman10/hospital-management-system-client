@@ -7,11 +7,7 @@ import {
   getDefaultDashboardRoute
 } from '@/utils/authUtils'
 import { getSession } from '@/app/lib/session'
-
-const SESSION_COOKIE_NAMES = [
-  'better-auth.session_token',
-  '__Secure-better-auth.session_token'
-]
+import { isAuthSessionCookieName } from '@/utils/authCookieNames'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -26,7 +22,7 @@ export async function proxy(request: NextRequest) {
 
   const hasSessionCookie = request.cookies
     .getAll()
-    .some(({ name }) => SESSION_COOKIE_NAMES.includes(name))
+    .some(({ name }) => isAuthSessionCookieName(name))
 
   // Optimization 1: On auth routes (/login, /register), if no session cookie exists, allow immediately (0ms)
   if (isAuth && !hasSessionCookie) {

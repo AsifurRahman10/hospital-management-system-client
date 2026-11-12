@@ -8,9 +8,16 @@ type CustomButtonProps = {
   className?: string
   icon?: ReactNode
   href?: string
+  onClick?: () => void
 }
 
-const CustomButton = ({ text, className, icon, href }: CustomButtonProps) => {
+const CustomButton = ({
+  text,
+  className,
+  icon,
+  href,
+  onClick
+}: CustomButtonProps) => {
   const classes = cn(
     buttonVariants(),
     'h-11.5 rounded-sm bg-primary px-5 text-sm font-bold text-white shadow-[0_4px_10px_rgba(49,103,217,0.2)]',
@@ -19,7 +26,10 @@ const CustomButton = ({ text, className, icon, href }: CustomButtonProps) => {
 
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link
+        href={href}
+        onClick={onClick}
+        className={classes}>
         {text}
         {icon && <span aria-hidden='true'>{icon}</span>}
       </Link>
@@ -27,7 +37,9 @@ const CustomButton = ({ text, className, icon, href }: CustomButtonProps) => {
   }
 
   return (
-    <span className={classes}>
+    <span
+      onClick={onClick}
+      className={classes}>
       {text}
       {icon && <span aria-hidden='true'>{icon}</span>}
     </span>

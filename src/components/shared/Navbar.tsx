@@ -3,15 +3,24 @@ import { ArrowUpRight, Plus } from 'lucide-react'
 import CustomButton from '@/components/shared/CustomButton'
 import { getMe } from '@/service/profile.service'
 import { NavbarAuth } from '@/components/shared/NavbarAuth'
-import { NavbarLinks } from '@/components/shared/NavbarLinks'
+import { MobileNavbar, NavbarLinks } from '@/components/shared/NavbarLinks'
+import { cookies } from 'next/headers'
+import { isAuthSessionCookieName } from '@/utils/authCookieNames'
 
 export async function Navbar() {
   let userData = null
-  try {
-    const isUserLoggedIn = await getMe()
-    userData = isUserLoggedIn?.data ?? null
-  } catch {
-    userData = null
+  const cookieStore = await cookies()
+  const hasSessionCookie = cookieStore
+    .getAll()
+    .some(({ name }) => isAuthSessionCookieName(name))
+
+  if (hasSessionCookie) {
+    try {
+      const isUserLoggedIn = await getMe()
+      userData = isUserLoggedIn?.data ?? null
+    } catch {
+      userData = null
+    }
   }
 
   return (
@@ -30,14 +39,15 @@ export async function Navbar() {
         <span>Life Hospital</span>
       </Link>
       <NavbarLinks />
-      <div className='flex gap-6 justify-center items-center'>
+      <div className='flex items-center justify-center gap-3 md:gap-6'>
         <NavbarAuth user={userData} />
         <CustomButton
           href='/doctors'
-          className='bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
+          className='hidden md:inline-flex bg-transparent shadow-none border-2 border-primary text-primary rounded-sm hover:bg-transparent'
           text='Make appointment'
           icon={<ArrowUpRight />}
         />
+        <MobileNavbar />
       </div>
     </header>
   )
