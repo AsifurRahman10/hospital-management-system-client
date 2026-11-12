@@ -1,12 +1,6 @@
 import { syncResponseCookies } from '@/utils/authCookies'
+import { getSafeRedirectPath } from '@/utils/authUtils'
 import { NextRequest, NextResponse } from 'next/server'
-
-const getSafeRedirectPath = (path: string | null): string => {
-  if (path && path.startsWith('/') && !path.startsWith('//')) {
-    return path
-  }
-  return '/dashboard'
-}
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token')

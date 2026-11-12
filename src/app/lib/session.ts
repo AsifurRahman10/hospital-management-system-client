@@ -9,7 +9,7 @@ const API_URL =
   'http://localhost:5000'
 if (!API_URL) {
   throw new Error(
-    'NEXT_PUBLIC_API_URL is not defined in the environment variables'
+    'NEXT_API_BASE_URL is not defined in the environment variables'
   )
 }
 export const getSession = cache(async () => {

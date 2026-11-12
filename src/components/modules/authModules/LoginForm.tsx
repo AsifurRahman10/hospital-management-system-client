@@ -6,6 +6,7 @@ import { AuthShell } from '@/components/shared/AuthShell'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { loginAction } from '@/service/auth.service'
+import { getSafeRedirectPath } from '@/utils/authUtils'
 import { ILoginPayload, loginZodSchema } from '@/validation/auth.validation'
 import { useForm } from '@tanstack/react-form'
 import { useMutation } from '@tanstack/react-query'
@@ -20,28 +21,21 @@ interface LoginFormProps {
   authError?: string
 }
 
-const API_URL = process.env.NEXT_API_BASE_URL || process.env.NEXT_API_BASE_URL
-
 export const getGoogleLoginUrl = (
   redirectPath = '/dashboard',
   origin?: string
 ): string => {
-  if (!API_URL) {
-    throw new Error('API URL is not configured')
+  const safeRedirect = getSafeRedirectPath(redirectPath)
+  const params = new URLSearchParams({ redirect: safeRedirect })
+  const resolvedOrigin =
+    origin ??
+    (typeof window !== 'undefined' ? window.location.origin : undefined)
+
+  if (resolvedOrigin) {
+    params.set('origin', resolvedOrigin)
   }
 
-  if (!redirectPath.startsWith('/') || redirectPath.startsWith('//')) {
-    redirectPath = '/dashboard'
-  }
-
-  const url = new URL('/api/v1/auth/login/google', API_URL)
-
-  url.searchParams.set('redirect', redirectPath)
-  if (origin) {
-    url.searchParams.set('origin', origin)
-  }
-
-  return url.toString()
+  return `/api/auth/google/login?${params.toString()}`
 }
 
 const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {

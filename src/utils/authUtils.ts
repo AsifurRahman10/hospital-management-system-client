@@ -79,3 +79,13 @@ export const getDefaultDashboardRoute = (role: UserRole) => {
 
   return '/'
 }
+
+export const getSafeRedirectPath = (
+  path?: string | null,
+  fallback = '/dashboard'
+): string => {
+  if (path && path.startsWith('/') && !path.startsWith('//')) {
+    return path
+  }
+  return fallback
+}
