@@ -17,12 +17,16 @@ import { toast } from 'sonner'
 
 interface LoginFormProps {
   redirectPath?: string
+  authError?: string
 }
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || process.env.NEXT_PUBLIC_API_URL
 
-export const getGoogleLoginUrl = (redirectPath = '/dashboard'): string => {
+export const getGoogleLoginUrl = (
+  redirectPath = '/dashboard',
+  origin?: string
+): string => {
   if (!API_URL) {
     throw new Error('API URL is not configured')
   }
@@ -34,14 +38,19 @@ export const getGoogleLoginUrl = (redirectPath = '/dashboard'): string => {
   const url = new URL('/api/v1/auth/login/google', API_URL)
 
   url.searchParams.set('redirect', redirectPath)
+  if (origin) {
+    url.searchParams.set('origin', origin)
+  }
 
   return url.toString()
 }
 
-const LoginForm = ({ redirectPath }: LoginFormProps) => {
+const LoginForm = ({ redirectPath, authError }: LoginFormProps) => {
   const router = useRouter()
 
-  const [serverError, setServerError] = useState<string | null>(null)
+  const [serverError, setServerError] = useState<string | null>(
+    authError ? 'Google login failed. Please try again.' : null
+  )
   const [isGoogleRedirecting, setIsGoogleRedirecting] = useState(false)
 
   const { mutateAsync, isPending } = useMutation({
@@ -99,7 +108,10 @@ const LoginForm = ({ redirectPath }: LoginFormProps) => {
     try {
       setIsGoogleRedirecting(true)
 
-      const url = getGoogleLoginUrl(redirectPath || '/dashboard')
+      const url = getGoogleLoginUrl(
+        redirectPath || '/dashboard',
+        window.location.origin
+      )
 
       window.location.assign(url)
     } catch (error: unknown) {

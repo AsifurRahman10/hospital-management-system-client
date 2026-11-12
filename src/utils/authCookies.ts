@@ -1,8 +1,12 @@
 import { cookies } from 'next/headers'
 
 type SetCookieHeader = string | string[] | undefined
+type CookieSetter = Pick<Awaited<ReturnType<typeof cookies>>, 'set'>
 
-export const syncResponseCookies = async (header: SetCookieHeader) => {
+export const syncResponseCookies = async (
+  header: SetCookieHeader,
+  targetStore?: CookieSetter
+) => {
   const setCookieHeaders = Array.isArray(header)
     ? header
     : header
@@ -11,7 +15,7 @@ export const syncResponseCookies = async (header: SetCookieHeader) => {
 
   if (!setCookieHeaders.length) return
 
-  const cookieStore = await cookies()
+  const cookieStore = targetStore ?? (await cookies())
 
   for (const cookie of setCookieHeaders) {
     const [nameValue, ...attributes] = cookie.split(';')

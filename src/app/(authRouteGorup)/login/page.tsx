@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import LoginForm from '@/components/modules/authModules/LoginForm'
 
 interface LoginParams {
-  searchParams: Promise<{ redirect?: string }>
+  searchParams: Promise<{ redirect?: string; authError?: string }>
 }
 
 const LoginContent = async ({ searchParams }: LoginParams) => {
@@ -10,7 +10,10 @@ const LoginContent = async ({ searchParams }: LoginParams) => {
   const redirectPath = params.redirect
   return (
     <div>
-      <LoginForm redirectPath={redirectPath} />
+      <LoginForm
+        redirectPath={redirectPath}
+        authError={params.authError}
+      />
     </div>
   )
 }
