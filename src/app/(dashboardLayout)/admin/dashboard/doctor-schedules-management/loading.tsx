@@ -1,5 +1,5 @@
-const DoctorSchedulesManagementLoading = () => {
-  return <div>loading</div>
-}
+import { TableManagementSkeleton } from '@/components/modules/dashboard/DashboardSkeletons'
 
-export default DoctorSchedulesManagementLoading
+export default function ManagementLoading() {
+  return <TableManagementSkeleton />
+}

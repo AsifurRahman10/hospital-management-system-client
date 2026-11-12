@@ -62,11 +62,15 @@ export const loginAction = async (
 
     if (!response.success) {
       const respError = (response as any)?.error || response.message || ''
-      if (typeof respError === 'string' && respError.toLowerCase().includes('email not verified')) {
+      if (
+        typeof respError === 'string' &&
+        respError.toLowerCase().includes('email not verified')
+      ) {
         return {
           success: false,
           requiresVerification: true,
-          message: 'Your email is not verified. A verification code has been sent to your email.',
+          message:
+            'Your email is not verified. A verification code has been sent to your email.',
           redirectTo: `/verify-email?email=${encodeURIComponent(parsedPayload.data.email)}&unverified=true`
         }
       }
@@ -82,7 +86,8 @@ export const loginAction = async (
       return {
         success: false,
         requiresVerification: true,
-        message: 'Your email is not verified. Please verify your email with the OTP.',
+        message:
+          'Your email is not verified. Please verify your email with the OTP.',
         redirectTo: `/verify-email?email=${encodeURIComponent(user.email)}&unverified=true`
       }
     }
@@ -109,7 +114,8 @@ export const loginAction = async (
       return {
         success: false,
         requiresVerification: true,
-        message: 'Your email is not verified. A verification code has been sent to your email.',
+        message:
+          'Your email is not verified. A verification code has been sent to your email.',
         redirectTo: `/verify-email?email=${encodeURIComponent(parsedPayload.data.email)}&unverified=true`
       }
     }
@@ -137,10 +143,7 @@ export const registerAction = async (
   }
 
   try {
-    const response = await httpClient.post(
-      '/auth/register',
-      parsedPayload.data
-    )
+    const response = await httpClient.post('/auth/register', parsedPayload.data)
 
     if (!response.success) {
       return {
@@ -228,7 +231,8 @@ export const resendVerificationEmailAction = async (
     return {
       success: true,
       message:
-        response.message || 'Verification email resent successfully! Please check your inbox.'
+        response.message ||
+        'Verification email resent successfully! Please check your inbox.'
     }
   } catch (error: any) {
     console.error('Resend verification email failed:', error)

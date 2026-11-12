@@ -1,5 +1,5 @@
-const PaymentManagementLoading = () => {
-  return <div>PaymentManagementLoading</div>
-}
+import { TableManagementSkeleton } from '@/components/modules/dashboard/DashboardSkeletons'
 
-export default PaymentManagementLoading
+export default function ManagementLoading() {
+  return <TableManagementSkeleton />
+}

@@ -13,18 +13,24 @@ if (!API_BASE_URL) {
 
 const axiosInstance = async () => {
   const cookieStore = await cookies()
+
   const instance = axios.create({
-    baseURL: API_BASE_URL + '/api/v1',
+    baseURL: `${API_BASE_URL.replace(/\/+$/, '')}/api/v1`,
     timeout: 30000,
-    withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
       Cookie: cookieStore.toString()
     }
   })
 
+  // Sync backend cookies
   instance.interceptors.response.use(async (response) => {
-    await syncResponseCookies(response.headers['set-cookie'])
+    const setCookie = response.headers['set-cookie']
+
+    if (setCookie) {
+      await syncResponseCookies(setCookie)
+    }
+
     return response
   })
 

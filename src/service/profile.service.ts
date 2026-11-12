@@ -4,18 +4,9 @@ import { httpClient } from '@/app/lib/axios/httpClient'
 import { ApiResponse } from '@/types/api.types'
 import { IProfile } from '@/types/profile.types'
 import axios from 'axios'
-import { cookies } from 'next/headers'
-
-const SESSION_COOKIE_NAME = 'better-auth.session_token'
 
 export const getMe = async (): Promise<ApiResponse<IProfile> | null> => {
   try {
-    const cookieStore = await cookies()
-    const hasSession = cookieStore.has(SESSION_COOKIE_NAME)
-    if (!hasSession) {
-      return null
-    }
-
     const response = await httpClient.get<IProfile>('/auth/me')
     return response
   } catch (error: unknown) {

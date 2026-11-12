@@ -1,4 +1,5 @@
-export default function AdminsDashboardLoading() {
-  // Or a custom loading skeleton component
-  return <p>Loading doctor Dashboard...</p>
+import { DashboardOverviewSkeleton } from '@/components/modules/dashboard/DashboardSkeletons'
+
+export default function DoctorDashboardLoading() {
+  return <DashboardOverviewSkeleton />
 }
