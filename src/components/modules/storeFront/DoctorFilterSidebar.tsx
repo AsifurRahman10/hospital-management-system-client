@@ -171,9 +171,7 @@ const FilterSidebarContent = ({
                 pillClass(active)
               )}>
               <span className='truncate'>{spec.title}</span>
-              {active && (
-                <Check className='size-3.5 shrink-0 text-primary' />
-              )}
+              {active && <Check className='size-3.5 shrink-0 text-primary' />}
             </button>
           )
         })}
@@ -202,31 +200,6 @@ const FilterSidebarContent = ({
           </button>
         ))}
       </div>
-    </div>
-
-    {/* Sort */}
-    <div className='space-y-2'>
-      <label
-        htmlFor='sidebar-sort'
-        className='text-xs font-bold uppercase tracking-wider text-muted-foreground'>
-        Sort Preference
-      </label>
-      <select
-        id='sidebar-sort'
-        value={currentSortValue}
-        onChange={(e) => {
-          handleSortChange(e.target.value)
-          onItemSelect?.()
-        }}
-        className='h-10 w-full rounded-xl border border-border/70 bg-card px-3 text-xs font-semibold text-foreground outline-none transition-colors focus-visible:border-primary'>
-        {SORT_OPTIONS.map((opt) => (
-          <option
-            key={opt.value}
-            value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
     </div>
   </div>
 )

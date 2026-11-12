@@ -2,6 +2,13 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/app/lib/utils'
 import {
@@ -152,8 +159,8 @@ export const DoctorDirectory = () => {
           <div className='min-w-0 flex-1 space-y-6'>
             {/* Status bar with sort and active filter chips */}
             <div className='flex flex-col gap-3 rounded-2xl border border-border/70 bg-card p-4 shadow-xs'>
-              <div className='flex flex-wrap items-center justify-between gap-3 text-xs'>
-                <p className='font-semibold text-muted-foreground'>
+              <div className='flex  text-xs sm:flex-row items-center justify-between sm:gap-3'>
+                <p className='font-semibold text-muted-foreground text-nowrap w-full'>
                   {filters.showLoader ? (
                     'Searching verified physicians...'
                   ) : (
@@ -167,23 +174,40 @@ export const DoctorDirectory = () => {
                   )}
                 </p>
 
-                <div className='flex items-center gap-2'>
-                  <span className='text-muted-foreground font-medium'>
+                <div className='flex w-full items-center gap-2 sm:w-auto'>
+                  <span className='shrink-0 font-medium text-muted-foreground'>
                     Sort:
                   </span>
-                  <select
+
+                  {/* Non-modal so opening the menu doesn't lock scroll and shift layout */}
+                  <Select
+                    modal={false}
                     value={filters.currentSortValue}
-                    onChange={(e) => filters.handleSortChange(e.target.value)}
-                    aria-label='Sort doctors list'
-                    className='rounded-lg border border-border/70 bg-background px-2.5 py-1 text-xs font-bold text-foreground outline-none focus:border-primary'>
-                    {SORT_OPTIONS.map((opt) => (
-                      <option
-                        key={opt.value}
-                        value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                    onValueChange={(value) => {
+                      if (value) filters.handleSortChange(value)
+                    }}>
+                    <SelectTrigger aria-label='Sort doctors list'>
+                      <SelectValue className='font-semibold'>
+                        {SORT_OPTIONS.find(
+                          (opt) => opt.value === filters.currentSortValue
+                        )?.label ?? 'Recommended'}
+                      </SelectValue>
+                    </SelectTrigger>
+
+                    <SelectContent
+                      align='end'
+                      alignItemWithTrigger={false}
+                      className='min-w-44'>
+                      {SORT_OPTIONS.map((opt) => (
+                        <SelectItem
+                          key={opt.value}
+                          value={opt.value}
+                          className='text-xs font-medium'>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 

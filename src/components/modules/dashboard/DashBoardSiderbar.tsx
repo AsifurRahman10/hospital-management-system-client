@@ -32,9 +32,9 @@ export async function AppSidebar({
     <Sidebar
       collapsible='icon'
       {...props}>
-      <SidebarHeader className='p-4 pb-2'>
+      <SidebarHeader className='p-4 pb-2 bg-white sm:bg-transparent'>
         <div className='inline-flex shrink-0 items-center gap-2 text-[15px] font-extrabold text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary'>
-          <span className='grid size-8 place-items-center rounded-sm bg-primary text-white'>
+          <span className='grid size-8 place-items-center rounded-sm bg-primary text-white '>
             <Plus
               size={20}
               strokeWidth={2.5}
@@ -46,11 +46,11 @@ export async function AppSidebar({
           </span>
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className='bg-white sm:bg-transparent'>
         <SidebarNavList items={navItems} />
         <DemoCard />
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className='bg-white sm:bg-transparent'>
         <NavUser user={sidebarUser} />
       </SidebarFooter>
       <SidebarRail />

@@ -65,7 +65,7 @@ export const DoctorScheduleBookingModal = ({
             Cancel
           </Button>
 
-          <div className='space-x-2'>
+          <div className='flex justify-between md:justify-end gap-2'>
             <Button
               type='button'
               variant='secondary'

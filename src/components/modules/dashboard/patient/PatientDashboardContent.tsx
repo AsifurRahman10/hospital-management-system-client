@@ -31,7 +31,7 @@ const PatientDashboardContent = ({ user }: PatientDashboardContentProps) => {
           user={user}
           action={
             <Link
-              href='/dashboard/book-appointments'
+              href='/doctors'
               className='inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5'>
               <PlusIcon className='size-4' />
               Book appointment
