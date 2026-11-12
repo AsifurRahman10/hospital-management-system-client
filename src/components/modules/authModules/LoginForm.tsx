@@ -20,7 +20,7 @@ interface LoginFormProps {
   authError?: string
 }
 
-const API_URL = process.env.NEXT_API_BASE_URL || process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_API_BASE_URL || process.env.NEXT_API_BASE_URL
 
 export const getGoogleLoginUrl = (
   redirectPath = '/dashboard',
