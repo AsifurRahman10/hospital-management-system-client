@@ -1,13 +1,17 @@
 # 🏥 Life Hospital — Hospital Management System (HMS) Frontend
 
-A modern, full-featured, enterprise-grade Hospital Management System frontend built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Tailwind CSS v4**.
+Healthcare delivery often breaks down in the gaps between patients, clinicians, and administration: patients face long wait times, opaque doctor availability, and lost paper prescriptions; doctors battle scheduling conflicts and scattered visit records; and clinic administrators lack real-time operational visibility.
 
-Designed to streamline clinical and administrative operations, Life Hospital delivers tailored workflows for **Patients**, **Doctors**, **Admins**, and the **Public**. It combines a patient-friendly storefront and appointment booking engine with secure, role-based dashboards, clinical records, interactive analytics, and doctor schedule management.
+**Life Hospital** solves this by unifying clinical access into a transparent, end-to-end digital healthcare platform:
+- **For Patients:** Frictionless doctor discovery by specialty, transparent consultation fees, real-time appointment booking, online payments, and permanent access to digital prescriptions and visit history.
+- **For Doctors:** Autonomous schedule and slot configuration, streamlined patient queues, and an integrated digital prescription pad that eliminates paper-based errors.
+- **For Administrators:** Centralized operational oversight with real-time revenue analytics, doctor credentialing, medical department controls, and hospital-wide appointment auditing.
 
 ## 🎬 Demo & Links
 
-- **Frontend URL:** https://hospital-management-system-client-d21ty12sc.vercel.app/
-- **Backend API:** https://hospital-management-system-back-end-pw45.onrender.com/
+- **Frontend live URL:** https://hospital-management-system-client-d21ty12sc.vercel.app/
+- **Backend live URL:** https://hospital-management-system-back-end-pw45.onrender.com/
+- **Backend Repo URL:** https://github.com/AsifurRahman10/hospital-management-system-back-end
 
 [![Life Hospital Demo — click to watch with music](public/images/hms-demo.gif)](https://res.cloudinary.com/dsa8ooidh/video/upload/v1794488912/HMS_Video_with_music_w1mppj.mp4)
 
