@@ -17,6 +17,7 @@ Designed to streamline clinical and administrative operations, Life Hospital del
 ### 1. 🌐 Public Patient Portal & Storefront
 
 - **Landing & Discovery**: Clean hero section, clinic highlights, specialized service showcases, and patient testimonials.
+- **AI Hospital Assistant**: Floating chat widget powered by a RAG (Retrieval-Augmented Generation) backend. Patients can ask natural-language questions — "Find me a Cardiologist", "What are consultation fees?" — and receive structured doctor recommendations with specialty, experience, hospital affiliation, and direct booking links. Available on all public pages (Home, Doctors, Services, About, Contact). No configuration required; activate by clicking the **Chat with us** button at the bottom right.
 - **Doctor Directory**:
   - Search by doctor name, qualification, or department.
   - Multi-attribute filtering (specialty, consultation fee range, experience, patient ratings).
@@ -120,6 +121,7 @@ hms-frontend/
 │   │   ├── icon/           # Custom SVG icons
 │   │   ├── modules/        # Domain-driven feature modules
 │   │   │   ├── authModules/        # Login, registration, and OTP forms
+│   │   │   ├── chatbot/            # AI hospital assistant (RAG-powered floating chat widget)
 │   │   │   ├── dashboard/          # Admin, Doctor, and Patient widgets & charts
 │   │   │   └── storeFront/         # Hero, Doctor directory, filters, schedule picker
 │   │   ├── shared/         # Reusable composite components (DataTable, Modal, Navbar, Footer)

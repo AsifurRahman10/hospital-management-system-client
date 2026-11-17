@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Clock,
   HeartPulse,
+  MessageCircle,
   ShieldCheck,
   Stethoscope
 } from 'lucide-react'
@@ -59,6 +60,16 @@ const HeroSection = () => {
             />
           </a>
         </div>
+
+        {/* AI assistant nudge */}
+        <p className='mt-5 inline-flex items-center gap-2 text-sm text-muted-foreground'>
+          <MessageCircle className='size-4 text-primary' aria-hidden='true' />
+          Not sure where to start?{' '}
+          <span className='font-medium text-primary underline-offset-2 hover:underline cursor-default'>
+            Ask our AI assistant
+          </span>{' '}
+          — it&apos;s available at the bottom right.
+        </p>
 
         <div className='mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-6 text-xs font-semibold text-muted-foreground'>
           <span className='inline-flex items-center gap-2 text-foreground/80'>

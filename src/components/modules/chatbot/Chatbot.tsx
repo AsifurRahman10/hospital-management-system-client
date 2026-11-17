@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Stethoscope, X } from 'lucide-react'
+import { MessageCircle, X } from 'lucide-react'
 import { ChatbotWindow } from './ChatbotWindow'
 import { cn } from '@/app/lib/utils'
 
@@ -13,10 +13,17 @@ export function Chatbot() {
       {/* Chat window */}
       {open && <ChatbotWindow onClose={() => setOpen(false)} />}
 
+      {/* "Chat with us" label — visible only when closed */}
+      {!open && (
+        <span className='rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm'>
+          Chat with us
+        </span>
+      )}
+
       {/* Trigger button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? 'Close assistant' : 'Open hospital assistant'}
+        aria-label={open ? 'Close assistant' : 'Chat with our AI hospital assistant'}
         className={cn(
           'size-13 flex items-center justify-center rounded-full shadow-lg transition-all duration-200 cursor-pointer',
           'bg-primary text-primary-foreground',
@@ -24,7 +31,7 @@ export function Chatbot() {
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
         )}
       >
-        {open ? <X className='size-5' /> : <Stethoscope className='size-5' />}
+        {open ? <X className='size-5' /> : <MessageCircle className='size-5' />}
       </button>
     </div>
   )
