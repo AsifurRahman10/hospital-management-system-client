@@ -1,5 +1,6 @@
 import Footer from '@/components/shared/Footer'
 import { Navbar } from '@/components/shared/Navbar'
+import { Chatbot } from '@/components/modules/chatbot/Chatbot'
 
 export default function CommonLayout({
   children
@@ -11,6 +12,7 @@ export default function CommonLayout({
       <Navbar />
       <div>{children}</div>
       <Footer />
+      <Chatbot />
     </>
   )
 }
