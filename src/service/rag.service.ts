@@ -22,13 +22,16 @@ export interface IIngestDoctorsData {
 
 export interface IRagSource {
   id: string
+  sourceId: string
+  chunkKey?: string
+  sourceType?: string
+  sourceLabel?: string
   content: string
   similarity: number
   metadata?: {
     name?: string
     [key: string]: unknown
   }
-  sourceType?: string
 }
 
 export const queryRagService = async (payload: IRagQueryPayload) => {

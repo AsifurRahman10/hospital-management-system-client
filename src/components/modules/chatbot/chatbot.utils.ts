@@ -30,6 +30,6 @@ export function mergeAnswerWithSources(
       s.content.includes(doc.name)
     )
     const meta = source ? parseSourceContent(source.content) : {}
-    return { ...doc, ...meta, sourceId: source?.id }
+    return { ...doc, ...meta, sourceId: source?.sourceId }
   })
 }

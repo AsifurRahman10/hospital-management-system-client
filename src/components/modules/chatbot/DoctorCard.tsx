@@ -16,7 +16,9 @@ export function DoctorCard({ doc }: { doc: IDoctorCard }) {
             {doc.name}
           </span>
         </div>
-        <Badge variant='secondary' className='flex-shrink-0 text-xs'>
+        <Badge
+          variant='secondary'
+          className='flex-shrink-0 text-xs'>
           {doc.specialty}
         </Badge>
       </div>
@@ -50,9 +52,8 @@ export function DoctorCard({ doc }: { doc: IDoctorCard }) {
 
       {/* CTA */}
       <Link
-        href='/doctors'
-        className='inline-flex w-full h-7 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-xs font-medium text-foreground transition-colors hover:bg-muted cursor-pointer'
-      >
+        href={doc.sourceId ? `/doctors/${doc.sourceId}` : '/doctors'}
+        className='inline-flex w-full h-7 items-center justify-center rounded-lg border border-border bg-background px-2.5 text-xs font-medium text-foreground transition-colors hover:bg-muted cursor-pointer'>
         View Profile
       </Link>
     </div>
