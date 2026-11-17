@@ -9,7 +9,7 @@ Healthcare delivery often breaks down in the gaps between patients, clinicians, 
 
 ## 🎬 Demo & Links
 
-- **Frontend live URL:** https://hospital-management-system-client-d21ty12sc.vercel.app/
+- **Frontend live URL:** [Live link](https://hospital-management-system-client-seven.vercel.app/)
 - **Backend live URL:** https://hospital-management-system-back-end-pw45.onrender.com/
 - **Backend Repo URL:** https://github.com/AsifurRahman10/hospital-management-system-back-end
 
